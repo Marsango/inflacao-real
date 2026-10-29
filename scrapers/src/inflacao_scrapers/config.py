@@ -2,23 +2,25 @@
 
 import tomllib
 from pathlib import Path
-from typing import Self
+from typing import Annotated, Self
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .models import validate_url
 
+Identifier = Annotated[str, Field(pattern=r"^[a-z0-9]+(?:[-_][a-z0-9]+)*$", max_length=64)]
+
 
 class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
 
-    scraper_id: str = Field(pattern=r"^[a-z0-9]+(?:[-_][a-z0-9]+)*$", max_length=64)
-    shop_id: str = "super-muffato"
-    shop_url: str = "https://www.supermuffato.com.br"
+    adapter: str = "super-muffato"
+    enabled: bool = True
+    scraper_id: Identifier
+    shop_id: Identifier
+    shop_url: str
     core_url: str = "http://127.0.0.1:8080"
-    max_search_pages: int = Field(default=50, ge=1, le=50)
-    seller_id: str = "1"
-    sales_channel: str = "1"
+    ingestion_token_env: str = Field(default="INGESTION_TOKEN", pattern=r"^[A-Za-z_][A-Za-z0-9_]*$")
     store_id: str | None = None
     city: str | None = None
     state: str | None = None
@@ -45,13 +47,56 @@ class Settings(BaseModel):
 
     @model_validator(mode="after")
     def scope(self) -> Self:
-        if not self.seller_id or not self.sales_channel.isdigit():
-            raise ValueError("Seller and sales channel must be explicit")
         if (self.city is not None or self.state is not None) and self.store_id is None:
             raise ValueError("City/state require an explicitly selected store")
         return self
 
 
-def load_settings(path: Path) -> Settings:
+class RunnerConfiguration(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    scrapers: list[dict] = Field(min_length=1)
+
+
+class ScraperSelection(BaseModel):
+    model_config = ConfigDict(extra="ignore", strict=True)
+    adapter: str = "super-muffato"
+    enabled: bool = True
+
+
+def configuration_values(path: Path) -> tuple[list[dict], bool]:
     with path.open("rb") as file:
-        return Settings.model_validate(tomllib.load(file))
+        document = tomllib.load(file)
+    if "scrapers" in document:
+        return RunnerConfiguration.model_validate(document).scrapers, True
+    return [document], False
+
+
+def resolve_settings(values: dict, multiple: bool) -> Settings | None:
+    from .adapters.registry import registered_adapter
+
+    selection = ScraperSelection.model_validate(values)
+    if not selection.enabled:
+        return None
+    adapter = registered_adapter(selection.adapter)
+    settings_model = adapter.settings_model
+    settings = settings_model.model_validate(values)
+    if multiple and "spool_path" not in values:
+        settings.spool_path = f"data/{settings.shop_id}/{settings.scraper_id}/spool.sqlite3"
+    return settings
+
+
+def load_configurations(path: Path) -> list[Settings]:
+    values, multiple = configuration_values(path)
+    resolved = [resolve_settings(value, multiple) for value in values]
+    settings = [setting for setting in resolved if setting is not None]
+    paths = [(path.parent / setting.spool_path).resolve() for setting in settings]
+    if len(paths) != len(set(paths)):
+        raise ValueError("Enabled scrapers must use distinct spool_path values")
+    return settings
+
+
+def load_settings(path: Path) -> Settings:
+    settings = load_configurations(path)
+    if len(settings) != 1:
+        raise ValueError("Expected exactly one enabled scraper configuration")
+    return settings[0]

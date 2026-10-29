@@ -53,6 +53,9 @@ class MonitoringScope(WireModel):
     schema_version: Literal["1.0"]
     targets: list[MonitoringTarget] = Field(max_length=1000)
 
+    def matches(self, name: str) -> bool:
+        return any(target.matches(name) for target in self.targets)
+
     @model_validator(mode="after")
     def unique_targets(self):
         identities = [target.id for target in self.targets]

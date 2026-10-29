@@ -4,17 +4,18 @@ import argparse
 import sys
 from pathlib import Path
 
-from .commands import COMMANDS
-from .config import load_settings
+from .runner import run
 
 
 def argument_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path("config.toml"))
+    parser.add_argument(
+        "--config", type=Path, default=Path("config.toml"), help="Scraper or runner TOML"
+    )
     commands = parser.add_subparsers(dest="command", required=True)
     add_discovery_arguments(commands)
     commands.add_parser(
-        "collect", help="Discover core monitoring targets and durably queue batches"
+        "collect", help="Discover targets and deliver prices; save failed batches locally"
     )
     commands.add_parser("deliver", help="Send pending batches with INGESTION_TOKEN")
     commands.add_parser("status", help="Show local spool backlog")
@@ -29,17 +30,11 @@ def add_discovery_arguments(commands) -> None:
     discover.add_argument("--limit", type=int, choices=range(1, 51), default=20, metavar="1..50")
 
 
-def execute(arguments) -> int:
-    settings = load_settings(arguments.config)
-    command = COMMANDS[arguments.command]
-    return command(settings, arguments)
-
-
 def main() -> int:
     parser = argument_parser()
     arguments = parser.parse_args()
     try:
-        return execute(arguments)
+        return run(arguments)
     except (ValueError, RuntimeError, OSError) as error:
         print(f"error: {error}", file=sys.stderr)
         return 1

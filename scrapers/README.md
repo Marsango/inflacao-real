@@ -1,7 +1,7 @@
-# Super Muffato collector
+# Shop collectors
 
-The first adapter discovers products from **Curitiba – Champagnat** using
-Super Muffato's public VTEX product API. The core supplies brand-independent
+The registered adapters collect public VTEX catalogs for **Super Muffato,
+Angeloni, and Festval** around Curitiba. The core supplies brand-independent
 monitoring targets through its authenticated scope endpoint. Migration 00006
 seeds 16 targets covering the DIEESE basket's 13 food groups, regional flour/sugar
 variants, and pasta. See the [basket scope and sources](../docs/contracts/monitoring/v1/basic-food-basket.md).
@@ -10,6 +10,23 @@ the seed does not make their collection complete. Matching brands, variants and
 package sizes stay separate products.
 These groups are not a statistically representative inflation basket.
 
+| Adapter | Verified context | Discovery |
+| --- | --- | --- |
+| `super-muffato` | Champagnat online branch, sales channel `8`; no CEP selected | Paginated target searches |
+| `angeloni` | Delivery catalog for CEP `80730201`, mapped to Angeloni Bigorrilho | Food-category browsing, filtered by core targets |
+| `festval` | Delivery catalog for CEP `80730201`, mapped to regional seller `meufestvaldark` | Paginated target searches on sales channel `2` |
+
+The two delivery adapters resolve their configured CEP through the public regions
+endpoint at the start of every run. The response must contain the configured
+`regional_seller_id`; a missing/ambiguous mapping stops that scraper before price
+collection. The resolved region is sent explicitly in the request and public
+VTEX segment cookie. Observations preserve CEP, city/state, `channel=delivery`,
+and `store_id=region:<resolved region>/seller:<regional seller>`. The price
+response's seller ID remains `1`; it is preserved separately in `seller_id`.
+This records a regional online catalog; checkout prices and physical shelf prices
+require separate verification. Muffato's current context remains `online`, with
+a null CEP.
+
 ## Setup
 
 Run from `scrapers/`, with Python 3.12 or newer:
@@ -17,7 +34,7 @@ Run from `scrapers/`, with Python 3.12 or newer:
 ```sh
 python3 -m venv .venv
 .venv/bin/pip install --no-cache-dir -e '.[dev]'
-cp muffato.example.toml config.toml
+cp scrapers.example.toml config.toml
 ```
 
 This makes the Python package and `inflacao-scraper` command available inside
@@ -27,6 +44,89 @@ installation is needed. Database access is not part of scraper operation or test
 
 `config.toml` and `data/` are ignored by Git. Set a unique `scraper_id` for each
 independent installation. Keep the ingestion token only in the environment.
+
+## Shared runner and adapter registration
+
+The same command runs every enabled entry in `config.toml`:
+
+```sh
+.venv/bin/inflacao-scraper --config config.toml collect
+```
+
+Use one `[[scrapers]]` table per shop/store configuration. Each table has its own
+adapter, scraper/shop identity, core URL, request settings, branch selection,
+and fallback spool. The adapter name selects an implementation from
+[`ADAPTERS`](src/inflacao_scrapers/adapters/registry.py). Muffato, Angeloni and
+Festval are registered. The complete three-shop setup is in
+[`scrapers.example.toml`](scrapers.example.toml). Individual configurations are in
+[`angeloni.example.toml`](angeloni.example.toml),
+[`festval.example.toml`](festval.example.toml), and
+[`muffato.example.toml`](muffato.example.toml). For example:
+
+```toml
+[[scrapers]]
+adapter = "super-muffato"
+enabled = true
+scraper_id = "local-collector"
+core_url = "http://127.0.0.1:8080"
+ingestion_token_env = "INGESTION_TOKEN"
+sales_channel = "8"
+store_id = "sales-channel:8"
+city = "Curitiba"
+state = "PR"
+
+[[scrapers]]
+adapter = "another-shop"
+enabled = false
+# After registering this adapter, add its required settings and enable it.
+```
+
+Runs are sequential. Each enabled scraper gets a new HTTP client, run ID, and
+listing-deduplication state. A collection or delivery failure stops that scraper;
+the runner continues with the next entry. The final summary reports the number of
+scrapers and failures, and the command exits nonzero if any scraper failed.
+Unknown enabled adapters, invalid settings, and conflicting spool paths fail
+configuration validation before any scraper starts. Disabled entries require
+only `adapter` and `enabled = false`; their adapters need not be installed.
+All-disabled configurations are a successful no-op.
+
+`ingestion_token_env` names the environment variable containing that scraper's
+core token; it defaults to `INGESTION_TOKEN`. Tokens stay out of TOML files and
+shop requests. The current core authorizes one `INGESTION_SCRAPER_ID` and a set of
+`INGESTION_SHOP_IDS`; entries sending to the same core must use that authorized
+scraper identity and token, with each shop registered and allowed. Separate core
+instances can have different identities and token environment variables.
+
+Runner entries default to `data/<shop_id>/<scraper_id>/spool.sqlite3`, relative to
+the configuration file. Set distinct `spool_path` values explicitly when several
+entries use the same shop and scraper identity. `deliver`, `status`, and diagnostic
+`discover` also run across all enabled entries using their own settings.
+
+Existing flat Muffato TOML files still work, default to `adapter = "super-muffato"`,
+and retain `data/spool.sqlite3`. When migrating an existing queue to `[[scrapers]]`,
+retain its explicit `spool_path`; the new example does this for Muffato.
+
+To add a shop without changing the runner:
+
+1. Implement pure parsing and bounded fetching in its own package. Subclass the
+   shared `Settings` model for that shop's required options.
+2. Define an [`Adapter`](src/inflacao_scrapers/adapters/__init__.py) with its name,
+   settings model, `search_pages(requester, settings, target, query)`, and
+   `discover(requester, settings, query, limit)` functions. Searches yield shared
+   `ParsedPage` instances containing validated observations and parsing issues.
+   An optional `prepare` callback resolves per-run context. An adapter that browses
+   a whole catalog supplies `catalog_pages(requester, settings, scope)` instead
+   of `search_pages`; the runner counts matches for every core target.
+   Use fresh observation IDs/timestamps and report incomplete pagination as errors.
+3. Import its adapter into `adapters/registry.py` and add it to `ADAPTERS` under
+   its name. Registration is explicit; adding an unregistered Python file does
+   not make it runnable.
+4. Add an enabled `[[scrapers]]` table with that adapter's settings and authorize
+   its identity/shop in the core. The existing `collect` command discovers the
+   registration, collects its pages, and uses shared batching and delivery.
+
+See [`muffato/adapter.py`](src/inflacao_scrapers/muffato/adapter.py) for the first
+implementation. Adapter names are included in submitted collector provenance.
 
 ## Collection
 
@@ -40,25 +140,29 @@ independent installation. Keep the ingestion token only in the environment.
 Discovery prints SKU IDs, names, package sizes, availability, and prices without
 queueing measurements. It is an ad hoc diagnostic command, independent of the core.
 
-`collect` authenticates to `GET /api/v1/monitoring-targets` once per run, then
-searches Muffato for each target's phrases. It follows pagination, filters each
+For each enabled scraper, `collect` authenticates to `GET /api/v1/monitoring-targets`
+once per run. Muffato and Festval search each target's phrases. They follow pagination, filter each
 SKU using the central required/excluded name terms, and collects every matching
 brand and individually sold package size. A SKU found by several queries or
 targets is measured once per run. Brand and variant comparisons remain the core's
 responsibility. See the [monitoring v1 contract](../docs/contracts/monitoring/v1/README.md).
 
-Each page's validated observations are checkpointed in `data/spool.sqlite3`
-before requesting another page. Collection does not submit observations to the core.
+Each page's validated observations are batched and sent directly to the core
+before requesting another page. Successful delivery creates no local storage.
+If delivery fails after bounded retries, the exact attempted batch is saved in
+the scraper's configured spool and that scraper stops with a nonzero result. Use `deliver`
+to retry saved batches; `collect` does not drain an existing backlog.
 Every new measurement receives a new observation ID and UTC timestamp, even if
 the price is unchanged. Run and submission IDs are printed for diagnosis. An
-incomplete run exits nonzero and retains already queued observations. Restarting
-collection creates a new run; use `deliver` to resume existing deliveries.
+incomplete run exits nonzero; batches already accepted by the core remain there.
+Restarting collection creates a new run. An interruption before a failed batch
+is saved can lose that in-memory batch.
 
 The core seeds the initial scope through migration 00006; add/refine targets with
 forward migrations. Remove the old `sku_ids` field from existing local TOML files.
 `collect` now needs `INGESTION_TOKEN` and a reachable core. It never falls back to
 a local product list if scope retrieval or validation fails. Credentials are sent
-only to the configured core, never to Muffato; redirects are not followed.
+only to the configured core, never to shops; redirects are not followed.
 
 The scraper reports unique matching listings per target. Missing targets, parser
 errors, failed pages and repeated pagination mark the run incomplete. Searches
@@ -76,6 +180,55 @@ longer waits leave work for a later invocation. Redirects are not followed.
 No collection-result cache is used. Requests ask for revalidation and use unique
 query keys; responses with a positive HTTP Age are rejected as fresh measurements.
 Prices can still reflect the shop's own upstream updates and indexing delays.
+
+### Angeloni and Festval regionalization
+
+The defaults use the public business-address CEP `80730201` in Bigorrilho. On
+2026-10-29 the stores' public `GET /api/checkout/pub/regions` responses mapped
+this CEP to `superangeloni24` (Angeloni Bigorrilho) and `meufestvaldark` (Festval).
+These are delivery-region sellers, not pickup-point IDs. The regional mappings
+are checked again on each invocation, rather than hardcoding a region token.
+Changing the CEP requires verifying and configuring the matching regional seller.
+
+Festval's homepage segment selected sales channel `2`. The adapter also preserves
+the storefront's `utm_source=curitiba` segment field. Default unregionalized
+search responses reported offers unavailable; applying the resolved regional
+segment returned in-stock prices in live checks. The adapter never falls back
+to an unregionalized price when resolving the configured context fails.
+
+Angeloni's [published robots rules](https://super.angeloni.com.br/robots.txt)
+exclude `ft`/`fq` keyword-filter URLs. Its adapter uses the public
+`/_v/api/intelligent-search/product_search/<category facets>` catalog endpoint
+with `count`, `page`, `sc`, and `regionId`. It uses no `ft`, `fq`, `query`, or `map`
+query parameters. Each run loads the public category tree and resolves configured
+food leaf-category IDs into browsing paths. Each selected category is traversed
+once for all enabled core targets, then source names are filtered locally before
+parsing offers. Source pages are not replayed from a previous run.
+
+The defaults cover rice, beans, coffee, flour/corn flakes, milk/powdered milk,
+butter/margarine, oils, sugar, fruit, vegetables, beef, bread and pasta. These are
+retailer category partitions, not a replacement for the core's name rules. Add
+appropriate `catalog_category_ids` when expanding scope beyond those categories.
+Missing configured categories or parent categories stop collection explicitly.
+Product overlap across categories is deduplicated within the run.
+
+VTEX rejects pages after page 50, so the adapter enforces that bound per category.
+`max_catalog_pages` defaults to 1000 as an overall page budget across selected
+categories. Reaching either bound, repeated pages, missing totals and prematurely
+short pages are explicit incomplete runs. Already accepted batches remain in the core.
+`discover` also browses Angeloni's configured categories, stopping after its requested number
+of matching observations; use an individual config to inspect only one shop:
+
+```sh
+.venv/bin/inflacao-scraper --config angeloni.example.toml discover --query leite --limit 5
+.venv/bin/inflacao-scraper --config festval.example.toml discover --query arroz --limit 5
+```
+
+Shared fetching, parsing, pagination and regionalization now live in `vtex/`.
+Saved fixtures cover both response formats; Angeloni's Intelligent Search format
+uses `AvailableQuantity` when `IsAvailable` is absent. Both retain unavailable
+displayed offers, promotions and payment alternatives. Ambiguous repeated package
+sizes stay null, and variable-weight products still report unsupported extraction.
 
 ### Branch and delivery context
 
@@ -123,35 +276,69 @@ being silently truncated.
 ## Delivery to the core
 
 Configure the running core with matching `INGESTION_SCRAPER_ID` and
-`INGESTION_SHOP_IDS=super-muffato`. An administrator must register the shop before
+`INGESTION_SHOP_IDS=super-muffato,angeloni,festval`. An administrator must register the shops before
 the worker processes observations; the scraper itself never accesses PostgreSQL:
 
 ```sql
 INSERT INTO shops (id, name, website_url)
-VALUES ('super-muffato', 'Super Muffato', 'https://www.supermuffato.com.br')
+VALUES ('super-muffato', 'Super Muffato', 'https://www.supermuffato.com.br'),
+       ('angeloni', 'Angeloni', 'https://super.angeloni.com.br'),
+       ('festval', 'Festval', 'https://www.festval.com')
 ON CONFLICT (id) DO NOTHING;
 ```
 
 Use the existing core setup instructions in [core/README.md](../core/README.md).
-With the matching token exported as `INGESTION_TOKEN`, run:
+With the matching token exported under the configured `ingestion_token_env`, `collect` sends newly
+collected prices automatically. To retry batches saved after delivery failures, run:
 
 ```sh
 .venv/bin/inflacao-scraper --config config.toml deliver
 ```
 
-Delivery reuses the exact persisted UTF-8 body after retries and restarts. Batches
-are limited to 100 observations and 1 MiB, including their envelope. The local
+Delivery reuses the exact attempted UTF-8 body during retries and, for failed
+batches, after restarts. Batches are limited to 100 observations and 1 MiB,
+including their envelope. Each local
 SQLite spool uses synchronous transactions and defaults to **64 MiB of pending
 payload bytes**; database metadata/journaling needs additional disk space. A full
 spool stops collection explicitly without deleting queued batches.
 
-An empty 202 or 200 response acknowledges delivery and removes that local batch.
-Network/transient failures retain it for bounded retries or a later invocation.
-Authentication, validation, redirects, unexpected response bodies, and identity
-mismatches stop delivery for investigation. Tokens and response bodies are not logged.
+An empty 202 or 200 response acknowledges delivery. New successful batches are
+never stored locally; retrying a saved batch removes it only after acknowledgement.
+Network/transient failures use bounded retries. Exhausted retries, authentication,
+validation, redirects, and unexpected response bodies save a new batch locally
+and stop collection for investigation. An unsuccessful `deliver` leaves existing
+batches queued. Identity mismatches also stop delivery. Tokens and response bodies
+are not logged.
 Check the core's diagnostics for `processed`: acceptance confirms queueing only.
 Core registration, ingestion, and persisted history have not been verified by
 the scraper's standalone tests.
+
+### Pending end-to-end verification
+
+Two fixed-scope Muffato runs collected 48 observations on 2026-10-29 with fresh
+IDs and timestamps. Those observations were queued locally; their delivery and
+persisted history have not been verified. These runs predate core-owned target
+discovery and automatic delivery.
+
+After registering the shops and configuring authorization, deliver any pending
+batches and verify two collection runs against the same scope:
+
+- Accepted submissions reach `processed`; investigate retries and failures through
+  core diagnostics.
+- Persisted prices, packages, conditions and store context match the observations.
+- Fresh measurements retain distinct IDs and timestamps while compatible products
+  and listings reuse their catalog records.
+- Retrying an interrupted submission preserves its payload and identities without
+  duplicating history.
+
+Inspect PostgreSQL manually for this operational check. Automated persistence
+tests belong to the core and must use disposable Testcontainers with automatic
+cleanup. Scrapers continue to use HTTP only.
+
+Further work includes weight-based collection, a core history API and web view,
+scheduling, automated raw-payload retention, and collection-coverage reporting.
+Aggregate metrics require documented baskets, weighting, comparison periods and
+missing-data treatment before inflation or official-index comparisons.
 
 ## Tests
 
@@ -161,8 +348,10 @@ the scraper's standalone tests.
 .venv/bin/ruff check src tests
 .venv/bin/ruff format --check src tests
 
-# Real API requests: exact SKUs plus paginated rice/coffee discovery in Curitiba.
+# Real API requests across all three stores.
 .venv/bin/pytest -m live --live
+# Only the new adapters: regional prices and Angeloni pagination.
+.venv/bin/pytest tests/stores/test_live.py -m live --live
 ```
 
 No PostgreSQL, Docker, or live shop is required by the default suite. Delivery
@@ -177,7 +366,8 @@ silently skipping. Run this command periodically to detect upstream changes;
 no automated schedule or notification has been installed.
 
 The saved fixture is a small projection of a real response; see
-[fixtures/README.md](tests/fixtures/README.md). The ingestion schema is packaged
+[fixtures/README.md](tests/fixtures/README.md) and
+[regional-store fixtures](tests/fixtures/stores/README.md). The ingestion schema is packaged
 so installed collectors work outside a source checkout. Its equality with the
 core-owned shared schema and both shared examples is tested. After a coordinated
 contract change, refresh it from the repository root:

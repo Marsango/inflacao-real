@@ -1,4 +1,4 @@
-"""Exact source prices and conservative package extraction."""
+"""Exact VTEX prices and conservative package extraction."""
 
 import re
 from decimal import Decimal

@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 import httpx
+import pytest
 
 from inflacao_scrapers import cli, commands
 from inflacao_scrapers.config import load_settings
@@ -31,15 +32,22 @@ def install_mock_client(monkeypatch, handler):
     monkeypatch.setenv("INGESTION_TOKEN", "secret")
 
 
-def partial_collection_handler(source_bytes, requests):
+def scope_response(include_failure):
+    targets = [target()]
+    if include_failure:
+        targets.append(target("beans", "feijao"))
+    return httpx.Response(200, json={"schema_version": "1.0", "targets": targets})
+
+
+def collection_handler(source_bytes, requests, *, delivery_status=202, include_failure=True):
     def handler(request):
         requests.append(request)
         if request.url.path == "/api/v1/monitoring-targets":
             assert request.headers["authorization"] == "Bearer secret"
-            return httpx.Response(
-                200,
-                json={"schema_version": "1.0", "targets": [target(), target("beans", "feijao")]},
-            )
+            return scope_response(include_failure)
+        if request.method == "POST":
+            assert request.headers["authorization"] == "Bearer secret"
+            return httpx.Response(delivery_status)
         assert "authorization" not in request.headers
         if request.url.params["ft"] == "arroz":
             return httpx.Response(206, content=source_bytes)
@@ -48,21 +56,58 @@ def partial_collection_handler(source_bytes, requests):
     return handler
 
 
-def test_collect_checkpoints_before_later_source_failure(
-    tmp_path, monkeypatch, source_bytes, capsys
+def test_collect_delivers_before_later_source_failure(tmp_path, monkeypatch, source_bytes, capsys):
+    config = tmp_path / "config.toml"
+    config.write_text('scraper_id="test"\n')
+    requests = []
+    install_mock_client(monkeypatch, collection_handler(source_bytes, requests))
+    monkeypatch.setattr(sys, "argv", ["scraper", "--config", str(config), "collect"])
+    assert cli.main() == 1
+    assert "complete=False" in capsys.readouterr().out
+    assert len(requests) == 4
+    assert requests[2].method == "POST"
+    assert requests[2].url.path == "/api/v1/ingestion/submissions"
+    assert not (tmp_path / "data").exists()
+
+
+@pytest.mark.parametrize("status", [200, 202])
+def test_collect_command_delivers_without_creating_storage(
+    tmp_path, monkeypatch, source_bytes, capsys, status
 ):
     config = tmp_path / "config.toml"
     config.write_text('scraper_id="test"\n')
     requests = []
-    install_mock_client(monkeypatch, partial_collection_handler(source_bytes, requests))
+    handler = collection_handler(
+        source_bytes, requests, delivery_status=status, include_failure=False
+    )
+    install_mock_client(monkeypatch, handler)
+    monkeypatch.setattr(sys, "argv", ["scraper", "--config", str(config), "collect"])
+    assert cli.main() == 0
+    assert len(requests) == 3
+    assert requests[-1].method == "POST"
+    assert "complete=True" in capsys.readouterr().out
+    assert not (tmp_path / "data").exists()
+
+
+def test_collect_command_saves_failed_delivery_at_configured_path(
+    tmp_path, monkeypatch, source_bytes, capsys
+):
+    config = tmp_path / "config.toml"
+    config.write_text('scraper_id="test"\nspool_path="failed/batches.sqlite3"\n')
+    requests = []
+    handler = collection_handler(source_bytes, requests, delivery_status=401)
+    install_mock_client(monkeypatch, handler)
     monkeypatch.setattr(sys, "argv", ["scraper", "--config", str(config), "collect"])
     assert cli.main() == 1
-    assert "complete=False" in capsys.readouterr().out
     assert len(requests) == 3
-    with Spool(tmp_path / "data/spool.sqlite3") as spool:
-        assert spool.status()[0] == 1
-        submission = json.loads(list(spool.pending())[0][1])
-        assert submission["observations"][0]["product"]["source_product_id"] == "307840"
+    with Spool(tmp_path / "failed/batches.sqlite3") as spool:
+        identity, payload = next(spool.pending())
+        assert payload == requests[-1].content
+        assert identity == json.loads(payload)["submission_id"]
+    output = capsys.readouterr()
+    assert "HTTP 401" in output.err
+    assert "secret" not in output.err
+    assert "complete=False" in output.out
 
 
 def test_example_configuration_pins_curitiba_branch():

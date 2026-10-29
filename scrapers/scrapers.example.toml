@@ -1,0 +1,68 @@
+# Each enabled entry runs sequentially with the registered adapter and its own settings.
+# Register a new adapter before adding its enabled entry here.
+[[scrapers]]
+adapter = "super-muffato"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+shop_id = "super-muffato"
+shop_url = "https://www.supermuffato.com.br"
+core_url = "http://127.0.0.1:8080"
+ingestion_token_env = "INGESTION_TOKEN"
+sales_channel = "8"
+seller_id = "1"
+store_id = "sales-channel:8"
+city = "Curitiba"
+state = "PR"
+max_search_pages = 50
+
+# Explicitly retain the original queue when migrating from muffato.example.toml.
+# Without this setting, each entry gets data/<shop_id>/<scraper_id>/spool.sqlite3.
+spool_path = "data/spool.sqlite3"
+spool_capacity_bytes = 67108864
+timeout_seconds = 20.0
+request_interval_seconds = 1.0
+max_attempts = 3
+retry_base_seconds = 1.0
+retry_max_seconds = 60.0
+
+# The same scraper identity/token is authorized for all three shops in one core.
+[[scrapers]]
+adapter = "angeloni"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+shop_id = "angeloni"
+shop_url = "https://super.angeloni.com.br"
+core_url = "http://127.0.0.1:8080"
+ingestion_token_env = "INGESTION_TOKEN"
+sales_channel = "1"
+seller_id = "1"
+postal_code = "80730201"
+regional_seller_id = "superangeloni24"
+store_id = "seller:superangeloni24"
+city = "Curitiba"
+state = "PR"
+# Angeloni prohibits ft/fq search URLs. Browse once and filter core targets locally.
+# Verified food leaf categories keep every partition within VTEX's 50-page limit.
+catalog_category_ids = [43, 240, 274, 281, 283, 255, 390, 146, 244, 260, 183, 185, 84, 226, 263]
+# Overall page budget across all selected categories.
+max_catalog_pages = 1000
+spool_path = "data/angeloni/spool.sqlite3"
+
+[[scrapers]]
+adapter = "festval"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+shop_id = "festval"
+shop_url = "https://www.festval.com"
+core_url = "http://127.0.0.1:8080"
+ingestion_token_env = "INGESTION_TOKEN"
+sales_channel = "2"
+seller_id = "1"
+postal_code = "80730201"
+regional_seller_id = "meufestvaldark"
+marketing_source = "curitiba"
+store_id = "seller:meufestvaldark"
+city = "Curitiba"
+state = "PR"
+max_search_pages = 50
+spool_path = "data/festval/spool.sqlite3"

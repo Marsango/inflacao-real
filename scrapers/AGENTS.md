@@ -23,9 +23,11 @@ Choose the method per shop rather than requiring every collector to launch a bro
 ## Implementation patterns
 
 - Isolate each shop's selectors, pagination rules, and source-specific parsing in its own module or package.
+- Register each shop's `Adapter` in `src/inflacao_scrapers/adapters/registry.py`. Use a shop-specific subclass of shared settings and shared `ParsedPage` results. The runner executes enabled `[[scrapers]]` entries sequentially with isolated clients and queues; adapters must not implement their own batching or delivery.
 - Separate fetching, parsing, and submission. Parsing should accept saved source data and return observations without network calls, making page changes easy to diagnose and test.
 - Use a common pipeline: collection → parsing → Pydantic validation → bounded batching → durable delivery to the core. Shop adapters should not implement their own submission clients.
 - Share HTTP configuration and the core API client where behavior is common. Introduce shared extraction abstractions only after multiple shops demonstrate the need.
+- The three current shops share VTEX fetching and exact parsing in `src/inflacao_scrapers/vtex/`. Angeloni browses the catalog once per run and filters the complete core scope locally; Festval and Muffato use target searches. Regional delivery adapters must resolve the configured CEP, require the expected seller, and preserve the resulting context before collecting prices.
 - Prefer straightforward functions and explicit data models over deep class hierarchies. Use type hints at module boundaries.
 - Parse prices using exact decimal arithmetic. Handle Brazilian separators explicitly; never pass monetary values through binary floating-point arithmetic, including when decoding API JSON. Serialize money according to the shared contract.
 - Configure Pydantic validation deliberately so invalid or missing values cannot become plausible observations through unintended coercion. Require timezone-aware observation timestamps and reject non-finite monetary values.
@@ -59,7 +61,7 @@ Preserve source identifiers and context rather than guessing missing values or p
 - Set request timeouts and bound retries with backoff. Honor server retry guidance when supplied. Configure HTTPX redirect behavior explicitly for shop fetching; do not forward core credentials to an unexpected redirect destination.
 - Distinguish transient network failures from parser errors and invalid submissions; retry only failures that can reasonably succeed later.
 - Bound submission batches by both observation count and encoded request size according to the core contract. Validate a batch before sending it; the initial core design accepts or rejects each submitted batch as a whole.
-- Persist outgoing batches in a local durable spool before delivery so process restarts or core outages do not lose collected observations. Keep it independent of Botasaurus result caching and automatic exports; define its capacity and report exhaustion explicitly.
+- Send outgoing batches directly to the core. Only persist a batch locally when delivery fails after bounded retries, preserving the exact attempted bytes for redelivery. Open the durable spool lazily so successful collection does not create local storage. Stop collection explicitly after saving a failed batch, and report spool exhaustion without continuing collection.
 - Follow the contract's idempotency rules when retrying delivery. Reuse the scraper identity, submission ID, payload content, observation identities, and timestamps rather than creating a new measurement on every attempt.
 - Mark a local batch delivered after the ingestion endpoint returns `202 Accepted` for a durably stored batch or `200 OK` for an identical duplicate. Both responses have empty bodies. A lost response must trigger safe redelivery. Keep submission IDs in delivery logs; background processing is managed internally by the core.
 - Surface validation errors and submission-ID conflicts for investigation instead of retrying them indefinitely. Corrected content requires a new submission ID while preserving observation identity as defined by the contract.

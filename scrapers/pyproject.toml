@@ -28,7 +28,7 @@ inflacao_scrapers = ["ingestion_v1.json"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
-markers = ["live: explicitly enabled checks against Super Muffato's current API"]
+markers = ["live: explicitly enabled checks against the retailers' current public APIs"]
 
 [tool.ruff]
 target-version = "py312"

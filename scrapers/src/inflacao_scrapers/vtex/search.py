@@ -1,4 +1,4 @@
-"""Bounded catalog pagination; full pages at the limit are incomplete collections."""
+"""Bounded VTEX search pagination; reaching the limit reports incomplete collection."""
 
 import re
 from datetime import UTC, datetime

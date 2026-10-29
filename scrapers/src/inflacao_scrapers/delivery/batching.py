@@ -18,6 +18,7 @@ class BatchMetadata:
     scraper_id: str
     shop_id: str
     run_id: UUID
+    collector_name: str
     identity: UUID = field(default_factory=uuid4)
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
@@ -29,7 +30,7 @@ class BatchMetadata:
             shop_id=self.shop_id,
             run_id=self.run_id,
             created_at=self.created_at,
-            collector=Collector(name="super-muffato", version=__version__),
+            collector=Collector(name=self.collector_name, version=__version__),
             observations=observations,
         )
 
@@ -88,9 +89,14 @@ def emit_submission(submission: Submission | None) -> Iterator[Submission]:
 
 
 def batches(
-    observations: Iterable[Observation], *, scraper_id: str, shop_id: str, run_id: UUID
+    observations: Iterable[Observation],
+    *,
+    scraper_id: str,
+    shop_id: str,
+    run_id: UUID,
+    collector_name: str | None = None,
 ) -> Iterator[Submission]:
-    builder = BatchBuilder(BatchMetadata(scraper_id, shop_id, run_id))
+    builder = BatchBuilder(BatchMetadata(scraper_id, shop_id, run_id, collector_name or shop_id))
     for observation in observations:
         yield from emit_submission(builder.append(observation))
     yield from emit_submission(builder.finish())

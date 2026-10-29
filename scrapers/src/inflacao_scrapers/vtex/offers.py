@@ -1,4 +1,4 @@
-"""Preserve promotions and distinct payment terms without price inference."""
+"""Preserve VTEX promotions and distinct payment terms without price inference."""
 
 import json
 from decimal import Decimal
@@ -45,7 +45,7 @@ def known_amount(source: dict) -> str | None:
     amount = money(source["Price"])
     if amount != "0.00":
         return amount
-    if source.get("IsAvailable") is False:
+    if source.get("IsAvailable") is False or source.get("AvailableQuantity") == 0:
         return None
     raise ValueError("Unexplained zero price; verify the source")
 

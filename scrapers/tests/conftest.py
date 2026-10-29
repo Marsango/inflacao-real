@@ -3,15 +3,15 @@ from pathlib import Path
 
 import pytest
 
-from inflacao_scrapers.config import Settings
 from inflacao_scrapers.muffato import parse_products
+from inflacao_scrapers.muffato.config import MuffatoSettings
 
 FIXTURES = Path(__file__).parent / "fixtures"
 ROOT = Path(__file__).resolve().parents[2]
 
 
 def pytest_addoption(parser):
-    parser.addoption("--live", action="store_true", help="Call Super Muffato's public API")
+    parser.addoption("--live", action="store_true", help="Call the retailers' public APIs")
 
 
 def pytest_collection_modifyitems(config, items):
@@ -29,7 +29,7 @@ def mark_live_test(item, marker):
 
 @pytest.fixture
 def settings():
-    return Settings(
+    return MuffatoSettings(
         scraper_id="muffato-curitiba-01",
         sales_channel="8",
         store_id="sales-channel:8",

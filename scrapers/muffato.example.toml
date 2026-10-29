@@ -1,5 +1,7 @@
 # Start with one verified branch. Values come from Muffato's public store selector.
 # sc=8 is Curitiba - Champagnat, not the default sc=1 (Campo Mourão).
+adapter = "super-muffato"
+enabled = true
 scraper_id = "muffato-curitiba-01"
 shop_id = "super-muffato"
 shop_url = "https://www.supermuffato.com.br"

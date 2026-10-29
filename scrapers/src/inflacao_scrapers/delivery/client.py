@@ -7,6 +7,10 @@ from ..transport import Requester
 from .spool import Spool
 
 
+class DeliveryRejected(RuntimeError):
+    pass
+
+
 @dataclass
 class DeliveryTarget:
     core_url: str
@@ -34,21 +38,28 @@ class DeliveryTarget:
 
 def require_acknowledgement(response, identity: str) -> None:
     if response.status_code not in (200, 202) or response.content:
-        raise RuntimeError(
+        raise DeliveryRejected(
             f"Submission {identity}: unexpected HTTP {response.status_code}/body; "
             "batch retained for investigation"
         )
+
+
+def send_payload(
+    requester: Requester, target: DeliveryTarget, identity: str, payload: bytes
+) -> int:
+    target.authorize(payload)
+    response = target.send(requester, payload)
+    require_acknowledgement(response, identity)
+    return response.status_code
 
 
 def deliver_batch(
     spool: Spool, requester: Requester, target: DeliveryTarget, queued, report
 ) -> None:
     identity, payload = queued
-    target.authorize(payload)
-    response = target.send(requester, payload)
-    require_acknowledgement(response, identity)
+    status = send_payload(requester, target, identity, payload)
     spool.acknowledge(identity)
-    report(f"accepted submission_id={identity} status={response.status_code}")
+    report(f"accepted submission_id={identity} status={status}")
 
 
 def deliver(

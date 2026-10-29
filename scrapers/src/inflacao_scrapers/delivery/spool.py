@@ -23,10 +23,12 @@ class Spool:
         self.close()
 
     def enqueue(self, submission: Submission) -> None:
-        payload = submission.encode()
+        self.enqueue_payload(str(submission.submission_id), submission.encode())
+
+    def enqueue_payload(self, identity: str, payload: bytes) -> None:
         if len(payload) > MAX_BYTES:
             raise ValueError("Batch exceeds ingestion byte limit")
-        store_payload(self.database, str(submission.submission_id), payload, self.capacity)
+        store_payload(self.database, identity, payload, self.capacity)
 
     def pending(self) -> Iterator[tuple[str, bytes]]:
         yield from self.database.execute(

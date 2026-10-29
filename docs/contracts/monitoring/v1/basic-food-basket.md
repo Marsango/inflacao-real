@@ -52,8 +52,9 @@ not a reproduction of DIEESE's sampling, regional quantities, brands or cost ind
 No official weighting, basket total or inflation comparison is implemented here.
 The retained milk scope and pasta are explicit differences from that reference.
 
-Adding a target does not expand a shop adapter's supported price formats. Muffato
-currently handles individually sold packaged goods (`measurementUnit=un`,
+Adding a target does not expand a shop adapter's supported price formats. The
+Muffato, Angeloni, and Festval adapters currently handle individually sold
+packaged goods (`measurementUnit=un`,
 `unitMultiplier=1`). Variable-weight produce, meat and bakery listings remain
 unsupported and generate collection issues when encountered. Missing/unsupported
 coverage must not be presented as complete collection or a zero price. This

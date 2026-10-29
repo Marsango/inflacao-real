@@ -2,6 +2,8 @@
 .env.*
 !.env.example
 
+*_PLAN.md
+
 # Python collectors and local, durable delivery data.
 __pycache__/
 .pytest_cache/

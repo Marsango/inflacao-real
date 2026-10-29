@@ -5,11 +5,12 @@ from decimal import Decimal
 import httpx
 import pytest
 
+from inflacao_scrapers.adapters.registry import registered_adapter
 from inflacao_scrapers.collection import collect_scope
 from inflacao_scrapers.delivery import Spool
-from inflacao_scrapers.muffato.search import page_finished
 from inflacao_scrapers.scope import MonitoringTarget
 from inflacao_scrapers.transport import Requester
+from inflacao_scrapers.vtex.search import page_finished
 
 
 @pytest.fixture
@@ -38,13 +39,16 @@ def source_product(template, number):
     return product
 
 
-def collection_handler(target, pages, requests, status=200):
+def collection_handler(target, pages, requests, status=200, delivery_status=202):
     def handler(request):
         requests.append(request)
         if request.url.path == "/api/v1/monitoring-targets":
             return httpx.Response(
                 status, json={"schema_version": "1.0", "targets": [target.model_dump()]}
             )
+        if request.method == "POST":
+            assert request.headers["authorization"] == "Bearer secret"
+            return httpx.Response(delivery_status)
         assert "authorization" not in request.headers
         offset = int(request.url.params["_from"])
         return source_response(pages[offset])
@@ -61,13 +65,22 @@ def source_response(page):
 
 
 def run_collection(tmp_path, settings, handler):
-    with (
-        httpx.Client(transport=httpx.MockTransport(handler)) as client,
-        Spool(tmp_path / "spool.sqlite3") as spool,
-    ):
-        result = collect_scope(Requester(client, interval=0, attempts=1), spool, settings, "secret")
-        pending = [json.loads(payload) for _, payload in spool.pending()]
-    return result, pending
+    submitted = []
+
+    def recording_handler(request):
+        if request.method == "POST":
+            submitted.append(json.loads(request.content))
+        return handler(request)
+
+    with httpx.Client(transport=httpx.MockTransport(recording_handler)) as client:
+        result = collect_scope(
+            Requester(client, interval=0, attempts=1),
+            lambda: Spool(tmp_path / "spool.sqlite3"),
+            settings,
+            "secret",
+            registered_adapter(settings.adapter),
+        )
+    return result, submitted
 
 
 def observations(pending):
@@ -86,8 +99,12 @@ def test_paginates_all_brands_and_deduplicates_overlapping_queries(
     assert result == 0
     assert len(collected) == 51
     assert len({observation["product"]["brand"] for observation in collected}) == 51
-    assert [request.url.params["_from"] for request in requests[1:]] == ["0", "50", "0", "50"]
-    assert all(request.url.params["sc"] == "8" for request in requests[1:])
+    source_requests = [request for request in requests if request.url.host != "127.0.0.1"]
+    assert [request.url.params["_from"] for request in source_requests] == ["0", "50", "0", "50"]
+    assert all(request.url.params["sc"] == "8" for request in source_requests)
+    methods = [request.method for request in requests]
+    assert methods == ["GET", "GET", "POST", "GET", "POST", "GET", "GET"]
+    assert not (tmp_path / "spool.sqlite3").exists()
 
 
 def test_nonmatching_names_are_filtered_before_offer_parsing(
@@ -143,15 +160,37 @@ def test_spool_exhaustion_stops_further_source_requests(
     tmp_path, settings, source_bytes, target, monkeypatch
 ):
     requests = []
-    handler = collection_handler(target, {0: source_products(source_bytes, 50)}, requests)
-    monkeypatch.setattr(Spool, "enqueue", fail_enqueue)
+    handler = collection_handler(
+        target, {0: source_products(source_bytes, 50)}, requests, delivery_status=400
+    )
+    monkeypatch.setattr(Spool, "enqueue_payload", fail_enqueue)
     with pytest.raises(RuntimeError, match="full"):
         run_collection(tmp_path, settings, handler)
-    assert len(requests) == 2
+    assert len(requests) == 3
 
 
-def fail_enqueue(self, submission):
+def fail_enqueue(self, identity, payload):
     raise RuntimeError("Spool full")
+
+
+def test_failed_delivery_is_saved_before_stopping_collection(
+    tmp_path, settings, source_bytes, target, capsys
+):
+    requests = []
+    handler = collection_handler(
+        target, {0: source_products(source_bytes, 50)}, requests, delivery_status=401
+    )
+    result, submitted = run_collection(tmp_path, settings, handler)
+    assert result == 1
+    assert len(requests) == 3
+    assert len(submitted) == 1
+    with Spool(tmp_path / "spool.sqlite3") as spool:
+        identity, payload = next(spool.pending())
+        assert payload == requests[-1].content
+        assert identity == submitted[0]["submission_id"]
+    output = capsys.readouterr()
+    assert "saved locally" in output.err
+    assert "complete=False" in output.out
 
 
 def test_full_final_page_uses_source_total(tmp_path, settings, source_bytes, target):

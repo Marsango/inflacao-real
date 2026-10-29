@@ -1,4 +1,4 @@
-"""Decode exact source numbers without silently replacing duplicate keys."""
+"""Decode exact VTEX numbers without silently replacing duplicate keys."""
 
 import json
 from decimal import Decimal

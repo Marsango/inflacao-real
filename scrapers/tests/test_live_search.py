@@ -4,9 +4,9 @@ from pathlib import Path
 import httpx
 import pytest
 
-from inflacao_scrapers.muffato.search import search_pages
 from inflacao_scrapers.scope import MonitoringTarget
 from inflacao_scrapers.transport import Requester
+from inflacao_scrapers.vtex.search import search_pages
 
 EXAMPLES = json.loads(
     (Path(__file__).parents[2] / "docs/contracts/monitoring/v1/matching-examples.json").read_text()

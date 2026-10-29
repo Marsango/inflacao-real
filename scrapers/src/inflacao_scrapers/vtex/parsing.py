@@ -1,43 +1,41 @@
 """Pure parsing: saved responses in, validated measurements and issues out."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from decimal import InvalidOperation
+from urllib.parse import urljoin
 from uuid import uuid4
 
-from ..config import Settings
+from ..adapters import ParsedPage
 from ..models import Context, Observation, Product
-from ..scope import MonitoringTarget
+from ..scope import MonitoringScope, MonitoringTarget
+from .config import VtexSettings
 from .json import decode_response
 from .offers import offers_from_source
 from .prices import decimal_value, package_from_name
 
 
 @dataclass
-class ParsedPage:
-    observations: list[Observation] = field(default_factory=list)
-    issues: list[str] = field(default_factory=list)
-
-
-@dataclass
 class ParsingContext:
-    settings: Settings
+    settings: VtexSettings
     source_url: str
     observed_at: datetime
     selected_sku: str | None
-    target: MonitoringTarget | None
+    target: MonitoringTarget | MonitoringScope | None
 
 
 def parse_products(
     raw: bytes,
     *,
-    settings: Settings,
+    settings: VtexSettings,
     source_url: str,
     observed_at: datetime,
     selected_sku: str | None = None,
-    target: MonitoringTarget | None = None,
+    target: MonitoringTarget | MonitoringScope | None = None,
 ) -> ParsedPage:
     products = decode_response(raw)
+    if isinstance(products, dict):
+        products = products.get("products")
     if not isinstance(products, list):
         raise ValueError("Expected a product array, possibly a blocked/changed source")
     result, seen = ParsedPage(), set()
@@ -76,7 +74,7 @@ def parse_matching_candidate(sku, product, context, result, seen, identity) -> N
     result.observations.append(build_observation(sku, product, context))
 
 
-def matches_target(sku, target: MonitoringTarget | None) -> bool:
+def matches_target(sku, target: MonitoringTarget | MonitoringScope | None) -> bool:
     if target is None:
         return True
     if not isinstance(sku, dict):
@@ -100,7 +98,7 @@ def validate_packaged_sku(sku: dict) -> None:
         raise ValueError("Initial collector supports individually sold packaged goods only")
 
 
-def seller_offer(sku: dict, settings: Settings) -> dict:
+def seller_offer(sku: dict, settings: VtexSettings) -> dict:
     sellers = [seller for seller in sku["sellers"] if seller["sellerId"] == settings.seller_id]
     if len(sellers) != 1:
         raise ValueError("Configured seller absent or ambiguous")
@@ -118,14 +116,15 @@ def source_product(sku: dict, product: dict) -> Product:
     )
 
 
-def source_context(settings: Settings) -> Context:
+def source_context(settings: VtexSettings) -> Context:
+    settings.require_region()
     return Context(
         seller_id=settings.seller_id,
         store_id=settings.store_id,
-        postal_code=None,
+        postal_code=settings.postal_code,
         city=settings.city,
         state=settings.state,
-        channel="online",
+        channel=settings.observation_channel(),
     )
 
 
@@ -133,7 +132,19 @@ def availability(source: dict) -> str:
     available = source.get("IsAvailable")
     if available is not None and type(available) is not bool:
         raise ValueError("Malformed availability")
+    if available is None:
+        return availability_from_quantity(source.get("AvailableQuantity"))
     return {True: "in_stock", False: "out_of_stock", None: "unknown"}[available]
+
+
+def availability_from_quantity(quantity) -> str:
+    if quantity is None:
+        return "unknown"
+    if type(quantity) is not int or quantity < 0:
+        raise ValueError("Malformed available quantity")
+    if quantity > 0:
+        return "in_stock"
+    return "out_of_stock"
 
 
 def build_observation(sku: dict, product: dict, context: ParsingContext) -> Observation:
@@ -143,7 +154,7 @@ def build_observation(sku: dict, product: dict, context: ParsingContext) -> Obse
         observed_at=context.observed_at,
         collection_method="api",
         source_url=context.source_url,
-        product_url=product["link"],
+        product_url=urljoin(context.settings.shop_url, product["link"]),
         product=source_product(sku, product),
         context=source_context(context.settings),
         availability=availability(source),

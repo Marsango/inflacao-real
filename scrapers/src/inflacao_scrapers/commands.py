@@ -1,15 +1,15 @@
-"""Command workflows: discovery, collection checkpoints, queue status, and delivery."""
+"""Command workflows: discovery, automatic delivery, and failed-batch recovery."""
 
 import json
 import os
 import sys
+from functools import partial
 
 import httpx
 
 from .collection import collect_scope
 from .config import Settings
 from .delivery import Spool, deliver
-from .muffato import fetch_products, parse_products
 from .transport import Requester
 
 
@@ -36,25 +36,19 @@ def create_spool(settings: Settings, arguments) -> Spool:
     return Spool(arguments.config.parent / settings.spool_path, settings.spool_capacity_bytes)
 
 
-def status_command(settings: Settings, arguments) -> int:
+def status_command(settings: Settings, arguments, adapter) -> int:
     with create_spool(settings, arguments) as spool:
         count, size = spool.status()
         print(f"pending_batches={count} payload_bytes={size}")
     return 0
 
 
-def discover_command(settings: Settings, arguments) -> int:
+def discover_command(settings: Settings, arguments, adapter) -> int:
     with create_client(settings) as client:
         requester = create_requester(client, settings)
-        page = discover_page(requester, settings, arguments)
+        settings = adapter.prepare(requester, settings)
+        page = adapter.discover(requester, settings, arguments.query, arguments.limit)
     return report_discovery(page)
-
-
-def discover_page(requester: Requester, settings: Settings, arguments):
-    raw, url, timestamp = fetch_products(
-        requester, settings, query=arguments.query, limit=arguments.limit
-    )
-    return parse_products(raw, settings=settings, source_url=url, observed_at=timestamp)
 
 
 def report_discovery(page) -> int:
@@ -65,14 +59,14 @@ def report_discovery(page) -> int:
     return int(bool(page.issues))
 
 
-def deliver_command(settings: Settings, arguments) -> int:
+def deliver_command(settings: Settings, arguments, adapter) -> int:
     with create_client(settings) as client, create_spool(settings, arguments) as spool:
         requester = create_requester(client, settings)
         count = deliver(
             spool,
             requester,
             core_url=settings.core_url,
-            token=os.environ.get("INGESTION_TOKEN", ""),
+            token=os.environ.get(settings.ingestion_token_env, ""),
             scraper_id=settings.scraper_id,
             shop_id=settings.shop_id,
         )
@@ -80,10 +74,17 @@ def deliver_command(settings: Settings, arguments) -> int:
     return 0
 
 
-def collect_command(settings: Settings, arguments) -> int:
-    with create_client(settings) as client, create_spool(settings, arguments) as spool:
+def collect_command(settings: Settings, arguments, adapter) -> int:
+    with create_client(settings) as client:
         requester = create_requester(client, settings)
-        return collect_scope(requester, spool, settings, os.environ.get("INGESTION_TOKEN", ""))
+        spool_factory = partial(create_spool, settings, arguments)
+        return collect_scope(
+            requester,
+            spool_factory,
+            settings,
+            os.environ.get(settings.ingestion_token_env, ""),
+            adapter,
+        )
 
 
 COMMANDS = {

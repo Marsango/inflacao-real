@@ -1,0 +1,168 @@
+[
+  {
+    "id": 2,
+    "name": "Mercearia",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 43,
+        "name": "Arroz",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 239,
+        "name": "Açúcar e Adoçantes",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 260,
+            "name": "Açúcar",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 240,
+        "name": "Feijão",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 242,
+        "name": "Massas",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 263,
+            "name": "Massas secas",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 244,
+        "name": "Óleos",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 249,
+        "name": "Chocolates",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 467,
+            "name": "Barras",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 250,
+        "name": "Cafés e Chás",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 274,
+            "name": "Cafés",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 251,
+        "name": "Cereais e Farináceos",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 281,
+            "name": "Farinhas",
+            "hasChildren": false,
+            "children": []
+          },
+          {
+            "id": 283,
+            "name": "Flocos de Milho",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 255,
+        "name": "Leite em Pó",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 82,
+    "name": "Carnes, Aves e Peixes",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 84,
+        "name": "Carnes Bovinas",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 138,
+    "name": "Frios e Laticínios",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 146,
+        "name": "Manteiga e Margarina",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 390,
+        "name": "Leite",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 153,
+    "name": "Hortifruti",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 183,
+        "name": "Frutas",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 185,
+        "name": "Legumes",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 218,
+    "name": "Padaria",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 226,
+        "name": "Pães",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  }
+]
