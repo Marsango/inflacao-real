@@ -19,6 +19,7 @@ class CollectionRun:
     identity: UUID = field(default_factory=uuid4)
     observations: int = 0
     failures: int = 0
+    unknown_packages: int = 0
     seen: set[str] = field(default_factory=set)
 
     def issue(self, message: str) -> None:
@@ -27,6 +28,7 @@ class CollectionRun:
 
     def checkpoint(self, page, delivery, settings, target_id) -> set[str]:
         observations = [observation for observation in page.observations if self.keep(observation)]
+        self.unknown_packages += sum(unknown_package(observation) for observation in observations)
         submissions = batches(
             observations,
             scraper_id=settings.scraper_id,
@@ -51,9 +53,15 @@ class CollectionRun:
     def finish(self) -> int:
         print(
             f"run_id={self.identity} observations={self.observations} failures={self.failures} "
-            f"complete={self.failures == 0}"
+            f"unknown_packages={self.unknown_packages} complete={self.failures == 0}"
         )
         return int(self.failures != 0)
+
+
+def unknown_package(observation) -> bool:
+    if observation.product.package is not None:
+        return False
+    return any(offer.basis == "package" for offer in observation.offers)
 
 
 def collect_scope(requester, spool_factory, settings, token: str, adapter) -> int:

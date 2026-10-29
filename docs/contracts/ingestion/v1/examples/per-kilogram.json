@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "submission_id": "c60928c7-1b6c-4bb3-8434-7206b5f5d49d",
+  "scraper_id": "collector-sp-01",
+  "shop_id": "mercado-exemplo",
+  "run_id": "a34040d4-ec04-48b6-b7d8-4bd42222f989",
+  "created_at": "2026-10-27T12:00:05Z",
+  "collector": {
+    "name": "mercado-exemplo",
+    "version": "0.1.0"
+  },
+  "observations": [
+    {
+      "observation_id": "c7160fdf-e6c4-44f8-b764-31027baee9cb",
+      "observed_at": "2026-10-27T12:00:00Z",
+      "collection_method": "api",
+      "source_url": "https://mercado.example.com/api/products/tomate?store=sp-centro",
+      "product_url": "https://mercado.example.com/products/tomate",
+      "product": {
+        "source_product_id": "tomate-solto",
+        "name": "Tomate vendido por kg",
+        "brand": null,
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": "retailer-direct",
+        "store_id": "sp-centro",
+        "postal_code": "01001000",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "delivery"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "6.99",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": "7.99",
+          "conditions": {
+            "payment_method": "any",
+            "installments": null,
+            "membership_required": false,
+            "membership_program": null,
+            "coupon_required": false,
+            "minimum_quantity": "0.5",
+            "description": "Preço anunciado por kg; compra mínima de 500 g. Total sujeito ao peso final."
+          }
+        }
+      ]
+    }
+  ]
+}

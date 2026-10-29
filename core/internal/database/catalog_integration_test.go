@@ -226,3 +226,39 @@ func concurrentProduct(group int, shop string) catalogFixture {
 	product.name = "Café Descafeinado 500g"
 	return product
 }
+
+func TestCatalogRetainsPackageAndComponentReductionsWithLaterUnknownSize(test *testing.T) {
+	test.Run("mass", func(test *testing.T) {
+		fixture := newCatalogFixture(test)
+		product := catalogFixture{shop: "shop-a", sku: "coffee", name: "Café Tradicional 500g",
+			brand: "Marca A", quantity: "500", unit: "g", count: 1, observedAt: "2026-10-27T12:00:00Z"}
+		fixture.checkSizeReduction(product, "400", 1)
+	})
+	test.Run("components", func(test *testing.T) {
+		fixture := newCatalogFixture(test)
+		product := catalogFixture{shop: "shop-a", sku: "cans", name: "Bebida lata 350ml",
+			brand: "Marca A", quantity: "350", unit: "ml", count: 6, observedAt: "2026-10-27T12:00:00Z"}
+		fixture.checkSizeReduction(product, "350", 5)
+	})
+}
+
+func (fixture workerFixture) checkSizeReduction(product catalogFixture, quantity string, count int) {
+	first := fixture.processCatalog(1, product)
+	oldQuantity, oldCount := product.quantity, product.count
+	product.quantity, product.count, product.observedAt = quantity, count, "2026-10-28T12:00:00Z"
+	second := fixture.processCatalog(2, product)
+	fixture.assertVariantAssignment(first, second)
+	fixture.assertHistoricalSize(first, oldQuantity, oldCount)
+	fixture.assertHistoricalSize(second, quantity, count)
+	product.quantity, product.observedAt = "", "2026-10-29T12:00:00Z"
+	unknown := fixture.processCatalog(3, product)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(package_quantity IS NULL AND package_unit IS NULL
+        AND package_count IS NULL) FROM price_observations WHERE payload_id=$1`, unknown)
+	fixture.assertHistoricalSize(first, oldQuantity, oldCount)
+	fixture.assertHistoricalSize(second, quantity, count)
+}
+
+func (fixture workerFixture) assertHistoricalSize(identity int64, quantity string, count int) {
+	fixture.assert(`SELECT count(*)=2 AND bool_and(package_quantity=$2::numeric AND package_count=$3
+        AND price_basis='package') FROM price_observations WHERE payload_id=$1`, identity, quantity, count)
+}

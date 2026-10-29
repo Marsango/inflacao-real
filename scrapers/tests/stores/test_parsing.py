@@ -1,11 +1,13 @@
 from datetime import UTC, datetime
 from decimal import Decimal
 
+import pytest
+
 from inflacao_scrapers.scope import MonitoringScope, MonitoringTarget
 from inflacao_scrapers.vtex.offers import offers_from_source
 from inflacao_scrapers.vtex.parsing import parse_products
 
-from .conftest import encode_source
+from .conftest import FIXTURES, encode_source
 
 
 def parse(sample, raw=None, target=None):
@@ -91,3 +93,65 @@ def test_unprepared_context_is_reported_as_an_extraction_failure(store_sample):
     assert not page.observations
     assert page.issues
     assert "must be verified" in page.issues[0]
+
+
+def test_actual_regional_weight_candidates_preserve_advertised_bases(store_sample):
+    raw = (FIXTURES / f"{store_sample.name}-weight-candidates.json").read_bytes()
+    page = parse(store_sample, raw)
+    assert len(page.observations) == {"angeloni": 4, "festval": 5}[store_sample.name]
+    assert all("payment-basis:" in issue for issue in page.issues), page.issues
+    weighted = [item for item in page.observations if item.offers[0].basis == "kg"]
+    assert len(weighted) == {"angeloni": 3, "festval": 4}[store_sample.name]
+    assert all(item.product.package is None and item.product.gtin is None for item in weighted)
+    assert all(item.context.city == "Curitiba" for item in weighted)
+    assert all(item.context.postal_code == "80730201" for item in weighted)
+    assert all(
+        store_sample.settings.regional_seller_id in item.context.store_id for item in weighted
+    )
+
+
+def test_regional_weight_amounts_are_not_scaled_by_portion_size(store_sample):
+    raw = (FIXTURES / f"{store_sample.name}-weight-candidates.json").read_bytes()
+    page = parse(store_sample, raw)
+    expected = {
+        "150177": "6.59",
+        "4721796": "49.49",
+        "58297": "17.99",
+        "7515": "7.99",
+        "5568": "76.98",
+        "5621": "69.98",
+        "2164": "36.90",
+    }
+    for item in page.observations:
+        assert_regional_amount(item, expected)
+
+
+def assert_regional_amount(item, expected):
+    identity = item.product.source_product_id
+    if identity not in expected:
+        return
+    assert len(item.offers) == 1
+    assert item.offers[0].amount == expected[identity]
+    assert item.offers[0].basis == "kg"
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"city": "Other city"},
+        {"state": "SC"},
+        {"sales_channel": "99"},
+        {"seller_id": "other"},
+        {"regional_seller_id": "other"},
+        {"region_id": None},
+    ],
+)
+def test_regional_weight_prices_require_known_curitiba_context(store_sample, change):
+    raw = (FIXTURES / f"{store_sample.name}-weight-candidates.json").read_bytes()
+    settings = store_sample.prepared_settings().model_copy(update=change)
+    page = parse_products(
+        raw, settings=settings, source_url=settings.shop_url, observed_at=datetime.now(UTC)
+    )
+    assert page.issues
+    assert any("sale-format: unverified" in issue for issue in page.issues)
+    assert all(offer.basis == "package" for item in page.observations for offer in item.offers)

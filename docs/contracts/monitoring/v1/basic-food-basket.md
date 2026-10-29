@@ -54,11 +54,25 @@ The retained milk scope and pasta are explicit differences from that reference.
 
 Adding a target does not expand a shop adapter's supported price formats. The
 Muffato, Angeloni, and Festval adapters currently handle individually sold
-packaged goods (`measurementUnit=un`,
-`unitMultiplier=1`). Variable-weight produce, meat and bakery listings remain
-unsupported and generate collection issues when encountered. Missing/unsupported
-coverage must not be presented as complete collection or a zero price. This
-change registers those targets without guessing kilogram/package conversions.
+packaged goods (`measurementUnit=un`, `unitMultiplier=1`). Muffato's Champagnat
+online catalog (`sc=8`, seller `1`, no delivery CEP) also supports advertised
+kilogram prices verified against produce, beef and bakery samples. These prices
+retain `basis=kg` and null packages; approximate portions are not fixed contents.
+Portion payment totals are omitted with diagnostics, leaving the run incomplete
+while valid base prices survive. Angeloni's Bigorrilho region (channel `1`,
+`superangeloni24`) and Festval's Curitiba region (channel `2`, `meufestvaldark`)
+also support advertised kg prices. Display comparisons may use another Curitiba
+pickup location; observations retain their actual API seller, region, delivery
+CEP and availability. No branch inventory equivalence is assumed. Other units,
+kits and unverified multipliers remain explicit issues. See the
+[source evidence](../../../../scrapers/tests/fixtures/README.md).
+
+Current fixed contents come from verified SKU-name forms; unknown sizes stay null,
+and conflicting declarations generate issues. Structured net contents and
+homogeneous multipacks await evidence. Size history supports future analysis,
+without implementing shrinkflation detection. Missing/unsupported coverage must
+not be presented as complete collection or a zero price. No kilogram/package
+conversion, final weighed basket total or official-index comparison is implied.
 
 Migration 00006 is edited in place as requested. Goose does not replay an already
 applied version; an existing database that ran the earlier seed needs an explicit

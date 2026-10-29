@@ -19,6 +19,12 @@ class VtexSettings(Settings):
     region_id: str | None = None
     marketing_source: str | None = None
 
+    def supports_kilogram_prices(self) -> bool:
+        return False
+
+    def supports_egg_counts(self) -> bool:
+        return False
+
     @model_validator(mode="after")
     def delivery_context(self) -> Self:
         if self.postal_code and not self.regional_seller_id:

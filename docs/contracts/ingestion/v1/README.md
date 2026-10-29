@@ -16,7 +16,11 @@ Send UTF-8 JSON with one registered `shop_id` per submission. Initial limits are
 
 All documented object fields are required unless the schema says otherwise. Use explicit `null` for unknown nullable values, not empty strings, zero, or invented values. Unknown fields and duplicate JSON object keys are invalid. Reject non-finite numbers and invalid Unicode. UUIDs are lowercase UUIDv4 strings. Timestamps are valid UTC RFC 3339 values ending in `Z`, with optional fractional seconds of up to six digits; convert source offsets to UTC before submission. The endpoint also rejects U+0000, which PostgreSQL JSONB cannot store, and JSON nesting beyond 64 levels.
 
-See [examples/submission.json](examples/submission.json) for regular and conditional offers and [examples/unavailable.json](examples/unavailable.json) for an observation with no known price. All shops and products in these examples are fictional.
+See [examples/submission.json](examples/submission.json) for regular and conditional offers,
+[examples/unavailable.json](examples/unavailable.json) for an observation with no known price,
+and [examples/per-kilogram.json](examples/per-kilogram.json) for a loose product priced per kg,
+with null package contents and an explicit fractional purchase minimum.
+All shops and products in these examples are fictional.
 
 ## Envelope
 

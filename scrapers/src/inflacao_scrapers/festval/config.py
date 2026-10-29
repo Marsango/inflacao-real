@@ -17,3 +17,14 @@ class FestvalSettings(VtexSettings):
     city: str = "Curitiba"
     state: str = "PR"
     store_id: str = "seller:meufestvaldark"
+
+    def supports_kilogram_prices(self) -> bool:
+        return (
+            self.sales_channel == "2"
+            and self.seller_id == "1"
+            and self.regional_seller_id == "meufestvaldark"
+            and self.region_id is not None
+            and self.marketing_source == "curitiba"
+            and self.city == "Curitiba"
+            and self.state == "PR"
+        )

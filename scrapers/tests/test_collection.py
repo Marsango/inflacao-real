@@ -36,6 +36,7 @@ def source_product(template, number):
     sku = product["items"][0]
     sku["itemId"] = str(number)
     sku["nameComplete"] = f"Café Moído Brand {number} 500g"
+    sku["name"] = sku["nameComplete"]
     return product
 
 

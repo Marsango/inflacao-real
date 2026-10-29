@@ -46,9 +46,16 @@ Estamos construindo a base de coleta e histórico.
 | Interface em React | Planejada; ainda sem implementação. |
 
 O escopo de monitoramento usa os grupos de alimentos da cesta básica do DIEESE
-como referência, com diferenças documentadas. A coleta ainda se concentra em
-produtos embalados: itens vendidos por peso, como carnes e hortifruti, precisam
-de suporte adicional. Cadastrar um grupo de alimentos não significa que ele já
+como referência, com diferenças documentadas. Além de produtos embalados, o
+Super Muffato Champagnat (`sc=8`, vendedor `1`, sem CEP selecionado) coleta preços
+anunciados por kg de hortifruti, carnes e padaria, com amostras verificadas no site.
+Totais estimados de porções não viram preços por kg nem embalagens fixas; ofertas
+de pagamento sem uma base representável geram diagnóstico de coleta incompleta.
+Angeloni Bigorrilho e Festval também coletam preços por kg no catálogo regional
+de Curitiba. A conferência pode usar outro ponto de retirada na cidade; cada
+observação preserva o vendedor, a região e a disponibilidade retornados pela API.
+Os tamanhos atuais das embalagens são preservados quando conhecidos; não há
+detecção automática de reduflação. Cadastrar um grupo não significa que ele já
 tenha cobertura completa.
 
 Ainda não há um índice de inflação calculado pelo projeto nem um painel público.
@@ -140,7 +147,7 @@ Algumas contribuições úteis neste estágio:
 - Melhorar os scrapers e adicionar lojas, com exemplos de resposta e testes
   que possam rodar sem acessar o site real.
 - Investigar erros de identificação de produtos, embalagens e condições de oferta.
-- Ampliar o suporte a formatos de preço ainda não atendidos, como venda por peso.
+- Verificar venda por peso nos demais mercados e ampliar formatos de preço e embalagem.
 - Construir a primeira visualização de histórico, com linguagem simples e acessibilidade.
 - Revisar a documentação, os critérios de coleta e as limitações dos dados.
 

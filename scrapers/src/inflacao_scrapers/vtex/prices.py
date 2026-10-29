@@ -3,7 +3,7 @@
 import re
 from decimal import Decimal
 
-from ..models import Package
+from ..packaging import package_from_name as package_from_name
 
 
 def decimal_value(value) -> Decimal:
@@ -41,32 +41,29 @@ def money(value) -> str:
     return format(number, ".2f")
 
 
-def ambiguous_package(name: str) -> bool:
-    patterns = (
-        r"\b(?:leve|pague|pack|kit|com\s+\d+)|\d\s*[xX×+]\s*\d",
-        r"\b\d+\s*(?:unidades?|latas?|garrafas?|sach[eê]s?|c[aá]psulas?)\b",
-    )
-    if any(re.search(pattern, name, re.I) for pattern in patterns):
-        return True
-    measures = re.findall(r"\d+(?:[.,]\d+)?\s*(?:kg|g|ml|l)\b", name, re.I)
-    return len(measures) > 1
+def sale_basis(sku: dict, settings) -> str:
+    if sku.get("isKit") is not False:
+        raise ValueError("sale-format: kits or missing kit status are unsupported")
+    multiplier = decimal_value(sku.get("unitMultiplier"))
+    if multiplier <= 0 or multiplier > 1:
+        raise ValueError("sale-format: unsupported unit multiplier")
+    unit = sku.get("measurementUnit")
+    if unit == "un" and multiplier == 1:
+        return "package"
+    if unit == "kg" and settings.supports_kilogram_prices():
+        return "kg"
+    raise ValueError(f"sale-format: unverified unit/multiplier {unit!r}/{multiplier}")
 
 
-def canonical_quantity(number: Decimal) -> str:
-    value = format(number, "f")
-    if "." in value:
-        value = value.rstrip("0")
-        return value.rstrip(".")
+def source_gtin(sku: dict, basis: str) -> str | None:
+    value = sku.get("ean") or None
+    if basis == "kg" and isinstance(value, str) and re.fullmatch(r"[0-9]{1,7}", value):
+        return None  # Verified retailer internal codes, not GTINs; retain source SKU.
     return value
 
 
-def package_from_name(name: str) -> Package | None:
-    if ambiguous_package(name):
+def weight_description(sku: dict, basis: str) -> str | None:
+    if basis != "kg":
         return None
-    match = re.search(r"(?<![\d.,])(\d+(?:[.,]\d+)?)\s*(kg|g|ml|l)\s*$", name, re.I)
-    if match is None:
-        return None
-    quantity = decimal_value(match[1].replace(",", "."))
-    if quantity <= 0:
-        raise ValueError("Nonpositive package quantity")
-    return Package(quantity=canonical_quantity(quantity), unit=match[2].lower(), count=1)
+    detail = sku.get("complementName")
+    return "; ".join(filter(None, ["Preço anunciado por kg; total depende do peso final", detail]))

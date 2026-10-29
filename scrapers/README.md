@@ -227,8 +227,13 @@ of matching observations; use an individual config to inspect only one shop:
 Shared fetching, parsing, pagination and regionalization now live in `vtex/`.
 Saved fixtures cover both response formats; Angeloni's Intelligent Search format
 uses `AvailableQuantity` when `IsAvailable` is absent. Both retain unavailable
-displayed offers, promotions and payment alternatives. Ambiguous repeated package
-sizes stay null, and variable-weight products still report unsupported extraction.
+displayed offers, promotions and payment alternatives. Equivalent repeated package
+sizes agree; conflicting declarations stay null with a collection issue.
+Angeloni and Festval also support advertised kilogram prices in their verified
+Curitiba API contexts. Independent storefront checks establish the price unit;
+the comparison may use another Curitiba pickup location. API availability and
+location fields always come from the configured regional response, without
+copying a storefront's pickup selection or assuming identical branch inventory.
 
 ### Branch and delivery context
 
@@ -259,10 +264,52 @@ pagination. It examines every returned SKU and selects the configured seller.
 
 Fetching, pure parsing, contract models, batching, and delivery are separate modules.
 JSON prices are decoded as Decimal, never float, then serialized as exact two-place
-money strings. Package sizes come only from unambiguous terminal measurements in
-names; unknown or ambiguous multipacks remain null. This first adapter supports
-individually sold packaged goods (`measurementUnit=un`, `unitMultiplier=1`),
-not variable-weight items or kits. Invalid GTINs and malformed observations are reported.
+money strings. All three adapters retain individually sold packaged goods
+(`measurementUnit=un`, `unitMultiplier=1`). The SKU-aware contents resolver uses
+unambiguous measurements in the selected SKU's `name` and `nameComplete`, including
+nonterminal sizes and equivalent repeated measurements. Units are `g`, `kg`, `ml`
+and `l`, with spaces, case differences and decimal commas supported. Conflicting
+or invalid quantities produce null contents and an issue while valid prices survive.
+Unknown sizes stay null on each fresh observation and appear in the run's
+`unknown_packages` count. Parent/sibling metadata and prior sizes never fill gaps.
+
+Muffato's verified sales channel `8`, seller `1`, without a delivery CEP also
+supports advertised kilogram prices with positive multipliers up to one. Captured
+produce, beef and bakery listings were checked against the rendered Champagnat
+storefront. `Price` and `ListPrice` are kilogram amounts; the multiplier is never
+applied to them. Package is null even when a name contains `1kg` or an approximate
+portion weight. The latter wording is preserved in offer conditions. Short numeric
+retailer codes on these loose products become null GTINs; malformed full-length
+GTINs still fail validation. Kits, other units, invalid multipliers and unverified
+shop/context mappings remain explicit issues.
+
+Angeloni enables this mapping on channel `1` with regional seller
+`superangeloni24`; Festval on channel `2` with `meufestvaldark` and the
+`curitiba` marketing segment. Both require a freshly resolved region, seller `1`,
+and configured Curitiba/PR context. Captured fractional multipliers and rendered
+`/ KG` or `/kg` labels establish the advertised basis independently of portion
+totals. Angeloni's sampled offers have no payment alternatives. Festval's portion
+totals remain omitted under the same explicit diagnostic rule as Muffato's.
+Festval's Carlos de Carvalho pickup is in Bigorrilho, Curitiba; exact pickup
+equality is not required by the city-wide scope. Angeloni's storefront branch
+was not independently identified; collection location remains established by
+the verified Bigorrilho API region. Storefront availability does not overwrite it.
+See [regional source evidence](tests/fixtures/stores/README.md).
+
+Weighted `PaymentOptions` totals describe portions and have no verified per-kg
+mapping. They are omitted with a `payment-basis` diagnostic: independently valid
+base prices are delivered, but the run reports incomplete collection. No conversion
+from estimated totals, guessed promotional minimum or final checkout total is made.
+Missing prices and explained unavailable placeholders still produce empty offers.
+The storefront warns that final weighed totals can vary.
+
+Muffato's verified egg-carton names ending in `12un` (or another explicit count)
+map to quantity in `unit`, count 1. Homogeneous multipacks, mixed kits, bonus
+bundles and structured-only sizes remain deferred; sampled responses contained no
+verified complete SKU-specific structured net-content fields. No extra per-product
+request was added. See the [source mapping and provenance](tests/fixtures/README.md)
+for supported rules and remaining unknown-size coverage. Reliable size history is
+an input to later shrinkflation analysis; no detector or replacement matching is added.
 
 Availability and displayed prices are independent. Missing prices stay unknown;
 unavailable zero-price placeholders produce an empty offers array. Promotion
@@ -310,8 +357,11 @@ and stop collection for investigation. An unsuccessful `deliver` leaves existing
 batches queued. Identity mismatches also stop delivery. Tokens and response bodies
 are not logged.
 Check the core's diagnostics for `processed`: acceptance confirms queueing only.
-Core registration, ingestion, and persisted history have not been verified by
-the scraper's standalone tests.
+Core integration tests separately exercise the shared kilogram example through
+authenticated acceptance, worker processing, history persistence and retry
+deduplication using disposable PostgreSQL Testcontainers. They also verify fixed
+size/component reductions and later unknown sizes. This does not verify delivery
+to a running deployment or the historical queued live measurements below.
 
 ### Pending end-to-end verification
 
@@ -335,7 +385,8 @@ Inspect PostgreSQL manually for this operational check. Automated persistence
 tests belong to the core and must use disposable Testcontainers with automatic
 cleanup. Scrapers continue to use HTTP only.
 
-Further work includes weight-based collection, a core history API and web view,
+Further work includes additional verified shop contexts, structured net contents
+and multipacks, a core history API and web view,
 scheduling, automated raw-payload retention, and collection-coverage reporting.
 Aggregate metrics require documented baskets, weighting, comparison periods and
 missing-data treatment before inflation or official-index comparisons.
@@ -352,6 +403,10 @@ missing-data treatment before inflation or official-index comparisons.
 .venv/bin/pytest -m live --live
 # Only the new adapters: regional prices and Angeloni pagination.
 .venv/bin/pytest tests/stores/test_live.py -m live --live
+# Bounded fresh produce, beef and bakery checks for the verified Muffato mapping.
+.venv/bin/pytest tests/weight/test_live.py --live
+# Six regional produce/beef/bakery checks, preserving each shop's collection route.
+.venv/bin/pytest tests/stores/test_live.py -k advertised_kilogram --live
 ```
 
 No PostgreSQL, Docker, or live shop is required by the default suite. Delivery
@@ -369,7 +424,7 @@ The saved fixture is a small projection of a real response; see
 [fixtures/README.md](tests/fixtures/README.md) and
 [regional-store fixtures](tests/fixtures/stores/README.md). The ingestion schema is packaged
 so installed collectors work outside a source checkout. Its equality with the
-core-owned shared schema and both shared examples is tested. After a coordinated
+core-owned shared schema and all three shared examples is tested. After a coordinated
 contract change, refresh it from the repository root:
 
 ```sh

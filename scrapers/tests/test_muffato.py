@@ -40,8 +40,12 @@ def shape_validator():
     )
 
 
-def test_saved_response_shape(source_bytes):
-    shape_validator().validate(decode_response(source_bytes))
+@pytest.mark.parametrize(
+    "filename",
+    ["muffato-products.json", "muffato-weight-products.json", "muffato-package-products.json"],
+)
+def test_saved_response_shape(filename):
+    shape_validator().validate(decode_response((FIXTURES / filename).read_bytes()))
 
 
 @pytest.mark.parametrize(

@@ -55,3 +55,17 @@ def observation(settings, source_bytes):
     )
     assert not page.issues, page.issues
     return page.observations[0]
+
+
+@pytest.fixture
+def weighted_observation(settings):
+    page = parse_products(
+        (FIXTURES / "muffato-weight-products.json").read_bytes(),
+        settings=settings,
+        selected_sku="186092",
+        source_url=settings.shop_url + "/api/catalog_system/pub/products/search?sc=8&ft=banana",
+        observed_at=datetime(2026, 10, 29, 19, 4, tzinfo=UTC),
+    )
+    assert len(page.observations) == 1
+    assert all("payment-basis" in issue for issue in page.issues)
+    return page.observations[0]

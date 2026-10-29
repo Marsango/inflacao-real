@@ -8,7 +8,7 @@ from conftest import ROOT
 from inflacao_scrapers.models import SCHEMA, Observation, Submission
 
 
-@pytest.mark.parametrize("example", ["submission.json", "unavailable.json"])
+@pytest.mark.parametrize("example", ["submission.json", "unavailable.json", "per-kilogram.json"])
 def test_models_roundtrip_shared_contract_examples(example):
     path = ROOT / "docs/contracts/ingestion/v1/examples" / example
     document = json.loads(path.read_text())

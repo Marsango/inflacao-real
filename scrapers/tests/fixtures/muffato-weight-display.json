@@ -1,0 +1,37 @@
+{
+  "captured_at": "2026-10-29T19:13:55.298626+00:00",
+  "context": {
+    "sales_channel": "8",
+    "seller_id": "1",
+    "postal_code": null
+  },
+  "listing_url": "https://www.supermuffato.com.br/banana-da-terra-kg-186092/p?sc=8",
+  "wrapper_url": "https://www.supermuffato.com.br/_v/public/assets/v1/published/muffatosupermercados.store-theme@0.0.190/public/react/ShelfItemWithContext.min.js",
+  "price_component_url": "https://www.supermuffato.com.br/_v/public/assets/v1/published/muffatosupermercados.store-theme@0.0.190/public/react/2.min.js",
+  "wrapper_excerpt": "description:(null==f?void 0:f.complementName)||\"\",sellingPrice:(null===(c=null===(d=null==f?void 0:f.sellers[0])||void 0===d?void 0:d.commertialOffer)||void 0===c?void 0:c.ListPrice)||0,price:(null===(a=null===(m=null==f?void 0:f.sellers[0])||void 0===m?void 0:m.commertialOffer)||void 0===a?void 0:a.Price)||0,unitMultiplier:(null==f?void 0:f.unitMultiplier)||1,measurementUnit:(null==f?void 0:f.measurementUnit)||\"\",",
+  "price_component_excerpt": "I=function(e){var t=e.sellingPrice,a=e.price;return c.a.createElement(\"div\",{className:N.a.shelfPrice},t!==a?c.a.createElement(\"p\",{className:N.a.shelfSellingPrice},Object(_.h)(t)):null,c.a.createElement(\"p\",{className:N.a.shelfBestPrice},Object(_.h)(a)))}",
+  "verification": "Read-only headless Chromium DOM plus public deployed shelf code; no cart or checkout actions.",
+  "rendered_listings": [
+    {
+      "sku": "186092",
+      "url": "https://www.supermuffato.com.br/banana-da-terra-kg-186092/p?sc=8",
+      "captured_at": "2026-10-29T19:18:29.876307+00:00",
+      "branch_verified": true,
+      "visible_listing_excerpt": " procurando...\nHortifruti\nFrutas\nBanana da Terra Kg\nCompartilhar\nBanana da Terra Kg\nVendido por:\nSuper Muffato Delivery\nHortifruti\nCódigo\n:\n186092\nR$\n13\n,\n40\nQuantidade\n＋\n－\nAdicionar ao carrinho\nCEP\nNão sei meu CEP\nCalcular o frete\n*Preços de produtos pesáveis podem sofrer variação de acordo com o peso.\n*Imagens meramente ilustrativas.\n*Sujeito à disponibilidade de estoque.\nRecomendados Para Você\nretire na loja\nBanana Caturra/Nanica Kg\nR$ 6,10\nBanana Caturra/Nanica Kg\nR$ 6,10\n-\n+\nAdicionar\nretire na loja\n"
+    },
+    {
+      "sku": "269830",
+      "url": "https://www.supermuffato.com.br/carne-bovina-bife-de-patinho-kg-269830-1/p?sc=8",
+      "captured_at": "2026-10-29T19:28:31.766215+00:00",
+      "branch_verified": true,
+      "visible_listing_excerpt": "nas\nCarne Bovina Bife De Patinho Kg\nCompartilhar\nCarne Bovina Bife De Patinho Kg\nVendido por:\nSuper Muffato Delivery\nMuffato Foods\nCódigo\n:\n269830\nR$\n58\n,\n70\nQuantidade\n＋\n－\nAdicionar ao carrinho\nCEP\nNão sei meu CEP\nCalcular o frete\n*Preços de produtos pesáveis podem sofrer variação de acordo com o peso.\n*Imagens meramente ilustrativas.\n*Sujeito à disponibilidade de estoque.\nRecomendados Para Você\nretire na loja\nCarne  Moída Bovina Muffato Foods 500g\nR$ 23,70\nCarne  Moída Bovina Muffato Foods 500g\nR$ 23,70"
+    },
+    {
+      "sku": "145168",
+      "url": "https://www.supermuffato.com.br/pao-manteiguinha-kg-145168/p?sc=8",
+      "captured_at": "2026-10-29T19:20:43.791080+00:00",
+      "branch_verified": true,
+      "visible_listing_excerpt": "ê está procurando...\nPadaria\nPães\nPão Manteiguinha Kg\nCompartilhar\nPão Manteiguinha Kg\nVendido por:\nSuper Muffato Delivery\nPadaria\nCódigo\n:\n145168\nR$\n20\n,\n50\nQuantidade\n＋\n－\nAdicionar ao carrinho\nCEP\nNão sei meu CEP\nCalcular o frete\n*Preços de produtos pesáveis podem sofrer variação de acordo com o peso.\n*Imagens meramente ilustrativas.\n*Sujeito à disponibilidade de estoque.\nRecomendados Para Você\n15%\nDESCONTO\nretire na loja\nPão de Forma Original Wickbold Do Forno Pacote 500g\nR$ 12,40\nR$ 10,54\nPão de Forma"
+    }
+  ]
+}

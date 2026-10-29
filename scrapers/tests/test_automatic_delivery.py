@@ -10,8 +10,10 @@ from inflacao_scrapers.delivery.immediate import DeliveryFailure, ImmediateDeliv
 from inflacao_scrapers.transport import Requester
 
 
-@pytest.fixture
-def submission(observation):
+@pytest.fixture(params=["package", "kg"])
+def submission(observation, weighted_observation, request):
+    if request.param == "kg":
+        observation = weighted_observation
     return next(
         batches([observation], scraper_id="scraper", shop_id="super-muffato", run_id=uuid4())
     )

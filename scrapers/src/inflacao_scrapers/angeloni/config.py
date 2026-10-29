@@ -37,3 +37,13 @@ class AngeloniSettings(VtexSettings):
         min_length=1,
         max_length=200,
     )
+
+    def supports_kilogram_prices(self) -> bool:
+        return (
+            self.sales_channel == "1"
+            and self.seller_id == "1"
+            and self.regional_seller_id == "superangeloni24"
+            and self.region_id is not None
+            and self.city == "Curitiba"
+            and self.state == "PR"
+        )

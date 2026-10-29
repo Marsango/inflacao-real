@@ -1,0 +1,67 @@
+{
+  "status": "enabled: verified Curitiba API context and independent kilogram display semantics",
+  "expected_api_context": {
+    "postal_code": "80730201",
+    "region_id": "v2.C757A7648D3E25DBFEE6A162DDDA2DC1",
+    "regional_seller_id": "meufestvaldark",
+    "sales_channel": "2"
+  },
+  "captures": [
+    {
+      "source_index": 0,
+      "captured_at": "2026-10-29T19:32:47.742314+00:00"
+    },
+    {
+      "source_index": 1,
+      "captured_at": "2026-10-29T19:32:48.364359+00:00"
+    },
+    {
+      "source_index": 2,
+      "captured_at": "2026-10-29T19:32:49.097688+00:00"
+    }
+  ],
+  "storefront_context_verified": false,
+  "reason": "City-wide collection accepts a different Curitiba pickup view. Preserve the verified API seller/region/availability; storefront values establish the advertised price basis, not identical branch inventory.",
+  "rendered_candidates": [
+    {
+      "sku": "7515",
+      "url": "https://www.festval.com/banana-nanica-kg/p?sc=2",
+      "captured_at": "2026-10-29T19:39:12.416Z",
+      "supplied_segment_retained": false,
+      "visible_excerpt": "tas\nFrutas Tradicionais\nBanana Nanica Aproximadamente 100g/un\nBanana Nanica Aproximadamente 100g/un\nReferência: 57053\nComprar\n\nInformações do produto\n\nQuem viu, comprou também\n\nBanana Caturra Aproximadamente 200g/un\nR$ 6,99\n43%\nR$ 3,99 /kg\nAdicionar\nManga Palmer Festval Aproximadamente 450g/un\nR$ 10,99 /kg\nAdicionar\nAbacate Aproximadamente 670g/un\nR$ 11,99 /kg\nAdicionar\nGoiaba Vermelha Aproximadamente 185g/un\nR$ 10,99 /kg\nAdicionar\nMamão Formosa Aproximadamente 1,8 kg/un\nR$ 14,99 /kg\nAdicionar\nManga Espada Aproximadamente 200g/un\nR$ 14,99\n20%\nR$ 11,99 /kg\nAdicionar\nManga Haden Aproximadamente 450g/un\nR$ 12,99 /kg\nAdicionar\n\nMais Vendidos\n\nSuco de Laranja Festval 900ml\nR$ 14,99 /un\nAdicionar\n"
+    },
+    {
+      "sku": "5568",
+      "url": "https://www.festval.com/bife-de-patinho-1953-friboi-500g/p?sc=2",
+      "captured_at": "2026-10-29T19:39:13.867Z",
+      "supplied_segment_retained": false,
+      "visible_excerpt": "ougue e Peixaria\nCarnes Bovinas\nBifes e Porcionados\nBife de Patinho 1953 kg\nBife de Patinho 1953 kg\nReferência: 64840\nR$ 76,98 /kg\n＋\n－\n\nDetalhes do Produto\n\nBife de Patinho 1953 Friboi kg, corte magro e suculento, ideal para grelhados, bifes e pratos do dia a dia. Com excelente sabor e textura, é perfeito para quem busca uma opção saudável e versátil na cozinha. Proveniente de carnes selecionadas, garante frescor e qualidade em cada pedaço. Embalagem por kg, ideal para refeições em família ou ocasiões especiais. Experimente o sabor e a tradição Friboi!\n\nVer Mais\n\nQuem viu, comprou também\n\nNovidades no Festval.com\n\nControl your privacy\nAdOpt\nOur website uses cookies to improve navigation.\nWe "
+    },
+    {
+      "sku": "2164",
+      "url": "https://www.festval.com/pao-italiano-multigraos-kg/p?sc=2",
+      "captured_at": "2026-10-29T19:39:44.739Z",
+      "supplied_segment_retained": false,
+      "visible_excerpt": "s\nPão Italiano Multigrãos Aproximadamente 344g/uni\nPão Italiano Multigrãos Aproximadamente 344g/uni\nReferência: 38717\n＋\n－\nR$ 36,90 /kg\nAprox. 344g/unidade\nComprar\n\nInformações do produto\n\nQuem viu, comprou também\n\nPão Sarrasin com Passas Sabor de France Aproximadamente 355g/un\nR$ 59,90 /kg\nAdicionar\nPão Ciabata com Grãos kg\nR$ 36,90 /kg\nAdicionar\nPão Italiano Multigrãos Aproximadamente 344g/uni\nR$ 36,90 /kg\nAdicionar\nPão de Castanha e Girassol Lievito 300g\nR$ 21,90 /un\nAdicionar\nPão Francês Multigrãos Le Pierre 140g\nR$ 12,90 /un\nAdicionar\nPão Multigrano Festval Aproximadamente 250g/un\nR$ 36,90 /kg\nAdicionar\nPão Multigrãos Lievito Aproximadamente 330g\nR$ 21,90 /kg\nAdicionar\n\nMais Vendidos\n\nSu"
+    }
+  ],
+  "previous_decision": {
+    "status": "unverified: weight mapping disabled",
+    "reason": "Rendered sessions did not establish the expected API seller/region; displayed pickup context or availability differed. Matching price amounts alone are insufficient evidence."
+  },
+  "acceptance_scope": {
+    "collection_city": "Curitiba",
+    "collection_state": "PR",
+    "api_context_verified": true,
+    "exact_storefront_region_required": false,
+    "exact_storefront_region_verified": false,
+    "storefront_availability_used": false
+  },
+  "display_location": {
+    "name": "Carlos de Carvalho pickup",
+    "city": "Curitiba",
+    "state": "PR",
+    "source_url": "https://www.festval.com/retirada-e-entrega",
+    "address": "Alameda Doutor Carlos de Carvalho, 1652 - Bigorrilho"
+  }
+}

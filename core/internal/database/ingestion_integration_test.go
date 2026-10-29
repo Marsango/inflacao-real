@@ -143,3 +143,45 @@ func TestIngestionDoesNotAcknowledgeFailedCommit(test *testing.T) {
 	}
 	fixture.assert(`SELECT count(*)=0 FROM ingestion_payloads`)
 }
+
+func TestKilogramHTTPObservationsReachHistoryWithoutDuplicateRetries(test *testing.T) {
+	fixture := newHTTPFixture(test)
+	fixture.registerShop()
+	fixture.body = readExample(test, "per-kilogram")
+	requireHTTPStatus(test, submitRequest(fixture.handler, fixture.body), http.StatusAccepted)
+	fixture.assert(`SELECT count(*)=0 FROM price_observations`)
+	fixture.process()
+	fixture.assert(processedQueueSQL)
+	requireHTTPStatus(test, submitRequest(fixture.handler, fixture.body), http.StatusOK)
+	fixture.assertKilogramHistory()
+	fixture.submitNextKilogramObservation()
+	fixture.assert(`SELECT count(*)=2 AND count(DISTINCT observation_id)=2
+        AND count(DISTINCT product_id)=1 AND count(DISTINCT shop_product_id)=1 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=1 AND bool_and(gtin IS NULL) FROM products`)
+}
+
+func (fixture httpFixture) assertKilogramHistory() {
+	fixture.assert(`SELECT count(*)=1 AND bool_and(price_amount=6.99 AND price_basis='kg'
+        AND reference_amount=7.99 AND package_quantity IS NULL AND package_unit IS NULL
+        AND package_count IS NULL AND minimum_quantity=0.5 AND payment_method='any'
+        AND membership_required=false AND coupon_required=false AND installments IS NULL
+        AND seller_id='retailer-direct' AND store_id='sp-centro' AND postal_code='01001000'
+        AND city='São Paulo' AND state='SP' AND channel='delivery' AND availability='in_stock'
+        AND source_url='https://mercado.example.com/api/products/tomate?store=sp-centro'
+        AND collection_method='api'
+        AND observed_at='2026-10-27T12:00:00Z'::timestamptz AND offer_count=1
+        AND condition_description LIKE '%peso final%') FROM price_observations`)
+	fixture.assert(`SELECT count(*)=1 AND bool_and(product_url='https://mercado.example.com/products/tomate')
+        FROM shop_products WHERE source_product_id='tomate-solto'`)
+}
+
+func (fixture httpFixture) submitNextKilogramObservation() {
+	raw := workerPayload(fixture.test, "per-kilogram", 2, func(document map[string]any) {
+		observationNumber(2)(document)
+		firstObservation(document)["observed_at"] = "2026-10-28T12:00:00Z"
+	})
+	requireHTTPStatus(fixture.test, submitRequest(fixture.handler, raw), http.StatusAccepted)
+	fixture.process()
+	requireHTTPStatus(fixture.test, submitRequest(fixture.handler, raw), http.StatusOK)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(status='processed') FROM ingestion_payloads`)
+}

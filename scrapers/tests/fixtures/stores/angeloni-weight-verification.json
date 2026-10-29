@@ -1,0 +1,62 @@
+{
+  "status": "enabled: verified Curitiba API context and independent kilogram display semantics",
+  "expected_api_context": {
+    "postal_code": "80730201",
+    "region_id": "v2.EF13DD0D15B905FE43EF419690AD7CFC",
+    "regional_seller_id": "superangeloni24",
+    "sales_channel": "1"
+  },
+  "captures": [
+    {
+      "source_index": 0,
+      "captured_at": "2026-10-29T19:32:42.502681+00:00"
+    },
+    {
+      "source_index": 1,
+      "captured_at": "2026-10-29T19:32:43.452468+00:00"
+    },
+    {
+      "source_index": 2,
+      "captured_at": "2026-10-29T19:32:45.324865+00:00"
+    }
+  ],
+  "storefront_context_verified": false,
+  "reason": "City-wide collection accepts a different Curitiba pickup view. Preserve the verified API seller/region/availability; storefront values establish the advertised price basis, not identical branch inventory.",
+  "rendered_candidates": [
+    {
+      "sku": "150177",
+      "url": "https://super.angeloni.com.br/banana-branca-kg-150177/p?sc=1",
+      "captured_at": "2026-10-29T19:35:03.350Z",
+      "supplied_segment_retained": false,
+      "visible_excerpt": "es\nChocolates\nVinhos\nCervejas\nNatal\nA\\CASA\nSuper App\nCompra Rápida\nHortifrutiFrutasBanana Branca Kg\nPerguntas sobre o produto?\nPerguntar\nBanana Branca Kg\nR$ 6,59 / KG\nADICIONAR AO CARRINHO\n\nPreço final calculado após pesagem\n\nFormas de Pagamento\n\nInformações de Entrega\n\nAvaliações\nCarregando…\nFaça login para escrever uma avaliação.\nMais recentes\nOrdenar por:\nMais recentes\nMais antigas\nClassificação mais alta\nClassificação mais baixa\nTodos\nFiltrar por:\nTodos\n1 estrela\n2 estrelas\n3 estrelas\n4 estrelas\n5 estrelas\nCarregando avaliações…"
+    },
+    {
+      "sku": "4721796",
+      "url": "https://super.angeloni.com.br/acem-moido-bovino-best-beef-kg-4721796/p?sc=1",
+      "captured_at": "2026-10-29T19:35:06.317Z",
+      "supplied_segment_retained": false,
+      "visible_excerpt": "al\nA\\CASA\nSuper App\nCompra Rápida\nCarnes, Aves E PeixesCarnes BovinasAcém Moído Bovino BEST BEEF Kg\nPerguntas sobre o produto?\nPerguntar\nAcém Moído Bovino BEST BEEF Kg\nCarregando avaliações...\nVer avaliações\n: 4721796\n\nProduto indisponível\n\nPreencha os campos e assim que o produto voltar ao estoque avisamos você! :)\n\nENVIAR\nDescrição do produto\n\nAcém Moído Bovino BEST BEEF Kg\n\nInformações do Produto\nOrigem\tNacional\nCorte\tAcém\nTipo\tMoída\nAvaliações\nCarregando…\nFaça login para escrever uma avaliação.\nMais recentes\nOrdenar por:\nMais recentes\nMais antigas\nClassificação mais alta\nClassificação mais baixa\nTodos\nFiltrar por:\nTodos\n1 estrela\n2 estrelas\n3 estrelas\n4 estrelas\n5 estrelas\nCarregando ava"
+    },
+    {
+      "sku": "58297",
+      "url": "https://super.angeloni.com.br/pao-angeloni-frances-kg-58297/p?sc=1",
+      "captured_at": "2026-10-29T19:35:08.905Z",
+      "supplied_segment_retained": false,
+      "visible_excerpt": "PadariaPãesPão ANGELONI Francês Kg\nPerguntas sobre o produto?\nPerguntar\nPão ANGELONI Francês kg\nCarregando avaliações...\nVer avaliações\n: 58297\nR$ 17,99 / KG\nCarregando...\nADICIONAR AO CARRINHO\n\nPreço final calculado após pesagem\n\nFormas de Pagamento\n\nInformações de Entrega\n\nDescrição do produto\n\nPão ANGELONI Francês kg\n\nInformações do Produto\nTipo\tFrancês\nAvaliações\nCarregando…\nFaça login para escrever uma avaliação.\nMais recentes\nOrdenar por:\nMais recentes\nMais antigas\nClassificação mais alta\nClassificação mais baixa\nTodos\nFiltrar por:\nTodos\n1 estrela\n2 estrelas\n3 estrelas\n4 estrelas\n5 estrelas\nCarregando avaliações…"
+    }
+  ],
+  "previous_decision": {
+    "status": "unverified: weight mapping disabled",
+    "reason": "Rendered sessions did not establish the expected API seller/region; displayed pickup context or availability differed. Matching price amounts alone are insufficient evidence."
+  },
+  "acceptance_scope": {
+    "collection_city": "Curitiba",
+    "collection_state": "PR",
+    "api_context_verified": true,
+    "exact_storefront_region_required": false,
+    "exact_storefront_region_verified": false,
+    "storefront_availability_used": false
+  },
+  "display_location": null,
+  "location_provenance": "The regional API maps CEP 80730201 to Angeloni Bigorrilho (superangeloni24). The rendered page exact branch was not identified."
+}
