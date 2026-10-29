@@ -1,4 +1,4 @@
-"""Resolve configured food leaf categories into verified public browsing paths."""
+"""Discover live catalog partitions, with an optional diagnostic restriction."""
 
 from __future__ import annotations
 
@@ -20,7 +20,24 @@ class Category(BaseModel):
 
 def catalog_partitions(requester: Requester, settings: AngeloniSettings) -> list[str]:
     categories = fetch_categories(requester, settings)
-    requested = set(settings.catalog_category_ids)
+    if settings.catalog_category_ids is None:
+        return automatic_partitions(categories)
+    return selected_partitions(categories, settings.catalog_category_ids)
+
+
+def automatic_partitions(categories: list[Category]) -> list[str]:
+    paths = [
+        leaf_path(category, trail)
+        for category, trail in walk_categories(categories)
+        if not category.children
+    ]
+    if not paths:
+        raise ValueError("Category tree contains no leaf categories; collection not started")
+    return paths
+
+
+def selected_partitions(categories: list[Category], identifiers: list[int]) -> list[str]:
+    requested = set(identifiers)
     paths = {
         category.id: leaf_path(category, trail)
         for category, trail in walk_categories(categories)
@@ -55,5 +72,5 @@ def walk_category(category: Category, trail: tuple) -> Iterator[tuple]:
 
 def leaf_path(category: Category, trail: tuple) -> str:
     if category.has_children or category.children:
-        raise ValueError("Configure leaf catalog categories to respect the source pagination limit")
+        raise ValueError("Expected leaf catalog categories; incomplete tree or non-leaf selection")
     return "/".join(trail)

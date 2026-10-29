@@ -1,4 +1,4 @@
-"""Browse selected food categories, filter core targets, and use shared delivery."""
+"""Discover catalog categories, filter core targets, and use shared delivery."""
 
 from ..adapters import Adapter, ParsedPage
 from ..scope import MonitoringScope, MonitoringTarget

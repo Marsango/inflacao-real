@@ -42,8 +42,8 @@ store_id = "seller:superangeloni24"
 city = "Curitiba"
 state = "PR"
 # Angeloni prohibits ft/fq search URLs. Browse once and filter core targets locally.
-# Verified food leaf categories keep every partition within VTEX's 50-page limit.
-catalog_category_ids = [43, 240, 274, 281, 283, 255, 390, 146, 244, 260, 183, 185, 84, 226, 263]
+# Live leaf categories partition the catalog within VTEX's page limits.
+# Omit catalog_category_ids to discover all live leaf categories automatically.
 # Overall page budget across all selected categories.
 max_catalog_pages = 1000
 spool_path = "data/angeloni/spool.sqlite3"

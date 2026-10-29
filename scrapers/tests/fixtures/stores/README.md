@@ -13,9 +13,22 @@ were regionalized for the public Bigorrilho business-address CEP `80730201`.
   cookie. The fixture's total is reduced to its two saved products. Offers expose
   `AvailableQuantity`, without `IsAvailable`; product links are relative.
 - `angeloni-categories.json`: projection of the public `/api/catalog_system/pub/category/tree/5`
-  response. Keeps paths for the 15 configured basket-related leaf categories and
-  one chocolate category used in pipeline tests. Names, IDs, parentage and
+  response, refreshed on 2026-10-29 for the everyday-food expansion. Keeps paths
+  for 38 food/household leaf categories and one chocolate category used in
+  pipeline tests. This is a bounded fixture projection; the default scraper
+  discovers every leaf in the full live tree instead of using a category allowlist.
+  Names, IDs, parentage and
   `hasChildren` flags retain their source values.
+  The 11 added IDs are `83` (Aves), `144` (Iogurte), `149` (Queijos),
+  `182` (Ervas e Temperos), `187` (Ovos), `190` (Verduras),
+  `267` (Biscoitos Salgados), `278` (Aveia), `298` (Sardinha),
+  `322` (Molho de Tomate), and `324` (Sal). The category response establishes
+  navigation paths; it does not verify prices or availability of the new foods.
+  The food/household expansion adds `88` (Carnes Suínas), `86` (Peixes e Frutos Do Mar),
+  `150` (Requeijão), `245` (Vinagre e Aceto), `318` (Extrato e Polpa de Tomate),
+  `163` (Papel Higiênico), `166` (Sabonetes em Barra), `168` (Creme Dental),
+  `173` (Absorvente), `205` (Detergente e Lava-louças), `207` (Lava-Roupas),
+  and `196` (Água Sanitária), checked through the same public category endpoint.
 - `festval-products.json`: three rice products projected from
   `https://www.festval.com/api/catalog_system/pub/products/search`, queried for
   `arroz`, with `sc=2`, regional context and its `utm_source=curitiba` segment.

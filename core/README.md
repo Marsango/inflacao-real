@@ -146,8 +146,17 @@ matching semantics, examples, errors and coverage limits.
 Migration 00006 registers 16 targets: the DIEESE basket's 13 food groups with
 regional flour/sugar variants, plus the previously monitored pasta. See the
 [basket scope and research sources](../docs/contracts/monitoring/v1/basic-food-basket.md).
+Migration 00007 adds [21 everyday foods](../docs/contracts/monitoring/v1/everyday-foods.md).
+Migration 00008 adds [20 foods and eight household essentials](../docs/contracts/monitoring/v1/foods-and-household.md),
+for **65 targets** on a fresh database. Restart the updated core to apply pending
+forward migrations; scrapers receive the additions at their next run.
 Add or refine targets through new SQL migrations; scrapers fetch the scope at
-the start of every run.
+the start of every run. New targets require no scraper code or product-category
+configuration changes with the default configuration. Muffato and Festval search
+the returned queries; Angeloni discovers its live leaf categories automatically
+and filters the catalog using the same core rules. An older explicit Angeloni
+`catalog_category_ids` list must be removed once to enable automatic discovery.
+Source changes and unsupported price formats can still require adapter work.
 The worker also applies these rules to source names and associates discovered
 canonical products through `product_monitoring_targets`, in the same transaction
 as their observations. This groups products without changing identity matching:
@@ -210,7 +219,7 @@ it does not infer past identities from current catalog metadata.
 - `products`: canonical product variants, with name, brand, optional GTIN, and
   package quantity/unit/count. Different package sizes are different variants.
 - `monitoring_targets`: enabled collection groups and their shared discovery/name
-  rules, seeded by migration 00006 and served to all shop adapters.
+  rules, seeded by migrations 00006–00008 and served to all shop adapters.
 - `product_monitoring_targets`: associations between distinct canonical variants
   and their monitoring groups; membership does not imply price equivalence.
 - `shop_products`: a shop's listing, unique by `(shop_id, source_product_id)`,

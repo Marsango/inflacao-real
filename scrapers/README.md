@@ -4,7 +4,11 @@ The registered adapters collect public VTEX catalogs for **Super Muffato,
 Angeloni, and Festval** around Curitiba. The core supplies brand-independent
 monitoring targets through its authenticated scope endpoint. Migration 00006
 seeds 16 targets covering the DIEESE basket's 13 food groups, regional flour/sugar
-variants, and pasta. See the [basket scope and sources](../docs/contracts/monitoring/v1/basic-food-basket.md).
+variants, and pasta. Migrations 00007–00008 expand the scope to **65 targets**,
+including eggs, chicken, more meat cuts, produce, dairy, pantry foods, hygiene,
+and cleaning products.
+See the [basket scope and sources](../docs/contracts/monitoring/v1/basic-food-basket.md)
+and the [latest additions, activation steps, and package limits](../docs/contracts/monitoring/v1/foods-and-household.md).
 Variable-weight meat, produce and bakery items still require adapter support;
 the seed does not make their collection complete. Matching brands, variants and
 package sizes stay separate products.
@@ -158,8 +162,10 @@ incomplete run exits nonzero; batches already accepted by the core remain there.
 Restarting collection creates a new run. An interruption before a failed batch
 is saved can lose that in-memory batch.
 
-The core seeds the initial scope through migration 00006; add/refine targets with
-forward migrations. Remove the old `sku_ids` field from existing local TOML files.
+The core seeds the scope through migrations 00006–00008; add/refine targets with
+forward migrations. Restart the updated core to apply pending migrations; the
+daily scheduler receives the expanded scope on its next collection. Remove the
+old `sku_ids` field from existing local TOML files.
 `collect` now needs `INGESTION_TOKEN` and a reachable core. It never falls back to
 a local product list if scope retrieval or validation fails. Credentials are sent
 only to the configured core, never to shops; redirects are not followed.
@@ -181,6 +187,72 @@ No collection-result cache is used. Requests ask for revalidation and use unique
 query keys; responses with a positive HTTP Age are rejected as fresh measurements.
 Prices can still reflect the shop's own upstream updates and indexing delays.
 
+### Daily scheduling
+
+`collect` runs once and exits. To keep collecting every day, activate the installed
+virtual environment and start the scheduler from `scrapers/`:
+
+```sh
+source .venv/bin/activate
+# Export the matching INGESTION_TOKEN before starting the scheduler.
+python3 schedule.py
+```
+
+The default start time is **03:00 in America/Sao_Paulo**. Choose another daily
+time or timezone with:
+
+```sh
+python3 schedule.py --at 08:00 --timezone America/Sao_Paulo
+# Optional: use a different configuration file.
+python3 schedule.py --config scrapers.example.toml --at 08:00
+```
+
+The script defaults to `config.toml` beside `schedule.py`, including when launched
+from another directory. Installed packages also provide
+`inflacao-scraper-schedule --config config.toml --at 08:00`; that command defaults
+to the configuration in the working directory.
+
+The scheduler prints its next start with a timezone offset and waits until that
+time; starting it after today's scheduled time means the first run is tomorrow.
+It reloads the configuration on every run and executes all enabled scrapers
+sequentially through the existing collection and automatic delivery pipeline.
+Failures remain visible without ending the daily schedule. Saved failed batches
+still require the existing `deliver` command for recovery.
+
+Runs never overlap within one scheduler process. If collection extends beyond a
+later scheduled time, that missed slot is skipped and the scheduler waits for
+the next future daily time. There is no catch-up for time spent stopped.
+Keep the machine awake. Press Ctrl+C to stop a foreground scheduler.
+
+To run in the background and close the terminal, launch it with `nohup` from
+`scrapers/`, after exporting the matching ingestion token:
+
+```sh
+mkdir -p data
+nohup .venv/bin/python -u schedule.py --at 08:00 > data/scheduler.log 2>&1 < /dev/null &
+echo $! > data/scheduler.pid
+```
+
+The process inherits the exported token. Output is written immediately to
+`data/scheduler.log`. Start only one scheduler per configuration. Check its
+process and follow its output with:
+
+```sh
+ps -p "$(cat data/scheduler.pid)" -o pid,etime,args
+tail -f data/scheduler.log
+```
+
+Ctrl+C exits `tail` without stopping the scheduler. To stop the background
+scheduler, verify the process above is the expected scheduler, then run:
+
+```sh
+kill "$(cat data/scheduler.pid)"
+```
+
+Background execution survives closing the terminal, but the machine must remain
+running and awake. Restarting the machine stops scheduling; this command does
+not install a service or start automatically at boot.
+
 ### Angeloni and Festval regionalization
 
 The defaults use the public business-address CEP `80730201` in Bigorrilho. On
@@ -200,17 +272,27 @@ Angeloni's [published robots rules](https://super.angeloni.com.br/robots.txt)
 exclude `ft`/`fq` keyword-filter URLs. Its adapter uses the public
 `/_v/api/intelligent-search/product_search/<category facets>` catalog endpoint
 with `count`, `page`, `sc`, and `regionId`. It uses no `ft`, `fq`, `query`, or `map`
-query parameters. Each run loads the public category tree and resolves configured
-food leaf-category IDs into browsing paths. Each selected category is traversed
-once for all enabled core targets, then source names are filtered locally before
-parsing offers. Source pages are not replayed from a previous run.
+query parameters. Each run loads the public category tree and automatically
+discovers every available leaf category. Each category is traversed once for all
+enabled core targets, then source names are filtered locally before parsing
+offers. Only matching listings are submitted. Source pages are not replayed from
+a previous run, and product overlap across categories is deduplicated.
 
-The defaults cover rice, beans, coffee, flour/corn flakes, milk/powdered milk,
-butter/margarine, oils, sugar, fruit, vegetables, beef, bread and pasta. These are
-retailer category partitions, not a replacement for the core's name rules. Add
-appropriate `catalog_category_ids` when expanding scope beyond those categories.
-Missing configured categories or parent categories stop collection explicitly.
-Product overlap across categories is deduplicated within the run.
+**Adding a monitoring target is a core-only change.** Muffato and Festval search
+the core's target queries; Angeloni scans the live catalog and applies the same
+core rules. A new target or upstream category requires no scraper code or category
+configuration changes. Collection still depends on retailer availability and the
+adapter's supported source formats.
+
+When upgrading an older configuration, remove `catalog_category_ids` to enable
+automatic discovery and restart a running scheduler once to load the adapter
+change. Future core target additions are fetched on the next run without a
+scraper restart. The default and example configurations omit the restriction. An explicit
+list such as `catalog_category_ids = [467]` remains available for bounded diagnostics;
+it restricts coverage and can prevent new core targets from being found. Missing
+selected categories, non-leaf selections, empty trees and truncated branches fail
+explicitly. A broader scan increases requests and collection time, but stores only
+matching observations.
 
 VTEX rejects pages after page 50, so the adapter enforces that bound per category.
 `max_catalog_pages` defaults to 1000 as an overall page budget across selected
@@ -387,7 +469,7 @@ cleanup. Scrapers continue to use HTTP only.
 
 Further work includes additional verified shop contexts, structured net contents
 and multipacks, a core history API and web view,
-scheduling, automated raw-payload retention, and collection-coverage reporting.
+automated raw-payload retention, and collection-coverage reporting.
 Aggregate metrics require documented baskets, weighting, comparison periods and
 missing-data treatment before inflation or official-index comparisons.
 

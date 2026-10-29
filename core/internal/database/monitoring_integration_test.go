@@ -12,16 +12,16 @@ func TestMonitoringSeedAndEnabledScope(t *testing.T) {
 	ctx, db := testDatabase(t)
 	store := monitoring.PostgresStore{DB: db}
 	targets, err := store.List(ctx)
-	if err != nil || len(targets) != 16 {
-		t.Fatalf("expected sixteen seeded targets; got %v, %v", targets, err)
+	if err != nil || len(targets) != 65 {
+		t.Fatalf("expected sixty-five seeded targets; got %v, %v", targets, err)
 	}
 	checkSeededMatchingExamples(t, targets)
 	if _, err := db.ExecContext(ctx, `UPDATE monitoring_targets SET enabled=false WHERE id='cafe-moido'`); err != nil {
 		t.Fatal(err)
 	}
 	targets, err = store.List(ctx)
-	if err != nil || len(targets) != 15 {
-		t.Fatalf("expected fifteen enabled targets; got %v, %v", targets, err)
+	if err != nil || len(targets) != 64 {
+		t.Fatalf("expected sixty-four enabled targets; got %v, %v", targets, err)
 	}
 }
 
@@ -42,6 +42,40 @@ func checkSeededMatchingExamples(t *testing.T, targets []monitoring.Target) {
 	for _, example := range examples {
 		checkSeededTarget(t, byID[example.Target.ID], example.Target)
 	}
+}
+
+func TestEverydayFoodsMigrationPreservesExistingScope(t *testing.T) {
+	requestContext, pool := testDatabase(t)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 6)
+	requireNoError(t, err)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=16 FROM monitoring_targets`)
+	executeSQL(t, requestContext, pool, `UPDATE monitoring_targets
+		SET enabled=false, name='Local coffee target' WHERE id='cafe-moido'`)
+	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=65 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local coffee target'
+		FROM monitoring_targets WHERE id='cafe-moido'`)
+}
+
+func TestHouseholdMigrationPreservesExistingScope(t *testing.T) {
+	requestContext, pool := testDatabase(t)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 7)
+	requireNoError(t, err)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=37 FROM monitoring_targets`)
+	executeSQL(t, requestContext, pool, `UPDATE monitoring_targets SET enabled=false,
+		name='Local apple target', criteria=jsonb_set(criteria, '{excluded_terms}',
+		(criteria->'excluded_terms') || '["local-only"]'::jsonb) WHERE id='maca'`)
+	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=65 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local apple target'
+		AND (criteria->'excluded_terms') ?& ARRAY['local-only', 'detergente']
+		FROM monitoring_targets WHERE id='maca'`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM monitoring_targets
+		WHERE id IN ('goma-tapioca','queijo-minas-frescal')`)
 }
 
 func checkSeededTarget(t *testing.T, actual, expected monitoring.Target) {

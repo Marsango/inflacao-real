@@ -13,6 +13,6 @@ store_id = "seller:superangeloni24"
 city = "Curitiba"
 state = "PR"
 max_catalog_pages = 1000
-catalog_category_ids = [43, 240, 274, 281, 283, 255, 390, 146, 244, 260, 183, 185, 84, 226, 263]
+# Omit catalog_category_ids to discover all live leaf categories automatically.
 spool_path = "data/angeloni/spool.sqlite3"
 request_interval_seconds = 1.0

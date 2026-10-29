@@ -600,7 +600,15 @@
         "bolacha",
         "garrafa",
         "ghee",
-        "pipoca"
+        "pipoca",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
       ]
     },
     "cases": [
@@ -634,6 +642,10 @@
       },
       {
         "name": "Manteiga Ghee 200g",
+        "matches": false
+      },
+      {
+        "name": "Sabonete com Manteiga de Karité 90g",
         "matches": false
       }
     ]
@@ -821,7 +833,15 @@
       ],
       "excluded_terms": [
         "composto",
-        "mistura"
+        "mistura",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
       ]
     },
     "cases": [
@@ -835,6 +855,10 @@
       },
       {
         "name": "Óleo Composto Soja e Oliva 500ml",
+        "matches": false
+      },
+      {
+        "name": "Sabonete com Óleo de Soja 90g",
         "matches": false
       }
     ]
@@ -868,6 +892,2627 @@
       },
       {
         "name": "Macarrão Pronto Congelado 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "ovos",
+      "name": "Ovos de galinha",
+      "search_queries": [
+        "ovos"
+      ],
+      "required_terms": [
+        [
+          "ovo",
+          "ovos"
+        ]
+      ],
+      "excluded_terms": [
+        "codorna",
+        "pascoa",
+        "chocolate",
+        "liquido",
+        "liquidos",
+        "po",
+        "desidratado",
+        "maionese",
+        "massa",
+        "macarrao",
+        "bolo",
+        "biscoito",
+        "bolacha"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Ovos Brancos Grandes Marca A 12un",
+        "matches": true
+      },
+      {
+        "name": "Ovos Caipiras Marca B 20 unidades",
+        "matches": true
+      },
+      {
+        "name": "Ovos de Codorna 30un",
+        "matches": false
+      },
+      {
+        "name": "Ovo de Páscoa Chocolate 200g",
+        "matches": false
+      },
+      {
+        "name": "Macarrão com Ovos 500g",
+        "matches": false
+      },
+      {
+        "name": "Ovos Líquidos Pasteurizados 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "frango-peito",
+      "name": "Peito de frango",
+      "search_queries": [
+        "peito frango",
+        "file de peito"
+      ],
+      "required_terms": [
+        [
+          "frango"
+        ],
+        [
+          "peito"
+        ]
+      ],
+      "excluded_terms": [
+        "empanado",
+        "empanados",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "defumado",
+        "desfiado",
+        "hamburguer",
+        "nuggets",
+        "pronto",
+        "racao",
+        "recheado"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Filé de Peito de Frango Congelado Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Peito de Frango Resfriado kg",
+        "matches": true
+      },
+      {
+        "name": "Peito de Peru Defumado 200g",
+        "matches": false
+      },
+      {
+        "name": "Filé de Peito de Frango Empanado 300g",
+        "matches": false
+      },
+      {
+        "name": "Peito de Frango Cozido Desfiado 400g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "frango-coxa",
+      "name": "Coxa de frango",
+      "search_queries": [
+        "coxa frango"
+      ],
+      "required_terms": [
+        [
+          "frango"
+        ],
+        [
+          "coxa"
+        ]
+      ],
+      "excluded_terms": [
+        "sobrecoxa",
+        "empanado",
+        "empanada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Coxa de Frango Congelada Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Coxa de Frango Resfriada kg",
+        "matches": true
+      },
+      {
+        "name": "Sobrecoxa de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Coxa e Sobrecoxa de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Coxa de Frango Temperada 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "frango-sobrecoxa",
+      "name": "Sobrecoxa de frango",
+      "search_queries": [
+        "sobrecoxa frango"
+      ],
+      "required_terms": [
+        [
+          "frango"
+        ],
+        [
+          "sobrecoxa"
+        ]
+      ],
+      "excluded_terms": [
+        "coxa",
+        "empanado",
+        "empanada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sobrecoxa de Frango Congelada Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Filé de Sobrecoxa de Frango Resfriado 700g",
+        "matches": true
+      },
+      {
+        "name": "Coxa de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Coxa com Sobrecoxa de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Sobrecoxa de Frango Assada kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "cebola",
+      "name": "Cebola fresca",
+      "search_queries": [
+        "cebola"
+      ],
+      "required_terms": [
+        [
+          "cebola"
+        ]
+      ],
+      "excluded_terms": [
+        "creme",
+        "sopa",
+        "po",
+        "desidratada",
+        "frita",
+        "conserva",
+        "molho",
+        "tempero",
+        "farofa",
+        "salgadinho",
+        "biscoito",
+        "bolacha",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Cebola Nacional kg",
+        "matches": true
+      },
+      {
+        "name": "Cebola Roxa Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Creme de Cebola 60g",
+        "matches": false
+      },
+      {
+        "name": "Cebola em Conserva 300g",
+        "matches": false
+      },
+      {
+        "name": "Cebola Desidratada 20g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "alho",
+      "name": "Alho fresco",
+      "search_queries": [
+        "alho"
+      ],
+      "required_terms": [
+        [
+          "alho"
+        ]
+      ],
+      "excluded_terms": [
+        "pao",
+        "sal",
+        "tempero",
+        "pasta",
+        "creme",
+        "triturado",
+        "picado",
+        "desidratado",
+        "frito",
+        "conserva",
+        "oleo",
+        "molho",
+        "granulado",
+        "po",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Alho Nacional kg",
+        "matches": true
+      },
+      {
+        "name": "Alho Descascado Bandeja 200g",
+        "matches": true
+      },
+      {
+        "name": "Pão de Alho 400g",
+        "matches": false
+      },
+      {
+        "name": "Sal com Alho 300g",
+        "matches": false
+      },
+      {
+        "name": "Alho Triturado em Conserva 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sal-refinado",
+      "name": "Sal refinado",
+      "search_queries": [
+        "sal refinado"
+      ],
+      "required_terms": [
+        [
+          "sal"
+        ],
+        [
+          "refinado"
+        ]
+      ],
+      "excluded_terms": [
+        "temperado",
+        "tempero",
+        "light",
+        "hipossodico",
+        "grosso",
+        "rosa"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sal Refinado Iodado Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Sal Refinado Marca B 500g",
+        "matches": true
+      },
+      {
+        "name": "Sal Grosso 1kg",
+        "matches": false
+      },
+      {
+        "name": "Sal Refinado Temperado com Alho 500g",
+        "matches": false
+      },
+      {
+        "name": "Sal Refinado Light 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "cenoura",
+      "name": "Cenoura fresca",
+      "search_queries": [
+        "cenoura"
+      ],
+      "required_terms": [
+        [
+          "cenoura"
+        ]
+      ],
+      "excluded_terms": [
+        "bolo",
+        "suco",
+        "sopa",
+        "creme",
+        "pure",
+        "conserva",
+        "congelada",
+        "congelado",
+        "desidratada",
+        "farinha",
+        "semente",
+        "sementes",
+        "papinha",
+        "mistura"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Cenoura kg",
+        "matches": true
+      },
+      {
+        "name": "Cenoura Orgânica Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Bolo de Cenoura 400g",
+        "matches": false
+      },
+      {
+        "name": "Seleta de Legumes com Cenoura Congelada 300g",
+        "matches": false
+      },
+      {
+        "name": "Suco de Cenoura 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "alface",
+      "name": "Alface fresca",
+      "search_queries": [
+        "alface"
+      ],
+      "required_terms": [
+        [
+          "alface"
+        ]
+      ],
+      "excluded_terms": [
+        "semente",
+        "sementes",
+        "muda",
+        "mudas",
+        "mix",
+        "salada",
+        "pronta",
+        "pronto"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Alface Crespa Unidade",
+        "matches": true
+      },
+      {
+        "name": "Alface Americana Hidropônica Unidade",
+        "matches": true
+      },
+      {
+        "name": "Sementes de Alface 5g",
+        "matches": false
+      },
+      {
+        "name": "Mix de Folhas com Alface 150g",
+        "matches": false
+      },
+      {
+        "name": "Salada Pronta de Alface com Frango 250g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "laranja",
+      "name": "Laranja fresca",
+      "search_queries": [
+        "laranja"
+      ],
+      "required_terms": [
+        [
+          "laranja"
+        ]
+      ],
+      "excluded_terms": [
+        "suco",
+        "nectar",
+        "refresco",
+        "refrigerante",
+        "bebida",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "geleia",
+        "doce",
+        "bala",
+        "sabor",
+        "essencia",
+        "desidratada",
+        "polpa",
+        "cha",
+        "semente",
+        "sementes",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Laranja Pera kg",
+        "matches": true
+      },
+      {
+        "name": "Laranja Bahia Pacote 1kg",
+        "matches": true
+      },
+      {
+        "name": "Suco de Laranja Integral 1L",
+        "matches": false
+      },
+      {
+        "name": "Bolo de Laranja 300g",
+        "matches": false
+      },
+      {
+        "name": "Refrigerante Sabor Laranja 2L",
+        "matches": false
+      },
+      {
+        "name": "Limpador Laranja 500ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "molho-tomate",
+      "name": "Molho de tomate",
+      "search_queries": [
+        "molho de tomate",
+        "molho tomate"
+      ],
+      "required_terms": [
+        [
+          "molho"
+        ],
+        [
+          "tomate"
+        ]
+      ],
+      "excluded_terms": [
+        "extrato",
+        "ketchup",
+        "catchup",
+        "sardinha",
+        "sardinhas",
+        "atum",
+        "macarrao",
+        "lasanha",
+        "pizza",
+        "carne",
+        "frango",
+        "almondega",
+        "almondegas"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Molho de Tomate Tradicional Marca A 300g",
+        "matches": true
+      },
+      {
+        "name": "Molho Tomate Manjericão Marca B 340g",
+        "matches": true
+      },
+      {
+        "name": "Extrato de Tomate 300g",
+        "matches": false
+      },
+      {
+        "name": "Sardinha ao Molho de Tomate 125g",
+        "matches": false
+      },
+      {
+        "name": "Macarrão ao Molho de Tomate 500g",
+        "matches": false
+      },
+      {
+        "name": "Sardinhas ao Molho de Tomate Marca B 125g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "fuba",
+      "name": "Fubá de milho",
+      "search_queries": [
+        "fuba"
+      ],
+      "required_terms": [
+        [
+          "fuba"
+        ]
+      ],
+      "excluded_terms": [
+        "bolo",
+        "mistura",
+        "biscoito",
+        "bolacha",
+        "pronto",
+        "broa",
+        "flocao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Fubá Mimoso Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Fubá de Milho Marca B 1kg",
+        "matches": true
+      },
+      {
+        "name": "Mistura para Bolo de Fubá 400g",
+        "matches": false
+      },
+      {
+        "name": "Broa de Fubá 300g",
+        "matches": false
+      },
+      {
+        "name": "Flocão de Milho 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "flocao-milho",
+      "name": "Flocão de milho para cuscuz",
+      "search_queries": [
+        "flocao milho",
+        "flocos milho"
+      ],
+      "required_terms": [
+        [
+          "milho"
+        ],
+        [
+          "flocao",
+          "cuscuz"
+        ]
+      ],
+      "excluded_terms": [
+        "acucarado",
+        "acucarados",
+        "adocado",
+        "adocados",
+        "cereal matinal",
+        "sucrilhos",
+        "chocolate",
+        "fuba",
+        "pronto",
+        "pronta",
+        "pipoca"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Flocão de Milho Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Flocos de Milho para Cuscuz Marca B 500g",
+        "matches": true
+      },
+      {
+        "name": "Cereal Matinal Flocos de Milho Açucarados 250g",
+        "matches": false
+      },
+      {
+        "name": "Flocos de Arroz 500g",
+        "matches": false
+      },
+      {
+        "name": "Cuscuz Pronto com Flocos de Milho 300g",
+        "matches": false
+      },
+      {
+        "name": "Flocos de Milho Tostados sem Açúcar 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "queijo-mucarela",
+      "name": "Queijo muçarela",
+      "search_queries": [
+        "mussarela",
+        "mucarela",
+        "mozarela",
+        "mozzarella"
+      ],
+      "required_terms": [
+        [
+          "queijo"
+        ],
+        [
+          "mussarela",
+          "mucarela",
+          "mozarela",
+          "mozzarella"
+        ]
+      ],
+      "excluded_terms": [
+        "pizza",
+        "lasanha",
+        "pao",
+        "salgado",
+        "salgados",
+        "biscoito",
+        "bolacha",
+        "empanado",
+        "mistura",
+        "mix",
+        "simil",
+        "analogo",
+        "preparado",
+        "bufala"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Queijo Mussarela Fatiado Marca A 150g",
+        "matches": true
+      },
+      {
+        "name": "Queijo Muçarela Peça kg",
+        "matches": true
+      },
+      {
+        "name": "Queijo Mozzarella Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Pizza de Queijo Mussarela 400g",
+        "matches": false
+      },
+      {
+        "name": "Mistura de Queijo Mussarela e Prato 200g",
+        "matches": false
+      },
+      {
+        "name": "Queijo Mussarela de Búfala 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "maca",
+      "name": "Maçã fresca",
+      "search_queries": [
+        "maca"
+      ],
+      "required_terms": [
+        [
+          "maca"
+        ]
+      ],
+      "excluded_terms": [
+        "suco",
+        "nectar",
+        "vinagre",
+        "geleia",
+        "doce",
+        "pure",
+        "papinha",
+        "desidratada",
+        "seca",
+        "chips",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "sabor",
+        "cha",
+        "banana",
+        "semente",
+        "sementes",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Maçã Gala kg",
+        "matches": true
+      },
+      {
+        "name": "Maçã Fuji Pacote 1kg",
+        "matches": true
+      },
+      {
+        "name": "Suco de Maçã 1L",
+        "matches": false
+      },
+      {
+        "name": "Vinagre de Maçã 500ml",
+        "matches": false
+      },
+      {
+        "name": "Banana Maçã kg",
+        "matches": false
+      },
+      {
+        "name": "Detergente Maçã Verde 500ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "pao-forma",
+      "name": "Pão de forma",
+      "search_queries": [
+        "pao de forma",
+        "pao forma"
+      ],
+      "required_terms": [
+        [
+          "pao de forma",
+          "pao forma"
+        ]
+      ],
+      "excluded_terms": [
+        "mistura",
+        "farinha",
+        "torrada",
+        "torradas",
+        "sanduiche",
+        "sanduiches",
+        "bolo",
+        "congelado",
+        "congelada"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Pão de Forma Tradicional Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Pão Forma Integral Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Mistura para Pão de Forma 1kg",
+        "matches": false
+      },
+      {
+        "name": "Torradas de Pão de Forma 150g",
+        "matches": false
+      },
+      {
+        "name": "Sanduíche de Pão de Forma com Queijo 180g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "iogurte",
+      "name": "Iogurte",
+      "search_queries": [
+        "iogurte"
+      ],
+      "required_terms": [
+        [
+          "iogurte"
+        ]
+      ],
+      "excluded_terms": [
+        "bebida lactea",
+        "composto lacteo",
+        "sobremesa",
+        "sorvete",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "mix",
+        "cobertura",
+        "preparo",
+        "mistura"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Iogurte Natural Integral Marca A 170g",
+        "matches": true
+      },
+      {
+        "name": "Iogurte Morango Marca B 900g",
+        "matches": true
+      },
+      {
+        "name": "Iogurte Grego Marca C 100g",
+        "matches": true
+      },
+      {
+        "name": "Bebida Láctea Sabor Iogurte 900g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito com Cobertura de Iogurte 100g",
+        "matches": false
+      },
+      {
+        "name": "Mistura para Preparo de Iogurte 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "aveia",
+      "name": "Aveia em flocos, farelo ou farinha",
+      "search_queries": [
+        "aveia"
+      ],
+      "required_terms": [
+        [
+          "aveia"
+        ]
+      ],
+      "excluded_terms": [
+        "biscoito",
+        "bolacha",
+        "bebida",
+        "leite",
+        "mingau",
+        "mistura",
+        "granola",
+        "barra",
+        "barras",
+        "bolo",
+        "pao",
+        "sabonete",
+        "shake",
+        "vitamina",
+        "cereal matinal"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Aveia em Flocos Finos Marca A 170g",
+        "matches": true
+      },
+      {
+        "name": "Farelo de Aveia Marca B 200g",
+        "matches": true
+      },
+      {
+        "name": "Farinha de Aveia Marca C 200g",
+        "matches": true
+      },
+      {
+        "name": "Biscoito de Aveia e Mel 200g",
+        "matches": false
+      },
+      {
+        "name": "Bebida de Aveia 1L",
+        "matches": false
+      },
+      {
+        "name": "Barra de Cereal com Aveia 25g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "margarina",
+      "name": "Margarina",
+      "search_queries": [
+        "margarina"
+      ],
+      "required_terms": [
+        [
+          "margarina"
+        ]
+      ],
+      "excluded_terms": [
+        "biscoito",
+        "bolacha",
+        "bolo",
+        "pao",
+        "mistura",
+        "creme vegetal"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Margarina com Sal Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Margarina sem Sal Marca B 250g",
+        "matches": true
+      },
+      {
+        "name": "Manteiga com Sal 200g",
+        "matches": false
+      },
+      {
+        "name": "Creme Vegetal Tipo Margarina 500g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito com Margarina 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sardinha-conserva",
+      "name": "Sardinha em conserva",
+      "search_queries": [
+        "sardinha"
+      ],
+      "required_terms": [
+        [
+          "sardinha",
+          "sardinhas"
+        ],
+        [
+          "conserva",
+          "oleo",
+          "azeite",
+          "molho",
+          "lata",
+          "natural"
+        ]
+      ],
+      "excluded_terms": [
+        "fresca",
+        "fresco",
+        "congelada",
+        "congelado",
+        "pate",
+        "racao",
+        "pizza",
+        "torta"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sardinha em Óleo Marca A 125g",
+        "matches": true
+      },
+      {
+        "name": "Sardinhas ao Molho de Tomate Marca B 125g",
+        "matches": true
+      },
+      {
+        "name": "Sardinha em Conserva ao Natural 125g",
+        "matches": true
+      },
+      {
+        "name": "Sardinha Fresca kg",
+        "matches": false
+      },
+      {
+        "name": "Sardinha Congelada 1kg",
+        "matches": false
+      },
+      {
+        "name": "Patê de Sardinha em Óleo 100g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "biscoito-salgado",
+      "name": "Biscoito salgado",
+      "search_queries": [
+        "biscoito salgado",
+        "bolacha salgada",
+        "cream cracker",
+        "agua e sal"
+      ],
+      "required_terms": [
+        [
+          "biscoito salgado",
+          "biscoitos salgados",
+          "bolacha salgada",
+          "bolachas salgadas",
+          "cracker",
+          "crackers",
+          "agua e sal"
+        ]
+      ],
+      "excluded_terms": [
+        "doce",
+        "doces",
+        "chocolate",
+        "recheado",
+        "recheados",
+        "recheada",
+        "recheadas",
+        "wafer",
+        "racao",
+        "petisco canino"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Biscoito Cream Cracker Marca A 400g",
+        "matches": true
+      },
+      {
+        "name": "Bolacha Água e Sal Marca B 350g",
+        "matches": true
+      },
+      {
+        "name": "Biscoitos Salgados Integrais Marca C 200g",
+        "matches": true
+      },
+      {
+        "name": "Biscoito Doce Chocolate 200g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Cream Cracker Recheado 100g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Salgado para Ração 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "carne-bovina-acem",
+      "name": "Acém bovino",
+      "search_queries": [
+        "acem"
+      ],
+      "required_terms": [
+        [
+          "acem"
+        ]
+      ],
+      "excluded_terms": [
+        "suino",
+        "suina",
+        "porco",
+        "frango",
+        "hamburguer",
+        "almondega",
+        "almondegas",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "sopa",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Acém Bovino Resfriado kg",
+        "matches": true
+      },
+      {
+        "name": "Acém em Cubos Congelado 1kg",
+        "matches": true
+      },
+      {
+        "name": "Hambúrguer de Acém 400g",
+        "matches": false
+      },
+      {
+        "name": "Acém Bovino Temperado 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "carne-bovina-musculo",
+      "name": "Músculo bovino",
+      "search_queries": [
+        "musculo"
+      ],
+      "required_terms": [
+        [
+          "musculo"
+        ]
+      ],
+      "excluded_terms": [
+        "suino",
+        "suina",
+        "porco",
+        "frango",
+        "hamburguer",
+        "almondega",
+        "almondegas",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "sopa",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Músculo Bovino sem Osso kg",
+        "matches": true
+      },
+      {
+        "name": "Músculo em Cubos 500g",
+        "matches": true
+      },
+      {
+        "name": "Sopa de Músculo 400g",
+        "matches": false
+      },
+      {
+        "name": "Músculo Bovino Cozido 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "pernil-suino",
+      "name": "Pernil suíno",
+      "search_queries": [
+        "pernil suino",
+        "pernil porco"
+      ],
+      "required_terms": [
+        [
+          "pernil"
+        ],
+        [
+          "suino",
+          "suina",
+          "porco"
+        ]
+      ],
+      "excluded_terms": [
+        "frango",
+        "peru",
+        "cordeiro",
+        "peixe",
+        "bacalhau",
+        "canadense",
+        "defumado",
+        "defumada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "empanado",
+        "empanada",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Pernil Suíno sem Osso kg",
+        "matches": true
+      },
+      {
+        "name": "Pernil de Porco Congelado 1kg",
+        "matches": true
+      },
+      {
+        "name": "Pernil de Cordeiro kg",
+        "matches": false
+      },
+      {
+        "name": "Pernil Suíno Temperado 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "lombo-suino",
+      "name": "Lombo suíno",
+      "search_queries": [
+        "lombo suino",
+        "lombo porco"
+      ],
+      "required_terms": [
+        [
+          "lombo"
+        ],
+        [
+          "suino",
+          "suina",
+          "porco"
+        ]
+      ],
+      "excluded_terms": [
+        "frango",
+        "peru",
+        "cordeiro",
+        "peixe",
+        "bacalhau",
+        "canadense",
+        "defumado",
+        "defumada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "empanado",
+        "empanada",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Lombo Suíno Resfriado kg",
+        "matches": true
+      },
+      {
+        "name": "Lombo de Porco Congelado 1kg",
+        "matches": true
+      },
+      {
+        "name": "Lombo de Bacalhau 500g",
+        "matches": false
+      },
+      {
+        "name": "Lombo Suíno Canadense Defumado 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "file-tilapia",
+      "name": "Filé de tilápia",
+      "search_queries": [
+        "file tilapia"
+      ],
+      "required_terms": [
+        [
+          "file",
+          "files"
+        ],
+        [
+          "tilapia"
+        ]
+      ],
+      "excluded_terms": [
+        "empanado",
+        "empanada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "racao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Filé de Tilápia Congelado Marca A 400g",
+        "matches": true
+      },
+      {
+        "name": "Filés de Tilápia Resfriados kg",
+        "matches": true
+      },
+      {
+        "name": "Tilápia Inteira 1kg",
+        "matches": false
+      },
+      {
+        "name": "Filé de Tilápia Empanado 300g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "repolho",
+      "name": "Repolho fresco",
+      "search_queries": [
+        "repolho"
+      ],
+      "required_terms": [
+        [
+          "repolho"
+        ]
+      ],
+      "excluded_terms": [
+        "conserva",
+        "congelado",
+        "congelada",
+        "desidratado",
+        "desidratada",
+        "sopa",
+        "creme",
+        "pure",
+        "suco",
+        "farinha",
+        "bolo",
+        "salada",
+        "pronto",
+        "pronta",
+        "semente",
+        "sementes",
+        "chucrute",
+        "rolinho",
+        "rolinhos"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Repolho Verde Unidade",
+        "matches": true
+      },
+      {
+        "name": "Repolho Roxo kg",
+        "matches": true
+      },
+      {
+        "name": "Repolho em Conserva 300g",
+        "matches": false
+      },
+      {
+        "name": "Salada de Repolho Pronta 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "beterraba",
+      "name": "Beterraba fresca",
+      "search_queries": [
+        "beterraba"
+      ],
+      "required_terms": [
+        [
+          "beterraba"
+        ]
+      ],
+      "excluded_terms": [
+        "conserva",
+        "congelado",
+        "congelada",
+        "desidratado",
+        "desidratada",
+        "sopa",
+        "creme",
+        "pure",
+        "suco",
+        "farinha",
+        "bolo",
+        "salada",
+        "pronto",
+        "pronta",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Beterraba kg",
+        "matches": true
+      },
+      {
+        "name": "Beterraba Orgânica Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Suco de Beterraba 1L",
+        "matches": false
+      },
+      {
+        "name": "Beterraba em Conserva 300g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "chuchu",
+      "name": "Chuchu fresco",
+      "search_queries": [
+        "chuchu"
+      ],
+      "required_terms": [
+        [
+          "chuchu"
+        ]
+      ],
+      "excluded_terms": [
+        "conserva",
+        "congelado",
+        "congelada",
+        "desidratado",
+        "desidratada",
+        "sopa",
+        "creme",
+        "pure",
+        "suco",
+        "farinha",
+        "bolo",
+        "salada",
+        "pronto",
+        "pronta",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Chuchu kg",
+        "matches": true
+      },
+      {
+        "name": "Chuchu Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Sopa de Chuchu 400g",
+        "matches": false
+      },
+      {
+        "name": "Sementes de Chuchu 10un",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "abobrinha",
+      "name": "Abobrinha fresca",
+      "search_queries": [
+        "abobrinha"
+      ],
+      "required_terms": [
+        [
+          "abobrinha"
+        ]
+      ],
+      "excluded_terms": [
+        "conserva",
+        "congelado",
+        "congelada",
+        "desidratado",
+        "desidratada",
+        "sopa",
+        "creme",
+        "pure",
+        "suco",
+        "farinha",
+        "bolo",
+        "salada",
+        "pronto",
+        "pronta",
+        "semente",
+        "sementes",
+        "lasanha",
+        "antepasto"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Abobrinha Italiana kg",
+        "matches": true
+      },
+      {
+        "name": "Abobrinha Brasileira Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Lasanha de Abobrinha 500g",
+        "matches": false
+      },
+      {
+        "name": "Antepasto de Abobrinha 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "mandioca",
+      "name": "Mandioca, aipim ou macaxeira",
+      "search_queries": [
+        "mandioca",
+        "aipim",
+        "macaxeira"
+      ],
+      "required_terms": [
+        [
+          "mandioca",
+          "aipim",
+          "macaxeira"
+        ]
+      ],
+      "excluded_terms": [
+        "farinha",
+        "goma",
+        "tapioca",
+        "polvilho",
+        "amido",
+        "frita",
+        "frito",
+        "cozida",
+        "cozido",
+        "chips",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "pure",
+        "sopa",
+        "pronto",
+        "pronta",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Mandioca Descascada 1kg",
+        "matches": true
+      },
+      {
+        "name": "Aipim Congelado 1kg",
+        "matches": true
+      },
+      {
+        "name": "Macaxeira kg",
+        "matches": true
+      },
+      {
+        "name": "Farinha de Mandioca 1kg",
+        "matches": false
+      },
+      {
+        "name": "Goma de Tapioca de Mandioca 500g",
+        "matches": false
+      },
+      {
+        "name": "Mandioca Frita Congelada 400g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "batata-doce",
+      "name": "Batata-doce",
+      "search_queries": [
+        "batata doce"
+      ],
+      "required_terms": [
+        [
+          "batata doce"
+        ]
+      ],
+      "excluded_terms": [
+        "frita",
+        "frito",
+        "cozida",
+        "cozido",
+        "chips",
+        "farinha",
+        "pure",
+        "sopa",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "doce de",
+        "pronto",
+        "pronta",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Batata Doce Rosada kg",
+        "matches": true
+      },
+      {
+        "name": "Batata-doce Roxa Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Chips de Batata Doce 100g",
+        "matches": false
+      },
+      {
+        "name": "Farinha de Batata Doce 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "mamao",
+      "name": "Mamão fresco",
+      "search_queries": [
+        "mamao"
+      ],
+      "required_terms": [
+        [
+          "mamao"
+        ]
+      ],
+      "excluded_terms": [
+        "suco",
+        "nectar",
+        "refresco",
+        "refrigerante",
+        "bebida",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "geleia",
+        "doce",
+        "bala",
+        "sabor",
+        "essencia",
+        "desidratado",
+        "desidratada",
+        "polpa",
+        "cha",
+        "semente de",
+        "sementes de",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Mamão Papaya Unidade",
+        "matches": true
+      },
+      {
+        "name": "Mamão Formosa kg",
+        "matches": true
+      },
+      {
+        "name": "Suco de Mamão 1L",
+        "matches": false
+      },
+      {
+        "name": "Doce de Mamão 400g",
+        "matches": false
+      },
+      {
+        "name": "Sementes de Mamão fresco 10g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "limao",
+      "name": "Limão fresco",
+      "search_queries": [
+        "limao"
+      ],
+      "required_terms": [
+        [
+          "limao"
+        ]
+      ],
+      "excluded_terms": [
+        "suco",
+        "nectar",
+        "refresco",
+        "refrigerante",
+        "bebida",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "geleia",
+        "doce",
+        "bala",
+        "sabor",
+        "essencia",
+        "desidratado",
+        "desidratada",
+        "polpa",
+        "cha",
+        "semente de",
+        "sementes de",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Limão Tahiti kg",
+        "matches": true
+      },
+      {
+        "name": "Limão Siciliano Bandeja 500g",
+        "matches": true
+      },
+      {
+        "name": "Suco de Limão 500ml",
+        "matches": false
+      },
+      {
+        "name": "Detergente Limão 500ml",
+        "matches": false
+      },
+      {
+        "name": "Sabonete Limão 90g",
+        "matches": false
+      },
+      {
+        "name": "Sementes de Limão fresco 10g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "melancia",
+      "name": "Melancia fresca",
+      "search_queries": [
+        "melancia"
+      ],
+      "required_terms": [
+        [
+          "melancia"
+        ]
+      ],
+      "excluded_terms": [
+        "suco",
+        "nectar",
+        "refresco",
+        "refrigerante",
+        "bebida",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "geleia",
+        "doce",
+        "bala",
+        "sabor",
+        "essencia",
+        "desidratado",
+        "desidratada",
+        "polpa",
+        "cha",
+        "semente de",
+        "sementes de",
+        "detergente",
+        "sabonete",
+        "limpador",
+        "desinfetante",
+        "sabao",
+        "amaciante",
+        "alvejante",
+        "creme dental"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Melancia Inteira kg",
+        "matches": true
+      },
+      {
+        "name": "Melancia sem Sementes Unidade",
+        "matches": true
+      },
+      {
+        "name": "Suco de Melancia 1L",
+        "matches": false
+      },
+      {
+        "name": "Bala Sabor Melancia 100g",
+        "matches": false
+      },
+      {
+        "name": "Sementes de Melancia fresca 10g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "requeijao",
+      "name": "Requeijão",
+      "search_queries": [
+        "requeijao"
+      ],
+      "required_terms": [
+        [
+          "requeijao"
+        ]
+      ],
+      "excluded_terms": [
+        "mistura",
+        "preparado",
+        "composto",
+        "amido",
+        "analogo",
+        "simil",
+        "sabor",
+        "biscoito",
+        "bolacha",
+        "pao",
+        "pizza",
+        "salgado",
+        "salgados",
+        "coxinha",
+        "frango"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Requeijão Cremoso Marca A 200g",
+        "matches": true
+      },
+      {
+        "name": "Requeijão Light Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Mistura de Requeijão com Amido 200g",
+        "matches": false
+      },
+      {
+        "name": "Pão Recheado com Requeijão 300g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "queijo-prato",
+      "name": "Queijo prato",
+      "search_queries": [
+        "queijo prato"
+      ],
+      "required_terms": [
+        [
+          "queijo"
+        ],
+        [
+          "prato"
+        ]
+      ],
+      "excluded_terms": [
+        "mistura",
+        "mix",
+        "analogo",
+        "simil",
+        "preparado",
+        "pizza",
+        "sanduiche",
+        "pao",
+        "salgado",
+        "salgados",
+        "biscoito",
+        "bolacha"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Queijo Prato Fatiado Marca A 150g",
+        "matches": true
+      },
+      {
+        "name": "Queijo Prato Peça kg",
+        "matches": true
+      },
+      {
+        "name": "Sanduíche de Queijo Prato 180g",
+        "matches": false
+      },
+      {
+        "name": "Mistura de Queijo Prato e Mussarela 200g",
+        "matches": false
+      },
+      {
+        "name": "Queijo Minas Frescal 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "vinagre",
+      "name": "Vinagre culinário",
+      "search_queries": [
+        "vinagre"
+      ],
+      "required_terms": [
+        [
+          "vinagre"
+        ]
+      ],
+      "excluded_terms": [
+        "limpeza",
+        "alcool de limpeza",
+        "multiuso",
+        "sabonete",
+        "shampoo",
+        "condicionador",
+        "molho",
+        "bala",
+        "goma",
+        "suplemento",
+        "capsula",
+        "capsulas"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Vinagre de Álcool Marca A 750ml",
+        "matches": true
+      },
+      {
+        "name": "Vinagre de Maçã Marca B 500ml",
+        "matches": true
+      },
+      {
+        "name": "Vinagre de Limpeza 1L",
+        "matches": false
+      },
+      {
+        "name": "Shampoo Vinagre de Maçã 300ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "extrato-tomate",
+      "name": "Extrato de tomate",
+      "search_queries": [
+        "extrato de tomate",
+        "extrato tomate"
+      ],
+      "required_terms": [
+        [
+          "extrato"
+        ],
+        [
+          "tomate"
+        ]
+      ],
+      "excluded_terms": [
+        "molho",
+        "ketchup",
+        "catchup",
+        "sardinha",
+        "sardinhas",
+        "atum",
+        "macarrao",
+        "lasanha",
+        "pizza",
+        "carne",
+        "frango",
+        "almondega",
+        "almondegas"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Extrato de Tomate Marca A 300g",
+        "matches": true
+      },
+      {
+        "name": "Extrato Tomate Concentrado Marca B 140g",
+        "matches": true
+      },
+      {
+        "name": "Molho de Tomate 300g",
+        "matches": false
+      },
+      {
+        "name": "Molho com Extrato de Tomate 300g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "arroz-integral",
+      "name": "Arroz integral",
+      "search_queries": [
+        "arroz integral"
+      ],
+      "required_terms": [
+        [
+          "arroz"
+        ],
+        [
+          "integral"
+        ]
+      ],
+      "excluded_terms": [
+        "biscoito",
+        "bolacha",
+        "farinha",
+        "bebida",
+        "leite",
+        "pronto",
+        "cozido",
+        "mistura",
+        "mix",
+        "risoto",
+        "salgadinho",
+        "macarrao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Arroz Integral Tipo 1 Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Arroz Integral Parboilizado Marca B 1kg",
+        "matches": true
+      },
+      {
+        "name": "Biscoito de Arroz Integral 100g",
+        "matches": false
+      },
+      {
+        "name": "Arroz Integral Cozido Pronto 250g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "arroz-parboilizado",
+      "name": "Arroz parboilizado",
+      "search_queries": [
+        "arroz parboilizado"
+      ],
+      "required_terms": [
+        [
+          "arroz"
+        ],
+        [
+          "parboilizado"
+        ]
+      ],
+      "excluded_terms": [
+        "integral",
+        "biscoito",
+        "bolacha",
+        "farinha",
+        "pronto",
+        "cozido",
+        "mistura",
+        "mix",
+        "risoto"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Arroz Parboilizado Tipo 1 Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Arroz Parboilizado Marca B 5kg",
+        "matches": true
+      },
+      {
+        "name": "Arroz Integral Parboilizado 1kg",
+        "matches": false
+      },
+      {
+        "name": "Arroz Branco Tipo 1 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "papel-higienico",
+      "name": "Papel higiênico seco",
+      "search_queries": [
+        "papel higienico"
+      ],
+      "required_terms": [
+        [
+          "papel higienico"
+        ]
+      ],
+      "excluded_terms": [
+        "umedecido",
+        "umedecidos",
+        "umido",
+        "umidos",
+        "suporte",
+        "porta papel",
+        "dispenser"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Papel Higiênico Folha Dupla 12 Rolos 30m",
+        "matches": true
+      },
+      {
+        "name": "Papel Higiênico Folha Simples 4 Rolos 60m",
+        "matches": true
+      },
+      {
+        "name": "Papel Higiênico Umedecido 40un",
+        "matches": false
+      },
+      {
+        "name": "Suporte para Papel Higiênico Unidade",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sabonete-barra",
+      "name": "Sabonete em barra",
+      "search_queries": [
+        "sabonete",
+        "sabonete barra"
+      ],
+      "required_terms": [
+        [
+          "sabonete",
+          "sabonetes"
+        ]
+      ],
+      "excluded_terms": [
+        "liquido",
+        "liquida",
+        "gel",
+        "espuma",
+        "refil",
+        "intimo",
+        "intima",
+        "saboneteira"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sabonete em Barra Marca A 90g",
+        "matches": true
+      },
+      {
+        "name": "Sabonete Hidratante Marca B 85g",
+        "matches": true
+      },
+      {
+        "name": "Sabonete Líquido 250ml",
+        "matches": false
+      },
+      {
+        "name": "Sabonete Íntimo 200ml",
+        "matches": false
+      },
+      {
+        "name": "Saboneteira para Sabonetes Unidade",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "creme-dental",
+      "name": "Creme dental",
+      "search_queries": [
+        "creme dental",
+        "pasta de dente"
+      ],
+      "required_terms": [
+        [
+          "creme dental",
+          "pasta dental",
+          "pasta de dente",
+          "pasta de dentes"
+        ]
+      ],
+      "excluded_terms": [
+        "escova",
+        "escovas",
+        "enxaguante",
+        "fio dental",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Creme Dental com Flúor Marca A 90g",
+        "matches": true
+      },
+      {
+        "name": "Pasta de Dentes Infantil Marca B 50g",
+        "matches": true
+      },
+      {
+        "name": "Escova com Creme Dental 90g",
+        "matches": false
+      },
+      {
+        "name": "Kit Pasta Dental e Fio Dental",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "absorvente",
+      "name": "Absorvente menstrual externo",
+      "search_queries": [
+        "absorvente"
+      ],
+      "required_terms": [
+        [
+          "absorvente",
+          "absorventes"
+        ]
+      ],
+      "excluded_terms": [
+        "interno",
+        "internos",
+        "urinario",
+        "urinarios",
+        "incontinencia",
+        "geriatrico",
+        "geriatrica",
+        "fralda",
+        "fraldas",
+        "diario",
+        "diarios",
+        "amamentacao"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Absorvente Externo com Abas Marca A 8un",
+        "matches": true
+      },
+      {
+        "name": "Absorventes Noturnos Marca B 16 unidades",
+        "matches": true
+      },
+      {
+        "name": "Absorvente Interno 8un",
+        "matches": false
+      },
+      {
+        "name": "Absorvente para Incontinência Urinária 10un",
+        "matches": false
+      },
+      {
+        "name": "Absorvente para Amamentação 12un",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "detergente-louca",
+      "name": "Detergente para louça manual",
+      "search_queries": [
+        "detergente",
+        "lava loucas liquido"
+      ],
+      "required_terms": [
+        [
+          "detergente",
+          "lava loucas",
+          "lava louca"
+        ]
+      ],
+      "excluded_terms": [
+        "roupa",
+        "roupas",
+        "maquina",
+        "maquinas",
+        "pastilha",
+        "pastilhas",
+        "capsula",
+        "capsulas",
+        "po",
+        "barra",
+        "sabonete",
+        "automotivo",
+        "piso",
+        "pisos",
+        "desinfetante",
+        "limpador",
+        "desengraxante"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Detergente Líquido Neutro Marca A 500ml",
+        "matches": true
+      },
+      {
+        "name": "Lava Louças Líquido Marca B 500ml",
+        "matches": true
+      },
+      {
+        "name": "Detergente para Roupas 1L",
+        "matches": false
+      },
+      {
+        "name": "Detergente para Máquina Lava Louças 500g",
+        "matches": false
+      },
+      {
+        "name": "Detergente em Pó para Lava Louças 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sabao-roupas-po",
+      "name": "Sabão em pó para roupas",
+      "search_queries": [
+        "sabao em po",
+        "lava roupas po"
+      ],
+      "required_terms": [
+        [
+          "sabao em po",
+          "lava roupas em po",
+          "lava roupa em po",
+          "lava roupas po",
+          "lava roupa po"
+        ]
+      ],
+      "excluded_terms": [
+        "louca",
+        "loucas",
+        "liquido",
+        "liquida",
+        "barra",
+        "amaciante",
+        "maos",
+        "automotivo"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sabão em Pó Marca A 800g",
+        "matches": true
+      },
+      {
+        "name": "Lava Roupas Pó Marca B 1,6kg",
+        "matches": true
+      },
+      {
+        "name": "Sabão Líquido para Roupas 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão em Pó para Lava Louças 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sabao-roupas-liquido",
+      "name": "Sabão líquido para roupas",
+      "search_queries": [
+        "sabao liquido roupas",
+        "lava roupas liquido"
+      ],
+      "required_terms": [
+        [
+          "roupa",
+          "roupas"
+        ],
+        [
+          "liquido",
+          "liquida"
+        ],
+        [
+          "sabao",
+          "lava roupas",
+          "lava roupa",
+          "lavar roupas",
+          "lavar roupa"
+        ]
+      ],
+      "excluded_terms": [
+        "louca",
+        "loucas",
+        "po",
+        "barra",
+        "amaciante",
+        "maos",
+        "sabonete",
+        "automotivo",
+        "desinfetante"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sabão Líquido para Roupas Marca A 1L",
+        "matches": true
+      },
+      {
+        "name": "Lava Roupas Líquido Concentrado Marca B 900ml",
+        "matches": true
+      },
+      {
+        "name": "Amaciante Líquido para Roupas 2L",
+        "matches": false
+      },
+      {
+        "name": "Sabão Líquido para Mãos 250ml",
+        "matches": false
+      },
+      {
+        "name": "Sabão em Pó para Roupas 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "agua-sanitaria",
+      "name": "Água sanitária",
+      "search_queries": [
+        "agua sanitaria"
+      ],
+      "required_terms": [
+        [
+          "agua sanitaria"
+        ]
+      ],
+      "excluded_terms": [
+        "sem cloro",
+        "gel",
+        "perfumada",
+        "kit",
+        "suporte"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Água Sanitária Marca A 1L",
+        "matches": true
+      },
+      {
+        "name": "Água Sanitária Marca B 5L",
+        "matches": true
+      },
+      {
+        "name": "Alvejante sem Cloro 1L",
+        "matches": false
+      },
+      {
+        "name": "Água Sanitária em Gel 500ml",
         "matches": false
       }
     ]

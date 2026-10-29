@@ -24,9 +24,14 @@ and [Conab/DIEESE regional notes](https://www.gov.br/conab/pt-br/atuacao/informa
 | Soybean oil | `oleo-soja` |
 | Butter | `manteiga` |
 
-There are **16 enabled targets**: 15 covering these groups and regional flour/sugar
+The original scope contains **16 targets**: 15 covering these groups and regional flour/sugar
 variants, plus the previously monitored `macarrao` target. Existing target IDs and
 rules are preserved. The broader liquid/powdered milk scope also remains in place.
+Migration 00007 adds [21 everyday foods](everyday-foods.md), for **37 enabled
+targets** at that version. Migration 00008 adds
+[20 foods and eight household essentials](foods-and-household.md), bringing the
+current fresh-database scope to **65 targets**. The household additions are
+separate from the food-basket reference.
 
 For beef, discovery uses the methodology's boneless cuts: patinho, coxão mole
 (chã de dentro), and coxão duro (chã de fora). Bread includes the regional search

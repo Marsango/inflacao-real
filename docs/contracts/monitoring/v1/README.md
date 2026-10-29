@@ -63,9 +63,11 @@ listings and take fresh measurements.
 Migration 00006 seeds 16 targets covering the DIEESE basket's 13 food groups,
 regional flour/sugar variants, and the previously monitored pasta. The
 [basket scope and sources](basic-food-basket.md) document every target and adapter
-coverage limits. These are collection groups, not an inflation basket or a
-declaration that their products are interchangeable. Liquid and powdered milk,
-for example, remain different products.
+coverage limits. Migration 00007 adds [21 everyday foods](everyday-foods.md),
+and migration 00008 adds [20 foods and eight household essentials](foods-and-household.md),
+bringing the fresh-database scope to **65 targets**. These are collection groups,
+not an inflation basket or a declaration that their products are interchangeable.
+Liquid and powdered milk, for example, remain different products.
 Rice requires explicit `branco`/`polido` and `tipo 1`/`tipo1` evidence in its name.
 
 The worker continues its existing GTIN/brand/variant/package identity matching.
@@ -82,7 +84,13 @@ Rule edits and disabled targets do not erase existing associations or rewrite
 price history. A future aggregate requires explicit methodology and rule history.
 
 Manage targets through forward SQL migrations for now. No target-editing API or
-manual shop-SKU registration is needed. All adapters fetch the enabled scope once
+manual shop-SKU registration is needed. With the default scraper configuration,
+adding a target requires changes only in the core. Muffato and Festval search the
+returned queries; Angeloni discovers all live leaf categories and filters the
+catalog using the returned rules. Its optional `catalog_category_ids` override is
+for restricted diagnostics, not a second product scope. Remove older category
+allowlists to enable automatic discovery.
+All adapters fetch the enabled scope once
 at the beginning of each collection run; they must fail explicitly on an
 unavailable or unsupported scope rather than use a hidden local fallback.
 

@@ -6,6 +6,9 @@ import httpx
 from inflacao_scrapers import cli, commands
 from inflacao_scrapers.delivery import Spool
 from inflacao_scrapers.transport import Requester
+from inflacao_scrapers.vtex.json import decode_response
+
+from .conftest import encode_source
 
 CONFIGURATION = """
 [[scrapers]]
@@ -130,4 +133,68 @@ def test_empty_core_scope_does_not_contact_either_shop(tmp_path, monkeypatch, sa
     assert status == 0
     assert len(requests) == 2
     assert all(request.url.host == "127.0.0.1" for request in requests)
+    assert not (tmp_path / "data").exists()
+
+
+def add_new_department(sample):
+    categories = json.loads(sample.categories)
+    categories.append(
+        {"id": 900001, "name": "New department", "hasChildren": False, "children": []}
+    )
+    sample.categories = encode_source(categories)
+    document = decode_response(sample.source)
+    product = document["products"][0]
+    sku = product["items"][0]
+    sku["name"] = sku["nameComplete"] = "Sorvete de Baunilha 500g"
+    sample.source = encode_source(document)
+
+
+def new_scope_response():
+    target = {
+        "id": "sorvete",
+        "name": "Sorvete",
+        "search_queries": ["sorvete"],
+        "required_terms": [["sorvete"]],
+        "excluded_terms": [],
+    }
+    return httpx.Response(200, json={"schema_version": "1.0", "targets": [target]})
+
+
+def automatic_catalog_handler(samples, requests):
+    def handler(request):
+        requests.append(request)
+        if request.url.path == "/api/v1/monitoring-targets":
+            return new_scope_response()
+        if "product_search" in request.url.path:
+            return new_department_response(request, samples["angeloni"])
+        return response_for(request, samples, None, False, {})
+
+    return handler
+
+
+def new_department_response(request, sample):
+    assert "authorization" not in request.headers
+    assert "vtex_segment=" in request.headers["cookie"]
+    assert not {"ft", "fq", "query", "map"}.intersection(request.url.params)
+    if request.url.path.endswith("category-1/900001"):
+        return httpx.Response(200, content=sample.source)
+    return httpx.Response(200, json={"products": [], "recordsFiltered": 0})
+
+
+def test_core_target_in_new_department_collects_without_scraper_configuration_changes(
+    tmp_path, monkeypatch, samples
+):
+    add_new_department(samples["angeloni"])
+    path = tmp_path / "config.toml"
+    path.write_text('[[scrapers]]\nadapter="angeloni"\nscraper_id="shared"\n')
+    requests = []
+    monkeypatch.setenv("INGESTION_TOKEN", "secret")
+    install_mock_runtime(monkeypatch, automatic_catalog_handler(samples, requests))
+    monkeypatch.setattr(sys, "argv", ["scraper", "--config", str(path), "collect"])
+    assert cli.main() == 0
+    documents = submissions(requests)
+    assert len(documents) == 1
+    assert documents[0]["shop_id"] == "angeloni"
+    observation = documents[0]["observations"][0]
+    assert observation["product"]["name"] == "Sorvete de Baunilha 500g"
     assert not (tmp_path / "data").exists()

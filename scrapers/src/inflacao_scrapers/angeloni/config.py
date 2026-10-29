@@ -16,24 +16,8 @@ class AngeloniSettings(VtexSettings):
     city: str = "Curitiba"
     state: str = "PR"
     store_id: str = "seller:superangeloni24"
-    catalog_category_ids: list[int] = Field(
-        default_factory=lambda: [
-            43,
-            240,
-            274,
-            281,
-            283,
-            255,
-            390,
-            146,
-            244,
-            260,
-            183,
-            185,
-            84,
-            226,
-            263,
-        ],
+    catalog_category_ids: list[int] | None = Field(
+        default=None,
         min_length=1,
         max_length=200,
     )

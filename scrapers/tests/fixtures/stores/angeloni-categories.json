@@ -49,6 +49,25 @@
         "children": []
       },
       {
+        "id": 245,
+        "name": "Vinagre e Aceto",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 246,
+        "name": "Biscoitos e Snacks",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 267,
+            "name": "Biscoitos Salgados",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
         "id": 249,
         "name": "Chocolates",
         "hasChildren": true,
@@ -80,6 +99,12 @@
         "hasChildren": true,
         "children": [
           {
+            "id": 278,
+            "name": "Aveia",
+            "hasChildren": false,
+            "children": []
+          },
+          {
             "id": 281,
             "name": "Farinhas",
             "hasChildren": false,
@@ -94,10 +119,48 @@
         ]
       },
       {
+        "id": 252,
+        "name": "Conservas e Enlatados",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 298,
+            "name": "Sardinha",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
         "id": 255,
         "name": "Leite em Pó",
         "hasChildren": false,
         "children": []
+      },
+      {
+        "id": 256,
+        "name": "Molhos, Temperos e Condimentos",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 318,
+            "name": "Extrato e Polpa de Tomate",
+            "hasChildren": false,
+            "children": []
+          },
+          {
+            "id": 322,
+            "name": "Molho de Tomate",
+            "hasChildren": false,
+            "children": []
+          },
+          {
+            "id": 324,
+            "name": "Sal",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -107,8 +170,26 @@
     "hasChildren": true,
     "children": [
       {
+        "id": 83,
+        "name": "Aves",
+        "hasChildren": false,
+        "children": []
+      },
+      {
         "id": 84,
         "name": "Carnes Bovinas",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 86,
+        "name": "Peixes e Frutos Do Mar",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 88,
+        "name": "Carnes Suínas",
         "hasChildren": false,
         "children": []
       }
@@ -120,8 +201,26 @@
     "hasChildren": true,
     "children": [
       {
+        "id": 144,
+        "name": "Iogurte",
+        "hasChildren": false,
+        "children": []
+      },
+      {
         "id": 146,
         "name": "Manteiga e Margarina",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 149,
+        "name": "Queijos",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 150,
+        "name": "Requeijão",
         "hasChildren": false,
         "children": []
       },
@@ -134,10 +233,61 @@
     ]
   },
   {
+    "id": 152,
+    "name": "Higiene e Beleza",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 159,
+        "name": "Higiene Bucal",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 168,
+            "name": "Creme Dental",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 161,
+        "name": "Higiene Íntima",
+        "hasChildren": true,
+        "children": [
+          {
+            "id": 173,
+            "name": "Absorvente",
+            "hasChildren": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 163,
+        "name": "Papel Higiênico",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 166,
+        "name": "Sabonetes em Barra",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  },
+  {
     "id": 153,
     "name": "Hortifruti",
     "hasChildren": true,
     "children": [
+      {
+        "id": 182,
+        "name": "Ervas e Temperos",
+        "hasChildren": false,
+        "children": []
+      },
       {
         "id": 183,
         "name": "Frutas",
@@ -147,6 +297,43 @@
       {
         "id": 185,
         "name": "Legumes",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 187,
+        "name": "Ovos",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 190,
+        "name": "Verduras",
+        "hasChildren": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 195,
+    "name": "Limpeza e Lavanderia",
+    "hasChildren": true,
+    "children": [
+      {
+        "id": 196,
+        "name": "Água Sanitária",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 205,
+        "name": "Detergente e Lava-louças",
+        "hasChildren": false,
+        "children": []
+      },
+      {
+        "id": 207,
+        "name": "Lava-Roupas",
         "hasChildren": false,
         "children": []
       }
