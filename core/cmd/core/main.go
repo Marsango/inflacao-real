@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"errors"
+	"database/sql"
 	"flag"
 	"fmt"
 	"log/slog"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,6 +15,7 @@ import (
 
 	"inflacao-real/core/internal/database"
 	"inflacao-real/core/internal/ingestion"
+	"inflacao-real/core/internal/monitoring"
 )
 
 func main() {
@@ -26,84 +26,94 @@ func main() {
 }
 
 func run() error {
-	envFile := flag.String("env-file", "", "optional dotenv file; existing environment variables take precedence")
-	flag.Parse()
-	if *envFile != "" {
-		if err := godotenv.Load(*envFile); err != nil {
-			return fmt.Errorf("load environment file: %w", err)
-		}
+	if err := loadEnvironment(); err != nil {
+		return err
 	}
+	requestContext, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	startupContext, cancel := context.WithTimeout(requestContext, time.Minute)
+	defer cancel()
+	pool, err := openDatabase(startupContext)
+	if err != nil {
+		return err
+	}
+	defer pool.Close()
+	application, err := newApplication(pool)
+	if err != nil {
+		return err
+	}
+	return application.run(requestContext)
+}
 
+func loadEnvironment() error {
+	environmentFile := flag.String("env-file", "", "optional dotenv file; existing environment variables take precedence")
+	flag.Parse()
+	if *environmentFile == "" {
+		return nil
+	}
+	if err := godotenv.Load(*environmentFile); err != nil {
+		return fmt.Errorf("load environment file: %w", err)
+	}
+	return nil
+}
+
+func openDatabase(requestContext context.Context) (*sql.DB, error) {
 	connectionString, err := database.ConnectionString(os.Getenv)
 	if err != nil {
-		return err
+		return nil, err
 	}
+	pool, err := database.Open(requestContext, connectionString)
+	if err != nil {
+		return nil, err
+	}
+	if err := database.Migrate(requestContext, pool); err != nil {
+		pool.Close()
+		return nil, err
+	}
+	return pool, nil
+}
 
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+type application struct {
+	server *httpServer
+	worker *ingestion.Worker
+}
+
+func newApplication(pool *sql.DB) (application, error) {
+	auth := ingestion.AuthFromEnv(os.Getenv)
+	router, err := ingestion.NewRouter(ingestion.PostgresStore{DB: pool}, auth)
+	if err != nil {
+		return application{}, err
+	}
+	monitoring.RegisterRoutes(router, monitoring.PostgresStore{DB: pool}, auth.Authenticate)
+	worker, err := createWorker(pool)
+	if err != nil {
+		return application{}, err
+	}
+	return application{server: newHTTPServer(router), worker: worker}, nil
+}
+
+func createWorker(pool *sql.DB) (*ingestion.Worker, error) {
+	configuration, err := ingestion.WorkerConfigFromEnv(os.Getenv)
+	if err != nil {
+		return nil, err
+	}
+	return ingestion.NewWorker(pool, configuration)
+}
+
+func (application application) run(requestContext context.Context) error {
+	stop := startWorker(requestContext, application.worker)
 	defer stop()
-	startupCtx, cancel := context.WithTimeout(ctx, time.Minute)
-	defer cancel()
+	return application.server.serve(requestContext)
+}
 
-	db, err := database.Open(startupCtx, connectionString)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
+func startWorker(parentContext context.Context, worker *ingestion.Worker) func() {
+	requestContext, cancel := context.WithCancel(parentContext)
+	done := make(chan struct{})
+	go runWorker(requestContext, worker, done)
+	return func() { cancel(); <-done }
+}
 
-	if err := database.Migrate(startupCtx, db); err != nil {
-		return err
-	}
-
-	router, err := ingestion.NewRouter(ingestion.PostgresStore{DB: db}, ingestion.AuthFromEnv(os.Getenv))
-	if err != nil {
-		return err
-	}
-	workerConfig, err := ingestion.WorkerConfigFromEnv(os.Getenv)
-	if err != nil {
-		return err
-	}
-	worker, err := ingestion.NewWorker(db, workerConfig)
-	if err != nil {
-		return err
-	}
-	workerCtx, cancelWorker := context.WithCancel(ctx)
-	workerDone := make(chan struct{})
-	go func() {
-		defer close(workerDone)
-		worker.Run(workerCtx)
-	}()
-	defer func() {
-		cancelWorker()
-		<-workerDone
-	}()
-	address := os.Getenv("HTTP_ADDR")
-	if address == "" {
-		address = "127.0.0.1:8080"
-	}
-	server := &http.Server{
-		Addr:              address,
-		Handler:           router,
-		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       15 * time.Second,
-		WriteTimeout:      15 * time.Second,
-		IdleTimeout:       time.Minute,
-	}
-	serverErrors := make(chan error, 1)
-	go func() { serverErrors <- server.ListenAndServe() }()
-	slog.Info("ingestion API started", "address", address)
-	select {
-	case err := <-serverErrors:
-		if !errors.Is(err, http.ErrServerClosed) {
-			return fmt.Errorf("serve HTTP: %w", err)
-		}
-		return nil
-	case <-ctx.Done():
-		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer shutdownCancel()
-		if err := server.Shutdown(shutdownCtx); err != nil {
-			server.Close()
-			return fmt.Errorf("shut down HTTP: %w", err)
-		}
-		return nil
-	}
+func runWorker(requestContext context.Context, worker *ingestion.Worker, done chan struct{}) {
+	defer close(done)
+	worker.Run(requestContext)
 }

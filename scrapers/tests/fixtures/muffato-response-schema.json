@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Super Muffato product response fields consumed by the collector",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["productId", "productName", "brand", "link", "items"],
+    "properties": {
+      "productId": {"type": "string"},
+      "productName": {"type": "string"},
+      "brand": {"type": ["string", "null"]},
+      "link": {"type": "string", "format": "uri"},
+      "items": {
+        "type": "array", "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["itemId", "name", "nameComplete", "ean", "measurementUnit", "unitMultiplier", "isKit", "sellers"],
+          "properties": {
+            "itemId": {"type": "string"},
+            "name": {"type": "string"},
+            "nameComplete": {"type": "string"},
+            "ean": {"type": ["string", "null"]},
+            "measurementUnit": {"type": "string"},
+            "unitMultiplier": {"type": "number", "exclusiveMinimum": 0},
+            "isKit": {"type": "boolean"},
+            "sellers": {
+              "type": "array", "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["sellerId", "sellerName", "commertialOffer"],
+                "properties": {
+                  "sellerId": {"type": "string"},
+                  "sellerName": {"type": "string"},
+                  "commertialOffer": {"$ref": "#/$defs/offer"}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "offer": {
+      "type": "object",
+      "required": ["Price", "ListPrice", "IsAvailable", "AvailableQuantity", "DiscountHighLight", "Teasers", "PromotionTeasers", "BuyTogether", "PaymentOptions"],
+      "properties": {
+        "Price": {"type": ["number", "null"], "minimum": 0},
+        "ListPrice": {"type": ["number", "null"], "minimum": 0},
+        "IsAvailable": {"type": "boolean"},
+        "AvailableQuantity": {"type": "number", "minimum": 0},
+        "DiscountHighLight": {"type": "array"},
+        "Teasers": {"type": "array"},
+        "PromotionTeasers": {"type": "array"},
+        "BuyTogether": {"type": "array"},
+        "PaymentOptions": {
+          "type": "object",
+          "required": ["installmentOptions"],
+          "properties": {
+            "installmentOptions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["paymentName", "paymentGroupName", "installments"],
+                "properties": {
+                  "paymentName": {"type": "string"},
+                  "paymentGroupName": {"type": "string"},
+                  "installments": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["count", "total"],
+                      "properties": {
+                        "count": {"type": "integer", "minimum": 1},
+                        "total": {"type": "integer", "minimum": 0}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

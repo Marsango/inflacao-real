@@ -1,0 +1,24 @@
+# Start with one verified branch. Values come from Muffato's public store selector.
+# sc=8 is Curitiba - Champagnat, not the default sc=1 (Campo Mourão).
+scraper_id = "muffato-curitiba-01"
+shop_id = "super-muffato"
+shop_url = "https://www.supermuffato.com.br"
+core_url = "http://127.0.0.1:8080"
+sales_channel = "8"
+seller_id = "1"
+# This is the storefront's sales-channel identifier, not a warehouse ID.
+store_id = "sales-channel:8"
+city = "Curitiba"
+state = "PR"
+
+# Product scope comes from the core; searches run across all matching brands.
+# A full final page at this bound reports an incomplete run.
+max_search_pages = 50
+
+spool_path = "data/spool.sqlite3"
+spool_capacity_bytes = 67108864
+timeout_seconds = 20.0
+request_interval_seconds = 1.0
+max_attempts = 3
+retry_base_seconds = 1.0
+retry_max_seconds = 60.0

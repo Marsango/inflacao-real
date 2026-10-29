@@ -15,6 +15,12 @@ automatically creates or matches products and listings, persists price histories
 and handles observation deduplication and retries. Shops are registered manually.
 See its README for configuration and a submission example.
 
+The first [Python scraper](scrapers/README.md) collects a fixed scope of packaged
+foods from Super Muffato's Curitiba–Champagnat online catalog. It validates the
+shared ingestion contract, queues immutable batches locally, and submits them
+through the core's HTTP API. Its offline tests and opt-in live response-shape
+checks do not require PostgreSQL or Docker.
+
 ## Local database
 
 Install Docker Engine and the Docker Compose plugin. Run commands from the
@@ -71,5 +77,5 @@ docker compose down
 the local database data. Database/user/password environment variables initialize
 an empty volume; editing `.env` does not change credentials in an existing database.
 
-Only PostgreSQL is containerized at this stage. The core, scrapers, and web UI
-will be added as their implementations are introduced.
+Only PostgreSQL is containerized at this stage. The core and scraper run on the
+host; the web UI has not been implemented.

@@ -1,0 +1,875 @@
+[
+  {
+    "target": {
+      "id": "cafe-moido",
+      "name": "Café torrado e moído",
+      "search_queries": [
+        "cafe"
+      ],
+      "required_terms": [
+        [
+          "cafe"
+        ],
+        [
+          "moido",
+          "po"
+        ]
+      ],
+      "excluded_terms": [
+        "soluvel",
+        "capsula",
+        "capsulas",
+        "graos",
+        "bebida",
+        "filtro",
+        "cafeteira",
+        "leite"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Café Torrado e Moído Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "CAFÉ EM PÓ MARCA B 250 g",
+        "matches": true
+      },
+      {
+        "name": "Café moído gourmet Marca C 1kg",
+        "matches": true
+      },
+      {
+        "name": "Café solúvel em pó 100g",
+        "matches": false
+      },
+      {
+        "name": "Filtro para café moído",
+        "matches": false
+      },
+      {
+        "name": "Café em grãos 1kg",
+        "matches": false
+      },
+      {
+        "name": "Café Marca A 500g",
+        "matches": false
+      },
+      {
+        "name": "Descafeinado moído 500g",
+        "matches": false
+      },
+      {
+        "name": "Café pólen 250g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "arroz-branco-tipo-1",
+      "name": "Arroz branco tipo 1",
+      "search_queries": [
+        "arroz"
+      ],
+      "required_terms": [
+        [
+          "arroz"
+        ],
+        [
+          "branco",
+          "polido"
+        ],
+        [
+          "tipo 1",
+          "tipo1"
+        ]
+      ],
+      "excluded_terms": [
+        "integral",
+        "parboilizado",
+        "arboreo",
+        "carreteiro",
+        "pronto",
+        "farinha",
+        "biscoito"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Arroz Branco Tipo 1 Marca A 5kg",
+        "matches": true
+      },
+      {
+        "name": "Arroz Polido Tipo1 Marca B 1 kg",
+        "matches": true
+      },
+      {
+        "name": "Arroz branco tipo-1 Marca C 2kg",
+        "matches": true
+      },
+      {
+        "name": "Arroz integral tipo 1 1kg",
+        "matches": false
+      },
+      {
+        "name": "Arroz branco tipo 2 5kg",
+        "matches": false
+      },
+      {
+        "name": "Arroz branco 5kg",
+        "matches": false
+      },
+      {
+        "name": "Arroz branco tipo 10 5kg",
+        "matches": false
+      },
+      {
+        "name": "Biscoito de arroz branco tipo 1 100g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "carne-bovina-primeira",
+      "name": "Carne bovina de primeira: patinho e coxão",
+      "search_queries": [
+        "patinho",
+        "coxao mole",
+        "coxao duro",
+        "cha de dentro",
+        "cha de fora"
+      ],
+      "required_terms": [
+        [
+          "patinho",
+          "coxao mole",
+          "coxao duro",
+          "cha de dentro",
+          "cha de fora"
+        ]
+      ],
+      "excluded_terms": [
+        "suino",
+        "suina",
+        "porco",
+        "frango",
+        "hamburguer",
+        "almondega",
+        "almondegas",
+        "empanado",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "pronto",
+        "sopa",
+        "racao",
+        "com osso"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Patinho Bovino Resfriado Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Coxão Mole Bovino sem Osso Marca B 1kg",
+        "matches": true
+      },
+      {
+        "name": "Coxão Duro Bovino Marca C 1kg",
+        "matches": true
+      },
+      {
+        "name": "Chã de Dentro Bovina 1kg",
+        "matches": true
+      },
+      {
+        "name": "Chã de Fora Bovina 1kg",
+        "matches": true
+      },
+      {
+        "name": "Patinho Moído Marca D 500g",
+        "matches": true
+      },
+      {
+        "name": "Hambúrguer de Patinho 400g",
+        "matches": false
+      },
+      {
+        "name": "Patinho Temperado 500g",
+        "matches": false
+      },
+      {
+        "name": "Coxão Mole Suíno 1kg",
+        "matches": false
+      },
+      {
+        "name": "Coxão Duro com Osso 1kg",
+        "matches": false
+      },
+      {
+        "name": "Peito de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Picanha Bovina 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "farinha-trigo",
+      "name": "Farinha de trigo",
+      "search_queries": [
+        "farinha trigo"
+      ],
+      "required_terms": [
+        [
+          "farinha"
+        ],
+        [
+          "trigo"
+        ]
+      ],
+      "excluded_terms": [
+        "integral",
+        "mistura",
+        "farofa",
+        "rosca",
+        "lactea"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Farinha de Trigo Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Farinha Trigo Enriquecida Marca B 5kg",
+        "matches": true
+      },
+      {
+        "name": "Farinha de Trigo Integral 1kg",
+        "matches": false
+      },
+      {
+        "name": "Mistura de Farinha de Trigo para Bolo 1kg",
+        "matches": false
+      },
+      {
+        "name": "Farinha de Mandioca 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "farinha-mandioca",
+      "name": "Farinha de mandioca",
+      "search_queries": [
+        "farinha mandioca"
+      ],
+      "required_terms": [
+        [
+          "farinha"
+        ],
+        [
+          "mandioca"
+        ]
+      ],
+      "excluded_terms": [
+        "farofa",
+        "temperada",
+        "temperado",
+        "mistura",
+        "tapioca"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Farinha de Mandioca Branca Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Farinha de Mandioca Torrada Marca B 500g",
+        "matches": true
+      },
+      {
+        "name": "Farofa de Farinha de Mandioca Temperada 500g",
+        "matches": false
+      },
+      {
+        "name": "Farinha de Tapioca de Mandioca 500g",
+        "matches": false
+      },
+      {
+        "name": "Farinha de Trigo 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "batata",
+      "name": "Batata fresca",
+      "search_queries": [
+        "batata"
+      ],
+      "required_terms": [
+        [
+          "batata"
+        ]
+      ],
+      "excluded_terms": [
+        "doce",
+        "frita",
+        "fritas",
+        "chips",
+        "palha",
+        "congelada",
+        "congeladas",
+        "congelado",
+        "congelados",
+        "pure",
+        "amido",
+        "farinha",
+        "nhoque",
+        "gnocchi",
+        "pao",
+        "salgadinho",
+        "racao",
+        "snack",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Batata Inglesa Lavada 1kg",
+        "matches": true
+      },
+      {
+        "name": "Batata Asterix 1kg",
+        "matches": true
+      },
+      {
+        "name": "Batata Orgânica 600g",
+        "matches": true
+      },
+      {
+        "name": "Batata Doce 1kg",
+        "matches": false
+      },
+      {
+        "name": "Batata Palha 100g",
+        "matches": false
+      },
+      {
+        "name": "Batata Congelada Palito 1kg",
+        "matches": false
+      },
+      {
+        "name": "Purê de Batata em Flocos 200g",
+        "matches": false
+      },
+      {
+        "name": "Amido de Batata 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "tomate",
+      "name": "Tomate fresco",
+      "search_queries": [
+        "tomate"
+      ],
+      "required_terms": [
+        [
+          "tomate"
+        ]
+      ],
+      "excluded_terms": [
+        "molho",
+        "extrato",
+        "ketchup",
+        "catchup",
+        "seco",
+        "secos",
+        "desidratado",
+        "pelado",
+        "pelados",
+        "conserva",
+        "suco",
+        "sopa",
+        "polpa",
+        "salada",
+        "tempero",
+        "sabor",
+        "semente",
+        "sementes"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Tomate Longa Vida 1kg",
+        "matches": true
+      },
+      {
+        "name": "Tomate Italiano Orgânico 500g",
+        "matches": true
+      },
+      {
+        "name": "Molho de Tomate Tradicional 300g",
+        "matches": false
+      },
+      {
+        "name": "Extrato de Tomate 300g",
+        "matches": false
+      },
+      {
+        "name": "Tomate Pelado em Conserva 400g",
+        "matches": false
+      },
+      {
+        "name": "Tomate Seco 200g",
+        "matches": false
+      },
+      {
+        "name": "Sementes de Tomate 10g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "pao-frances",
+      "name": "Pão francês ou pão de sal",
+      "search_queries": [
+        "pao frances",
+        "pao de sal",
+        "cacetinho"
+      ],
+      "required_terms": [
+        [
+          "pao frances",
+          "pao tipo frances",
+          "pao de sal",
+          "cacetinho"
+        ]
+      ],
+      "excluded_terms": [
+        "torrada",
+        "torradas",
+        "farinha",
+        "forma",
+        "alho",
+        "recheado",
+        "integral",
+        "doce",
+        "hamburguer",
+        "congelado",
+        "congelados",
+        "congelada"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Pão Francês 1kg",
+        "matches": true
+      },
+      {
+        "name": "Pão Tipo Francês 500g",
+        "matches": true
+      },
+      {
+        "name": "Pão de Sal 500g",
+        "matches": true
+      },
+      {
+        "name": "Cacetinho 500g",
+        "matches": true
+      },
+      {
+        "name": "Pão Francês Integral 500g",
+        "matches": false
+      },
+      {
+        "name": "Pão Francês Congelado 1kg",
+        "matches": false
+      },
+      {
+        "name": "Torrada de Pão Francês 150g",
+        "matches": false
+      },
+      {
+        "name": "Pão de Forma 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "banana",
+      "name": "Banana fresca",
+      "search_queries": [
+        "banana"
+      ],
+      "required_terms": [
+        [
+          "banana"
+        ]
+      ],
+      "excluded_terms": [
+        "chips",
+        "frita",
+        "fritas",
+        "desidratada",
+        "passa",
+        "doce",
+        "bala",
+        "bolo",
+        "farinha",
+        "vitamina",
+        "suco",
+        "pure",
+        "geleia",
+        "bananada"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Banana Prata 1kg",
+        "matches": true
+      },
+      {
+        "name": "Banana Nanica 1kg",
+        "matches": true
+      },
+      {
+        "name": "Banana Caturra Orgânica 1kg",
+        "matches": true
+      },
+      {
+        "name": "Banana Chips 100g",
+        "matches": false
+      },
+      {
+        "name": "Doce de Banana 200g",
+        "matches": false
+      },
+      {
+        "name": "Farinha de Banana Verde 200g",
+        "matches": false
+      },
+      {
+        "name": "Banana Passa 100g",
+        "matches": false
+      },
+      {
+        "name": "Vitamina de Banana 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "manteiga",
+      "name": "Manteiga",
+      "search_queries": [
+        "manteiga"
+      ],
+      "required_terms": [
+        [
+          "manteiga"
+        ]
+      ],
+      "excluded_terms": [
+        "margarina",
+        "creme vegetal",
+        "amendoim",
+        "cacau",
+        "coco",
+        "sabor",
+        "biscoito",
+        "bolacha",
+        "garrafa",
+        "ghee",
+        "pipoca"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Manteiga com Sal Marca A 200g",
+        "matches": true
+      },
+      {
+        "name": "Manteiga sem Sal Marca B 500g",
+        "matches": true
+      },
+      {
+        "name": "Manteiga Extra Marca C 200g",
+        "matches": true
+      },
+      {
+        "name": "Margarina Sabor Manteiga 500g",
+        "matches": false
+      },
+      {
+        "name": "Manteiga de Amendoim 500g",
+        "matches": false
+      },
+      {
+        "name": "Manteiga de Cacau 10g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito de Manteiga 200g",
+        "matches": false
+      },
+      {
+        "name": "Manteiga Ghee 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "acucar-cristal",
+      "name": "Açúcar cristal",
+      "search_queries": [
+        "acucar cristal"
+      ],
+      "required_terms": [
+        [
+          "acucar"
+        ],
+        [
+          "cristal"
+        ]
+      ],
+      "excluded_terms": [
+        "confeiteiro",
+        "mistura",
+        "demerara",
+        "mascavo"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Açúcar Cristal Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Açúcar Cristal Orgânico Marca B 1kg",
+        "matches": true
+      },
+      {
+        "name": "Açúcar Refinado 1kg",
+        "matches": false
+      },
+      {
+        "name": "Mistura para Bolo com Açúcar Cristal 1kg",
+        "matches": false
+      },
+      {
+        "name": "Açúcar Mascavo 1kg",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "feijao",
+      "name": "Feijão em grãos",
+      "search_queries": [
+        "feijao"
+      ],
+      "required_terms": [
+        [
+          "feijao"
+        ]
+      ],
+      "excluded_terms": [
+        "pronto",
+        "temperado",
+        "caldo de feijao",
+        "farinha",
+        "sopa"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Feijão Carioca Caldo Bom 1kg",
+        "matches": true
+      },
+      {
+        "name": "Feijão Preto Marca B 1kg",
+        "matches": true
+      },
+      {
+        "name": "Caldo de Feijão 400g",
+        "matches": false
+      },
+      {
+        "name": "Feijão Pronto Temperado 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "leite",
+      "name": "Leite líquido ou em pó",
+      "search_queries": [
+        "leite"
+      ],
+      "required_terms": [
+        [
+          "leite"
+        ]
+      ],
+      "excluded_terms": [
+        "condensado",
+        "creme",
+        "doce",
+        "coco",
+        "bebida",
+        "composto",
+        "chocolate",
+        "biscoito",
+        "sabonete"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Leite Integral UHT Marca A 1L",
+        "matches": true
+      },
+      {
+        "name": "Leite em Pó Integral Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Leite Condensado 395g",
+        "matches": false
+      },
+      {
+        "name": "Bebida Láctea com Leite 1L",
+        "matches": false
+      },
+      {
+        "name": "Leite de Coco 200ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "acucar-refinado",
+      "name": "Açúcar refinado",
+      "search_queries": [
+        "acucar"
+      ],
+      "required_terms": [
+        [
+          "acucar"
+        ],
+        [
+          "refinado"
+        ]
+      ],
+      "excluded_terms": [
+        "confeiteiro",
+        "mistura"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Açúcar Refinado Marca A 1kg",
+        "matches": true
+      },
+      {
+        "name": "Açúcar Cristal 1kg",
+        "matches": false
+      },
+      {
+        "name": "Açúcar de Confeiteiro Refinado 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "oleo-soja",
+      "name": "Óleo de soja",
+      "search_queries": [
+        "oleo soja"
+      ],
+      "required_terms": [
+        [
+          "oleo"
+        ],
+        [
+          "soja"
+        ]
+      ],
+      "excluded_terms": [
+        "composto",
+        "mistura"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Óleo de Soja Marca A 900ml",
+        "matches": true
+      },
+      {
+        "name": "Óleo de Girassol 900ml",
+        "matches": false
+      },
+      {
+        "name": "Óleo Composto Soja e Oliva 500ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "macarrao",
+      "name": "Macarrão seco",
+      "search_queries": [
+        "macarrao"
+      ],
+      "required_terms": [
+        [
+          "macarrao"
+        ]
+      ],
+      "excluded_terms": [
+        "instantaneo",
+        "pronto",
+        "congelado"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Macarrão Espaguete Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Macarrão Instantâneo 85g",
+        "matches": false
+      },
+      {
+        "name": "Macarrão Pronto Congelado 500g",
+        "matches": false
+      }
+    ]
+  }
+]

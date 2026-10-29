@@ -1,3 +1,12 @@
 .env
 .env.*
 !.env.example
+
+# Python collectors and local, durable delivery data.
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+scrapers/data/
+scrapers/config.toml

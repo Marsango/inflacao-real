@@ -1,0 +1,1214 @@
+[
+  {
+    "productId": "307840",
+    "productName": "Arroz Carreteiro Seara Panelinha 300g",
+    "brand": "Seara",
+    "link": "https://www.supermuffato.com.br/arroz-carreteiro-seara-panelinha-300g-307840/p",
+    "items": [
+      {
+        "itemId": "307840",
+        "name": "Arroz Carreteiro Seara Panelinha 300g",
+        "nameComplete": "Arroz Carreteiro Seara Panelinha 300g",
+        "ean": "7894904296309",
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Super Muffato Delivery",
+            "commertialOffer": {
+              "Price": 16.66,
+              "ListPrice": 19.6,
+              "IsAvailable": true,
+              "AvailableQuantity": 10,
+              "DiscountHighLight": [
+                {
+                  "<Name>k__BackingField": "Guerrilha Seara - 15% Off - Mix de Produtos - 23.10 a 30.10 (desc15off)"
+                }
+              ],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "7",
+                    "bin": null,
+                    "paymentName": "Aura",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "16",
+                    "bin": null,
+                    "paymentName": "Vale",
+                    "paymentGroupName": "giftCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "21",
+                    "bin": null,
+                    "paymentName": "JCB",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "201",
+                    "bin": null,
+                    "paymentName": "Pagamento na Entrega / Pagamento na Loja",
+                    "paymentGroupName": "custom201PaymentGroupPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "401",
+                    "bin": null,
+                    "paymentName": "Cartão Crediffato",
+                    "paymentGroupName": "customPrivate_401PaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "402",
+                    "bin": null,
+                    "paymentName": "Cartão Convênio Crediffato",
+                    "paymentGroupName": "customPrivate_402PaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 1666,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1666,
+                        "total": 1666,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1666,
+                            "total": 1666
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 16,
+                    "name": "Vale",
+                    "groupName": "giftCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "16",
+                    "template": "giftCardPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 201,
+                    "name": "Pagamento na Entrega / Pagamento na Loja",
+                    "groupName": "custom201PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "201",
+                    "template": "custom201PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Cartão de Débito ou Crédito  É possível pagar no ato da entrega ou diretamente na loja, com cartões de débito e crédito aceitos pela loja que efetuará a entrega.  Dinheiro  Você também poderá realizar seu pagamento em dinheiro no momento da entrega de suas compras. Informe no campo “observação” do seu pedido (página de pagamento) sobre valores e possíveis necessidades de troco.  Boleto bancário (somente pessoa jurídica)  Pagamento através de boletos bancários são validos somente mediante a aprovação do cadastro e somente para Pessoas Jurídicas (Empresas). Para mais informações, entre em contato com nossa Central de Atendimento.  Pagamento através de boletos bancários são validos somente mediante a aprovação do cadastro e somente para Pessoas Jurídicas (Empresas). Para mais informações, entre em contato com nossa Central de Atendimento.  Não aceitamos Pix e Cheque como forma de Pagamento em Entregas e Retiradas.  Importante: Confira sua compra (se os itens solicitados estão de acordo com os entregues) e solicite sua Nota Fiscal de Compra/Cupom Fiscal.",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 401,
+                    "name": "Cartão Crediffato",
+                    "groupName": "customPrivate_401PaymentGroup",
+                    "validator": null,
+                    "stringId": "401",
+                    "template": "customPrivate_401PaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": true,
+                    "description": "Cartão Próprio do grupo Muffato.",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-07T00:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 2,
+                    "name": "Visa",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "2",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 4,
+                    "name": "Mastercard",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "4",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 1,
+                    "name": "American Express",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "1",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 3,
+                    "name": "Diners",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "3",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 7,
+                    "name": "Aura",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "7",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 8,
+                    "name": "Hipercard",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "8",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 9,
+                    "name": "Elo",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "9",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 21,
+                    "name": "JCB",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "21",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 125,
+                    "name": "Pix",
+                    "groupName": "instantPaymentPaymentGroup",
+                    "validator": null,
+                    "stringId": "125",
+                    "template": "instantPaymentPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 402,
+                    "name": "Cartão Convênio Crediffato",
+                    "groupName": "customPrivate_402PaymentGroup",
+                    "validator": null,
+                    "stringId": "402",
+                    "template": "customPrivate_402PaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": true,
+                    "description": "Cartão Próprio do grupo Muffato.",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-07T00:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 900,
+                    "name": "WH Google Pay",
+                    "groupName": "WH Google PayPaymentGroup",
+                    "validator": null,
+                    "stringId": "900",
+                    "template": "WH Google PayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "283622",
+    "productName": "Arroz Mondo Arboreo 1kg",
+    "brand": "Mondo",
+    "link": "https://www.supermuffato.com.br/arroz-mondo-arboreo-1kg-283622/p",
+    "items": [
+      {
+        "itemId": "283622",
+        "name": "Arroz Mondo Arboreo 1kg",
+        "nameComplete": "Arroz Mondo Arboreo 1kg",
+        "ean": "7896278181434",
+        "measurementUnit": "un",
+        "unitMultiplier": 1.0,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "Super Muffato Delivery",
+            "commertialOffer": {
+              "Price": 25.7,
+              "ListPrice": 25.7,
+              "IsAvailable": true,
+              "AvailableQuantity": 100,
+              "DiscountHighLight": [],
+              "Teasers": [],
+              "PromotionTeasers": [],
+              "BuyTogether": [],
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "7",
+                    "bin": null,
+                    "paymentName": "Aura",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "16",
+                    "bin": null,
+                    "paymentName": "Vale",
+                    "paymentGroupName": "giftCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "21",
+                    "bin": null,
+                    "paymentName": "JCB",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "201",
+                    "bin": null,
+                    "paymentName": "Pagamento na Entrega / Pagamento na Loja",
+                    "paymentGroupName": "custom201PaymentGroupPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "401",
+                    "bin": null,
+                    "paymentName": "Cartão Crediffato",
+                    "paymentGroupName": "customPrivate_401PaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "402",
+                    "bin": null,
+                    "paymentName": "Cartão Convênio Crediffato",
+                    "paymentGroupName": "customPrivate_402PaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 2570,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2570,
+                        "total": 2570,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MUFFATOSUPERMERCADOS",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2570,
+                            "total": 2570
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "paymentSystems": [
+                  {
+                    "id": 16,
+                    "name": "Vale",
+                    "groupName": "giftCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "16",
+                    "template": "giftCardPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 201,
+                    "name": "Pagamento na Entrega / Pagamento na Loja",
+                    "groupName": "custom201PaymentGroupPaymentGroup",
+                    "validator": null,
+                    "stringId": "201",
+                    "template": "custom201PaymentGroupPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": true,
+                    "description": "Cartão de Débito ou Crédito  É possível pagar no ato da entrega ou diretamente na loja, com cartões de débito e crédito aceitos pela loja que efetuará a entrega.  Dinheiro  Você também poderá realizar seu pagamento em dinheiro no momento da entrega de suas compras. Informe no campo “observação” do seu pedido (página de pagamento) sobre valores e possíveis necessidades de troco.  Boleto bancário (somente pessoa jurídica)  Pagamento através de boletos bancários são validos somente mediante a aprovação do cadastro e somente para Pessoas Jurídicas (Empresas). Para mais informações, entre em contato com nossa Central de Atendimento.  Pagamento através de boletos bancários são validos somente mediante a aprovação do cadastro e somente para Pessoas Jurídicas (Empresas). Para mais informações, entre em contato com nossa Central de Atendimento.  Não aceitamos Pix e Cheque como forma de Pagamento em Entregas e Retiradas.  Importante: Confira sua compra (se os itens solicitados estão de acordo com os entregues) e solicite sua Nota Fiscal de Compra/Cupom Fiscal.",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 401,
+                    "name": "Cartão Crediffato",
+                    "groupName": "customPrivate_401PaymentGroup",
+                    "validator": null,
+                    "stringId": "401",
+                    "template": "customPrivate_401PaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": true,
+                    "description": "Cartão Próprio do grupo Muffato.",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-07T00:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 2,
+                    "name": "Visa",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "2",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 4,
+                    "name": "Mastercard",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "4",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 1,
+                    "name": "American Express",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "1",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 3,
+                    "name": "Diners",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "3",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 7,
+                    "name": "Aura",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "7",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 8,
+                    "name": "Hipercard",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "8",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 9,
+                    "name": "Elo",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "9",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 21,
+                    "name": "JCB",
+                    "groupName": "creditCardPaymentGroup",
+                    "validator": null,
+                    "stringId": "21",
+                    "template": "creditCardPaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 125,
+                    "name": "Pix",
+                    "groupName": "instantPaymentPaymentGroup",
+                    "validator": null,
+                    "stringId": "125",
+                    "template": "instantPaymentPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 402,
+                    "name": "Cartão Convênio Crediffato",
+                    "groupName": "customPrivate_402PaymentGroup",
+                    "validator": null,
+                    "stringId": "402",
+                    "template": "customPrivate_402PaymentGroup-template",
+                    "requiresDocument": true,
+                    "isCustom": true,
+                    "description": "Cartão Próprio do grupo Muffato.",
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-07T00:00:00Z",
+                    "availablePayments": null
+                  },
+                  {
+                    "id": 900,
+                    "name": "WH Google Pay",
+                    "groupName": "WH Google PayPaymentGroup",
+                    "validator": null,
+                    "stringId": "900",
+                    "template": "WH Google PayPaymentGroup-template",
+                    "requiresDocument": false,
+                    "isCustom": false,
+                    "description": null,
+                    "requiresAuthentication": false,
+                    "dueDate": "2026-11-04T21:00:00Z",
+                    "availablePayments": null
+                  }
+                ],
+                "payments": [],
+                "giftCards": [],
+                "giftCardMessages": [],
+                "availableAccounts": [],
+                "availableTokens": []
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

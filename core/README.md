@@ -80,7 +80,7 @@ products, upserts listings, and writes price observations as described below.
 Raw-payload cleanup is not implemented.
 
 The runtime schema is embedded in the binary. After editing the shared schema,
-run `go generate ./internal/ingestion` from `core/`; a test checks that the copy
+run `go generate ./internal/ingestion/document` from `core/`; a test checks that the copy
 matches the shared contract.
 
 ## Background worker
@@ -135,6 +135,28 @@ workflow; replay does not authorize replacing an existing measurement.
 
 ## Automatic product matching
 
+### Shared monitoring scope
+
+`GET /api/v1/monitoring-targets` supplies all scrapers with the enabled,
+brand-independent discovery targets and deterministic inclusion/exclusion rules.
+It requires the ingestion Bearer token. See the
+[monitoring v1 contract](../docs/contracts/monitoring/v1/README.md) for the response,
+matching semantics, examples, errors and coverage limits.
+
+Migration 00006 registers 16 targets: the DIEESE basket's 13 food groups with
+regional flour/sugar variants, plus the previously monitored pasta. See the
+[basket scope and research sources](../docs/contracts/monitoring/v1/basic-food-basket.md).
+Add or refine targets through new SQL migrations; scrapers fetch the scope at
+the start of every run.
+The worker also applies these rules to source names and associates discovered
+canonical products through `product_monitoring_targets`, in the same transaction
+as their observations. This groups products without changing identity matching:
+brands, variants and sizes stay separate. Existing products are associated as
+fresh observations arrive; no initial backfill or aggregate comparison is added.
+Associations are additive catalog metadata, not historical scope snapshots.
+
+### Canonical product identity
+
 Only shops need manual registration. Each new observation receives a product and
 a shop/SKU listing automatically, within the payload's processing transaction.
 Matching follows this order:
@@ -187,6 +209,10 @@ it does not infer past identities from current catalog metadata.
   name and website URL describe the source, not a physical branch.
 - `products`: canonical product variants, with name, brand, optional GTIN, and
   package quantity/unit/count. Different package sizes are different variants.
+- `monitoring_targets`: enabled collection groups and their shared discovery/name
+  rules, seeded by migration 00006 and served to all shop adapters.
+- `product_monitoring_targets`: associations between distinct canonical variants
+  and their monitoring groups; membership does not imply price equivalence.
 - `shop_products`: a shop's listing, unique by `(shop_id, source_product_id)`,
   with its source name, brand, GTIN, customer-facing URL, and current product.
   `product_id` remains nullable for legacy/manual rows; the worker supplies it.

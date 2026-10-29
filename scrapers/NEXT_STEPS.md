@@ -5,6 +5,40 @@ collection pipeline before expanding to more shops or regions. Follow
 [AGENTS.md](AGENTS.md) and the shared
 [ingestion v1 contract](../docs/contracts/ingestion/v1/README.md).
 
+## Current status
+
+The first adapter is implemented for **Super Muffato, Curitiba – Champagnat**
+(storefront sales channel `8`), using the core-owned monitoring scope. Python setup, strict
+contract models, pure fixture parsing, bounded requests, batching, a durable local
+spool, authenticated HTTP delivery, offline tests, and explicit live response-shape
+tests are available. See [README.md](README.md) for actual commands and limitations.
+Collection now fetches enabled targets from the core, searches all matching brands,
+and checkpoints paginated results. Migration 00006 seeds 16 monitoring targets
+covering the DIEESE basic-basket groups, regional flour/sugar variants and pasta.
+Variable-weight meat, produce and bakery collection still needs adapter support;
+see the [basket scope](../docs/contracts/monitoring/v1/basic-food-basket.md).
+Existing local configs must remove `sku_ids`; collection also requires the core's
+`INGESTION_TOKEN`. The fixed-SKU runs described below predate this discovery flow.
+No PostgreSQL integration tests are part of the scraper suite; core persistence
+verification belongs to the core/manual milestone below.
+Two live runs of the 24-SKU scope succeeded on 2026-10-29, with fresh observation
+IDs and timestamps verified across runs. Their 48 observations are queued locally;
+they have not been submitted to or checked in the core.
+
+Remaining operational steps:
+
+1. Register `super-muffato` in the core and configure matching scraper authorization
+   and the environment-only ingestion token.
+2. Deliver queued observations and verify that core processing reaches `processed`.
+3. Verify the two-run persisted-history milestone below. Successful live collection
+   and local spooling alone do not establish successful ingestion or persistence.
+4. Keep running `.venv/bin/pytest -m live --live` periodically to detect upstream
+   response changes. No scheduler or notifications have been installed.
+5. Before claiming delivery-specific prices, select and verify an actual CEP.
+   Current measurements describe a selected online branch; delivery CEP remains null.
+
+The original implementation checklist below describes the first-scraper requirements.
+
 ## Implementation checklist
 
 1. **Choose the first shop and collection scope.**

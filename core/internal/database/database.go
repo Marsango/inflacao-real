@@ -14,58 +14,62 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 )
 
-// ConnectionString uses DATABASE_URL when set, otherwise the POSTGRES_* settings
-// shared with Compose. Credentials are escaped instead of interpolated into SQL.
-func ConnectionString(getenv func(string) string) (string, error) {
-	if value := getenv("DATABASE_URL"); value != "" {
-		if _, err := pgx.ParseConfig(value); err != nil {
-			return "", errors.New("invalid DATABASE_URL")
-		}
-		return value, nil
+func ConnectionString(environment func(string) string) (string, error) {
+	if value := environment("DATABASE_URL"); value != "" {
+		return validateConnectionString(value, "invalid DATABASE_URL")
 	}
-	valueOr := func(name, fallback string) string {
-		if value := getenv(name); value != "" {
-			return value
-		}
-		return fallback
-	}
-	password := getenv("POSTGRES_PASSWORD")
-	if password == "" {
+	if environment("POSTGRES_PASSWORD") == "" {
 		return "", errors.New("set DATABASE_URL or POSTGRES_PASSWORD")
 	}
-	port := valueOr("POSTGRES_PORT", "5432")
+	port := environmentOr(environment, "POSTGRES_PORT", "5432")
 	if number, err := strconv.ParseUint(port, 10, 16); err != nil || number == 0 {
 		return "", errors.New("POSTGRES_PORT must be between 1 and 65535")
 	}
-	connectionURL := url.URL{
-		Scheme: "postgres",
-		User:   url.UserPassword(valueOr("POSTGRES_USER", "inflacao_real"), password),
-		Host:   net.JoinHostPort(valueOr("POSTGRES_HOST", "127.0.0.1"), port),
-		Path:   "/" + valueOr("POSTGRES_DB", "inflacao_real"),
-		RawQuery: url.Values{
-			"sslmode": {valueOr("POSTGRES_SSLMODE", "disable")},
-		}.Encode(),
+	connectionURL := postgresURL(environment, port)
+	return validateConnectionString(connectionURL.String(), "invalid PostgreSQL connection settings")
+}
+
+func validateConnectionString(value, message string) (string, error) {
+	if _, err := pgx.ParseConfig(value); err != nil {
+		return "", errors.New(message)
 	}
-	if _, err := pgx.ParseConfig(connectionURL.String()); err != nil {
-		return "", errors.New("invalid PostgreSQL connection settings")
+	return value, nil
+}
+
+func environmentOr(environment func(string) string, name, fallback string) string {
+	if value := environment(name); value != "" {
+		return value
 	}
-	return connectionURL.String(), nil
+	return fallback
+}
+
+func postgresURL(environment func(string) string, port string) url.URL {
+	username := environmentOr(environment, "POSTGRES_USER", "inflacao_real")
+	host := environmentOr(environment, "POSTGRES_HOST", "127.0.0.1")
+	database := environmentOr(environment, "POSTGRES_DB", "inflacao_real")
+	options := url.Values{"sslmode": {environmentOr(environment, "POSTGRES_SSLMODE", "disable")}}
+	return url.URL{Scheme: "postgres", User: url.UserPassword(username, environment("POSTGRES_PASSWORD")),
+		Host: net.JoinHostPort(host, port), Path: "/" + database, RawQuery: options.Encode()}
 }
 
 // Open returns a checked connection pool. The caller owns the pool.
-func Open(ctx context.Context, connectionString string) (*sql.DB, error) {
-	config, err := pgx.ParseConfig(connectionString)
+func Open(requestContext context.Context, connectionString string) (*sql.DB, error) {
+	configuration, err := pgx.ParseConfig(connectionString)
 	if err != nil {
 		return nil, errors.New("invalid PostgreSQL connection settings")
 	}
-	config.RuntimeParams["timezone"] = "UTC"
-	db := stdlib.OpenDB(*config)
-	db.SetMaxOpenConns(10)
-	db.SetMaxIdleConns(5)
-	db.SetConnMaxLifetime(30 * time.Minute)
-	if err := db.PingContext(ctx); err != nil {
-		db.Close()
+	configuration.RuntimeParams["timezone"] = "UTC"
+	pool := stdlib.OpenDB(*configuration)
+	configurePool(pool)
+	if err := pool.PingContext(requestContext); err != nil {
+		pool.Close()
 		return nil, fmt.Errorf("connect to PostgreSQL: %w", err)
 	}
-	return db, nil
+	return pool, nil
+}
+
+func configurePool(pool *sql.DB) {
+	pool.SetMaxOpenConns(10)
+	pool.SetMaxIdleConns(5)
+	pool.SetConnMaxLifetime(30 * time.Minute)
 }

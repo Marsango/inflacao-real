@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inflacao-real-scrapers"
+version = "0.1.0"
+description = "Food price collection and durable delivery for Inflação Real"
+requires-python = ">=3.12"
+dependencies = [
+  "httpx>=0.28.1,<0.29",
+  "pydantic>=2.12,<3",
+  "jsonschema[format]>=4.25,<5",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.14,<1"]
+
+[project.scripts]
+inflacao-scraper = "inflacao_scrapers.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+inflacao_scrapers = ["ingestion_v1.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = ["live: explicitly enabled checks against Super Muffato's current API"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

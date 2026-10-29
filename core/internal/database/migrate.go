@@ -16,18 +16,18 @@ var migrations embed.FS
 
 // Migrate applies pending embedded migrations before application work begins.
 // It leaves db open for the API and background worker to share.
-func Migrate(ctx context.Context, db *sql.DB) error {
-	provider, err := migrationProvider(db)
+func Migrate(requestContext context.Context, pool *sql.DB) error {
+	provider, err := migrationProvider(pool)
 	if err != nil {
 		return err
 	}
-	if _, err := provider.Up(ctx); err != nil {
+	if _, err := provider.Up(requestContext); err != nil {
 		return fmt.Errorf("apply database migrations: %w", err)
 	}
 	return nil
 }
 
-func migrationProvider(db *sql.DB) (*goose.Provider, error) {
+func migrationProvider(pool *sql.DB) (*goose.Provider, error) {
 	source, err := fs.Sub(migrations, "migrations")
 	if err != nil {
 		return nil, fmt.Errorf("load embedded migrations: %w", err)
@@ -36,7 +36,7 @@ func migrationProvider(db *sql.DB) (*goose.Provider, error) {
 	if err != nil {
 		return nil, fmt.Errorf("configure migration lock: %w", err)
 	}
-	provider, err := goose.NewProvider(goose.DialectPostgres, db, source,
+	provider, err := goose.NewProvider(goose.DialectPostgres, pool, source,
 		goose.WithDisableGlobalRegistry(true),
 		goose.WithSessionLocker(locker),
 	)

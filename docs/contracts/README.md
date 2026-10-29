@@ -5,6 +5,8 @@ that Python scrapers send and the Go core reads. Python models and Go types must
 follow this same schema.
 
 - [Scraper ingestion v1](ingestion/v1/README.md): payload fields, examples, and validation rules.
+- [Monitoring scope v1](monitoring/v1/README.md): shared collection targets, discovery
+  rules, and coverage semantics for all shop adapters.
 
 The Go core implements submission validation, durable queueing, and background
 normalization and observation processing. See [the core worker documentation](../../core/README.md#background-worker)

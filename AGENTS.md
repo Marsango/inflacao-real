@@ -35,6 +35,20 @@ The core owns business rules and persistence. Scrapers and the web UI communicat
 - PostgreSQL is the database; `compose.yaml` provides the local instance. React tooling, scheduling, and deployment choices remain open. Introduce infrastructure and abstractions when concrete requirements justify them.
 - Always use disposable Testcontainers for integration-test infrastructure. Reuse shared setup helpers that start the required containers, apply migrations, and register automatic cleanup after each test, including failures. Never run integration tests against existing development or production databases.
 
+## Code design and Object Calisthenics
+
+Apply these rules across the repository, based on [William Durand's Object Calisthenics](https://williamdurand.fr/2013/06/03/object-calisthenics/):
+
+- Keep every function and method to **20 lines or fewer**. Each must do one clearly defined thing. Extract smaller functions with descriptive names when necessary; keep orchestration separate from individual operations.
+- Use only one level of control-flow indentation per function or method. Extract nested loops, conditionals, and error-handling blocks into focused helpers.
+- Avoid `else`. Use guard clauses and early returns to keep the main path clear.
+- Follow one dot per line: avoid chained calls and reaching through multiple objects. Work with immediate collaborators. Fluent interfaces are exempt.
+- Use full, descriptive names rather than abbreviations. Names should explain the responsibility without requiring readers to inspect the implementation.
+- Keep entities small: classes must not exceed 50 lines, and packages must not exceed 10 files. Split them by cohesive responsibilities.
+- Prefer behavior methods over getters, setters, and properties that expose state for decisions elsewhere. Keep decisions with the object that owns the state; reading state for presentation is acceptable.
+
+Preserve KISS: extracting a focused function does not require introducing a class or design pattern.
+
 ## Using these instructions
 
 This file applies throughout the repository. Read the `AGENTS.md` in each component you change for its implementation patterns and verification guidance. Keep project-wide rules here and component-specific details in their respective files; avoid duplicating guidance. Add deeper instructions only when a subdirectory needs distinct conventions.
