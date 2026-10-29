@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "submission_id": "d6d60e4f-7320-4c69-9d17-f0ee7c44b131",
+  "scraper_id": "collector-sp-01",
+  "shop_id": "mercado-exemplo",
+  "run_id": "a34040d4-ec04-48b6-b7d8-4bd42222f989",
+  "created_at": "2026-10-27T12:00:05Z",
+  "collector": {"name": "mercado-exemplo", "version": "0.1.0"},
+  "observations": [
+    {
+      "observation_id": "33c8b8f4-3bbb-47ed-8814-9fa144f70f86",
+      "observed_at": "2026-10-27T12:00:00Z",
+      "collection_method": "api",
+      "source_url": "https://mercado.example.com/api/products/arroz-5kg?store=sp-centro",
+      "product_url": "https://mercado.example.com/products/arroz-5kg",
+      "product": {
+        "source_product_id": "sku-000123",
+        "name": "Arroz branco tipo 1 — pacote 5 kg",
+        "brand": "Marca Exemplo",
+        "gtin": null,
+        "package": {"quantity": "5", "unit": "kg", "count": 1}
+      },
+      "context": {
+        "seller_id": "retailer-direct",
+        "store_id": "sp-centro",
+        "postal_code": "01001000",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "delivery"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "24.90",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": "27.90",
+          "conditions": {
+            "payment_method": "any",
+            "installments": null,
+            "membership_required": false,
+            "membership_program": null,
+            "coupon_required": false,
+            "minimum_quantity": "1",
+            "description": "Oferta válida para a loja selecionada."
+          }
+        },
+        {
+          "amount": "22.90",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "pix",
+            "installments": null,
+            "membership_required": true,
+            "membership_program": "Clube Exemplo",
+            "coupon_required": false,
+            "minimum_quantity": "1",
+            "description": "Preço exclusivo para membros, com pagamento via Pix."
+          }
+        }
+      ]
+    }
+  ]
+}

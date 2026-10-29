@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "submission_id": "8d8d6e4c-0a9a-4b53-b688-ac2c2758317a",
+  "scraper_id": "collector-sp-01",
+  "shop_id": "mercado-exemplo",
+  "run_id": "a34040d4-ec04-48b6-b7d8-4bd42222f989",
+  "created_at": "2026-10-27T12:00:10Z",
+  "collector": {"name": "mercado-exemplo", "version": "0.1.0"},
+  "observations": [
+    {
+      "observation_id": "7dfb1640-d0cb-444c-a512-67223c8c62bf",
+      "observed_at": "2026-10-27T12:00:08Z",
+      "collection_method": "browser",
+      "source_url": "https://mercado.example.com/products/leite-1l",
+      "product_url": "https://mercado.example.com/products/leite-1l",
+      "product": {
+        "source_product_id": "sku-000456",
+        "name": "Leite integral — caixa 1 L",
+        "brand": null,
+        "gtin": null,
+        "package": {"quantity": "1", "unit": "l", "count": 1}
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": null,
+        "postal_code": null,
+        "city": null,
+        "state": null,
+        "channel": "unknown"
+      },
+      "availability": "out_of_stock",
+      "offers": []
+    }
+  ]
+}

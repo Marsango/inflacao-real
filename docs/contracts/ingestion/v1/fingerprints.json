@@ -1,0 +1,6 @@
+{
+  "example": "examples/submission.json",
+  "algorithm": "SHA-256 over RFC 8785 JCS UTF-8 bytes",
+  "submission_sha256": "9bc32a5ee6e7ced4b40d2905bf119bdff8eeb8dfad67ec6ae402fbd5f0d1af75",
+  "first_observation_sha256": "1cfa32267692bb0b121edec2c0c5ee40da655941f60c69057305850ed25ae607"
+}
