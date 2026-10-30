@@ -8,7 +8,8 @@ def initialize():
     write_once("production.env", "POSTGRES_PASSWORD=" + secrets.token_hex(32) +
                "\nINGESTION_TOKEN=" + secrets.token_hex(32) + "\nCOLLECTION_TIME=09:00\n")
     template = (ROOT / "scrapers/scrapers.example.toml").read_text()
-    write_once("scrapers.toml", template.replace("http://127.0.0.1:8080", "http://core:8080"))
+    write_once("scrapers.toml", template)
+    migrate_internal_address()
 
 
 def write_once(filename, content):
@@ -22,3 +23,12 @@ def write_once(filename, content):
 
 def bootstrap():
     command("bash", str(ROOT / "deployment/bootstrap.sh"))
+
+
+def migrate_internal_address():
+    path = CONFIG / "scrapers.toml"
+    original = path.read_text()
+    updated = original.replace('core_url = "http://core:8080"',
+                               'core_url = "http://127.0.0.1:8080"')
+    if updated != original:
+        path.write_text(updated)

@@ -32,7 +32,7 @@ Migration/readiness failures prevent starting collection; inspect logs and fix t
 
 Configuration is created once under `/etc/nossa-inflacao/`: `production.env` contains
 random secrets and `COLLECTION_TIME=09:00`; `scrapers.toml` contains the existing regional
-shop settings with `http://core:8080`. Secrets are root-readable only. The scraper config
+shop settings with `http://127.0.0.1:8080`. Secrets are root-readable only. The scraper config
 is readable inside its container; the containing host directory is root-only.
 To edit, use `sudoedit /etc/nossa-inflacao/production.env` or the TOML file, then rerun up.
 Changing POSTGRES_PASSWORD in that file does not change an existing database's password;
@@ -44,7 +44,8 @@ Do not run Compose down with --volumes. Application containers run as UID 10001,
 capabilities, and cannot acquire new privileges. Docker logs rotate at 3 × 10 MB per service.
 Host configuration, database data, and pending scraper batches never belong in Git.
 The bootstrap leaves SSH and firewall rules unchanged. PostgreSQL has no published port;
-the core is bound only to 127.0.0.1:8080. No reverse proxy, public TLS, or Docker socket
+the core is bound only to 127.0.0.1:8080. Scrapers share the core container's
+network namespace and reach its API over loopback; HTTPS validation remains unchanged. No reverse proxy, public TLS, or Docker socket
 mount is needed. Publishing container ports can bypass UFW: retain these explicit bindings.
 
 ## Updates and operations

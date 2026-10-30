@@ -31,6 +31,7 @@ services:
       POSTGRES_USER: nossa_inflacao
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Required}
       HTTP_ADDR: 0.0.0.0:8080
+      GIN_MODE: release
       INGESTION_TOKEN: ${INGESTION_TOKEN:?Required}
       INGESTION_SCRAPER_ID: muffato-curitiba-01
       INGESTION_SHOP_IDS: super-muffato,angeloni,festval
@@ -49,6 +50,7 @@ services:
     cap_drop: [ALL]
     logging: *logging
   scrapers:
+    network_mode: service:core
     build:
       context: ..
       dockerfile: deployment/scrapers.Dockerfile

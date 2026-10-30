@@ -4,7 +4,7 @@ import shutil
 import tarfile
 import tempfile
 from pathlib import Path
-from runtime import CONFIG, command, compose, revision, require_clean_checkout
+from runtime import CONFIG, command, compose, revision, require_clean_checkout, spool_archive
 from lifecycle import database, start_application
 from settings import bootstrap
 
@@ -39,8 +39,7 @@ def dump_data(directory):
         database("pg_dump", "-U", "nossa_inflacao", "-d", "nossa_inflacao",
                  "--format=custom", stdout=destination)
     with (directory / "spool.tar.gz").open("wb") as destination:
-        compose("run", "--rm", "--no-deps", "-T", "scrapers", "tar", "-czf", "-",
-                "-C", "/app/data", ".", stdout=destination)
+        spool_archive("-czf", "-", "-C", "/app/data", ".", stdout=destination)
 
 
 def backup(destination):
@@ -99,8 +98,7 @@ def restore_data(directory):
         database("pg_restore", "-U", "nossa_inflacao", "-d", "nossa_inflacao",
                  "--exit-on-error", "--single-transaction", stdin=source)
     with (directory / "spool.tar.gz").open("rb") as source:
-        compose("run", "--rm", "--no-deps", "-T", "scrapers", "tar", "-xzf", "-",
-                "--no-same-owner", "-C", "/app/data", stdin=source)
+        spool_archive("-xzf", "-", "--no-same-owner", "-C", "/app/data", stdin=source)
 
 
 def restore(source):

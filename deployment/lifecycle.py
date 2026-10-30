@@ -30,7 +30,7 @@ def start():
 def start_application():
     compose("up", "-d", "--wait", "--wait-timeout", "180", "postgres", "core")
     sql(SHOPS)
-    compose("up", "-d", "scrapers")
+    compose("up", "-d", "--force-recreate", "scrapers")
     compose("ps")
 
 

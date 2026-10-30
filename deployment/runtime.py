@@ -20,11 +20,23 @@ def compose(*arguments, **options):
 
 
 def revision():
-    result = command("git", "-c", "safe.directory=" + str(ROOT), "-C", str(ROOT), "rev-parse", "HEAD", capture_output=True, text=True)
+    result = command("git", "--no-optional-locks", "-c", "safe.directory=" + str(ROOT), "-C", str(ROOT), "rev-parse", "HEAD", capture_output=True, text=True)
     return result.stdout.strip()
 
 
 def require_clean_checkout():
-    result = command("git", "-c", "safe.directory=" + str(ROOT), "-C", str(ROOT), "status", "--porcelain", capture_output=True, text=True)
+    result = command("git", "--no-optional-locks", "-c", "safe.directory=" + str(ROOT), "-C", str(ROOT), "status", "--porcelain", capture_output=True, text=True)
     if result.stdout.strip():
         raise RuntimeError("Commit deployment changes first; production builds require a clean checkout")
+
+
+def spool_archive(*arguments, **options):
+    result = compose("images", "-q", "scrapers", capture_output=True, text=True)
+    image = result.stdout.strip()
+    if not image:
+        raise RuntimeError("Build the scraper image before accessing its queue archive")
+    return command("docker", "run", "--rm", "-i", "--network", "none",
+                   "--user", "10001:10001", "--cap-drop=ALL",
+                   "--security-opt=no-new-privileges", "-v",
+                   "nossa-inflacao_scraper_data:/app/data", image, "tar", *arguments,
+                   **options)
