@@ -512,3 +512,12 @@ contract change, refresh it from the repository root:
 ```sh
 cp docs/contracts/ingestion/v1/schema.json scrapers/src/inflacao_scrapers/ingestion_v1.json
 ```
+
+### Search URL encoding
+
+Shared VTEX target searches encode spaces as `%20` rather than `+`. On
+2026-10-30, requests from the VPS for `batata doce` and `creme dental` returned
+HTTP 400 with form-encoded spaces and HTTP 200 with percent-encoded spaces.
+The change preserves query text, accented characters, literal plus signs, pagination,
+SKU filters and regional parameters; it applies to Muffato and Festval searches.
+Angeloni continues using its category-based collection route.

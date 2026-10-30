@@ -1,6 +1,7 @@
 """Paced, explicitly regionalized source requests without result caching."""
 
 from datetime import UTC, datetime
+from urllib.parse import quote, urlencode
 from uuid import uuid4
 
 import httpx
@@ -27,6 +28,12 @@ def search_parameters(
     raise ValueError("Specify a query or SKU")
 
 
+def search_url(settings, sku, query, limit, offset) -> str:
+    parameters = search_parameters(settings, sku, query, limit, offset)
+    encoded = urlencode(parameters, quote_via=quote)
+    return settings.shop_url + "/api/catalog_system/pub/products/search?" + encoded
+
+
 def validate_response(response: httpx.Response) -> None:
     if response.status_code not in (200, 206):
         raise ValueError(f"Source HTTP {response.status_code}; collection incomplete")
@@ -45,8 +52,7 @@ def request_products(
 ) -> httpx.Response:
     response = requester.request(
         "GET",
-        settings.shop_url + "/api/catalog_system/pub/products/search",
-        params=search_parameters(settings, sku, query, limit, offset),
+        search_url(settings, sku, query, limit, offset),
         headers=settings.source_headers(),
     )
     validate_response(response)
