@@ -14,17 +14,29 @@ import (
 //go:embed history.sql
 var historyQuery string
 
+//go:embed products.sql
+var productsQuery string
+
 type PostgresStore struct{ DB *sql.DB }
 
-func (store PostgresStore) Products(requestContext context.Context, after int64, limit int) (Products, error) {
-	rows, err := store.DB.QueryContext(requestContext, `SELECT id::text, name || coalesce(' · ' || brand, '') FROM products
-		WHERE id > $1 AND EXISTS (SELECT 1 FROM price_observations WHERE product_id=products.id)
-		ORDER BY id LIMIT $2`, after, limit+1)
+func (store PostgresStore) Products(requestContext context.Context, request ProductRequest) (Products, error) {
+	query, arguments := productQuery(request)
+	rows, err := store.DB.QueryContext(requestContext, query, arguments...)
 	if err != nil {
 		return Products{}, err
 	}
 	defer rows.Close()
-	return readProducts(rows, limit)
+	return readProducts(rows, request.Limit)
+}
+
+func productQuery(request ProductRequest) (string, []any) {
+	arguments := []any{request.After, request.Limit + 1}
+	if request.Query != "" {
+		return productsQuery, append(arguments, request.Query)
+	}
+	return `SELECT id::text, name || coalesce(' · ' || brand, '') FROM products
+		WHERE id > $1 AND EXISTS (SELECT 1 FROM price_observations WHERE product_id=products.id)
+		ORDER BY id LIMIT $2`, arguments
 }
 
 func readProducts(rows *sql.Rows, limit int) (Products, error) {

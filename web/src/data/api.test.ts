@@ -1,16 +1,17 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { ApiError, loadHistory, loadProducts } from './api';
+import { ApiError, loadHistory, searchProducts } from './api';
 import { jsonResponse, productHistory } from '../testing/apiFixture';
 
 afterEach(() => vi.unstubAllGlobals());
 
-it('follows catalog pagination and preserves string identities', async () => {
-  const core = vi.fn().mockResolvedValueOnce(jsonResponse({ items: [{ id: '9007199254740993', label: 'Arroz' }], nextCursor: '9007199254740993' }))
-    .mockResolvedValueOnce(jsonResponse({ items: [{ id: '9007199254740994', label: 'Café' }], nextCursor: null }));
+it('requests one bounded search page without following its cursor', async () => {
+  const page = { items: [{ id: '9007199254740993', label: 'Café' }], nextCursor: '9007199254740993' };
+  const core = vi.fn().mockResolvedValue(jsonResponse(page));
   vi.stubGlobal('fetch', core);
-  const products = await loadProducts(new AbortController().signal);
-  expect(products.map((product) => product.id)).toEqual(['9007199254740993', '9007199254740994']);
-  expect(core).toHaveBeenLastCalledWith('/api/v1/products?after=9007199254740993', expect.any(Object));
+  const products = await searchProducts('café união', new AbortController().signal);
+  expect(products).toEqual(page);
+  expect(core).toHaveBeenCalledTimes(1);
+  expect(core).toHaveBeenCalledWith('/api/v1/products?q=caf%C3%A9+uni%C3%A3o&limit=20', expect.any(Object));
 });
 
 it('forwards only contract filters and returns authoritative values', async () => {

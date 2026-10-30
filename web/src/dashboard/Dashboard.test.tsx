@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { Dashboard } from './Dashboard';
 import { monthsBefore, today } from '../shared/dates';
@@ -33,9 +33,10 @@ it('displays methodology and freshness supplied by core', async () => {
 
 it('selects products from the catalog and forwards the period', async () => {
   render(<Dashboard />);
-  await screen.findByRole('option', { name: 'Café · 500 g' });
+  fireEvent.change(screen.getByLabelText('Buscar produto'), { target: { value: 'arroz' } });
+  await screen.findByRole('button', { name: 'Arroz branco · 5 kg' });
   fireEvent.click(screen.getByRole('button', { name: 'Últimos 6 meses' }));
-  fireEvent.change(screen.getByLabelText('Produto'), { target: { value: '1' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Arroz branco · 5 kg' }));
   expect(await screen.findByRole('heading', { name: productHistory.title })).toBeVisible();
   expect(screen.getByText(/R\$\s*26,90/, { selector: 'strong' })).toBeVisible();
   expect(window.location.search).toContain('product=1');
@@ -58,8 +59,9 @@ it('validates dates and does not send invalid requests', async () => {
 it('restores real product IDs and dates from a shared URL', async () => {
   window.history.replaceState(null, '', '/?product=2&start=2026-10-27&end=2026-10-29');
   render(<Dashboard />);
-  await screen.findByRole('option', { name: 'Café · 500 g' });
-  expect(screen.getByLabelText('Produto')).toHaveValue('2');
+  await screen.findByRole('heading', { name: productHistory.title });
+  expect(screen.getByText('Produto selecionado:')).toHaveTextContent(productHistory.title);
+  expect(vi.mocked(fetch).mock.calls.some(([path]) => String(path).includes('/products'))).toBe(false);
   expect(fetch).toHaveBeenCalledWith('/api/v1/history?product=2&start=2026-10-27&end=2026-10-29', expect.any(Object));
 });
 
@@ -79,22 +81,23 @@ it('recovers a failed catalog independently', async () => {
   core.mockImplementation(async (path) => path.includes('/products') ? jsonResponse({}, 500) : jsonResponse(productHistory));
   vi.stubGlobal('fetch', core);
   render(<Dashboard />);
-  expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar os produtos');
-  expect(screen.getByLabelText('Produto')).toBeDisabled();
+  fireEvent.change(screen.getByLabelText('Buscar produto'), { target: { value: 'cafe' } });
+  expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível buscar produtos');
+  expect(screen.getByLabelText('Buscar produto')).toBeEnabled();
   core.mockImplementation(async () => jsonResponse(catalog));
-  fireEvent.click(screen.getByText('Tentar carregar produtos'));
-  await waitFor(() => expect(screen.getByLabelText('Produto')).toBeEnabled());
+  fireEvent.click(screen.getByText('Tentar buscar novamente'));
+  expect(await screen.findByRole('button', { name: 'Café · 500 g' })).toBeVisible();
 });
 
 it('shows empty history without inventing a collection timestamp', async () => {
-  vi.stubGlobal('fetch', mockCore({ ...productHistory, points: [], collectedAt: null, latestPriceMinor: null, changeBasisPoints: null }));
+  vi.stubGlobal('fetch', mockCore({ ...productHistory, points: [], collectedAt: null, latestPriceMinor: null, changeBasisPoints: null, counts: { ...productHistory.counts, products: 0, pricedDays: 0 } }));
   render(<Dashboard />);
   expect(await screen.findByText(/Nenhum preço comparável/)).toBeVisible();
   expect(screen.getByText('Sem coleta no período.')).toBeVisible();
 });
 
 it('shows insufficient history and stale data from core', async () => {
-  vi.stubGlobal('fetch', mockCore({ ...productHistory, points: [productHistory.points[0]], changeBasisPoints: null, stale: true }));
+  vi.stubGlobal('fetch', mockCore({ ...productHistory, points: [productHistory.points[0]], changeBasisPoints: null, stale: true, counts: { ...productHistory.counts, pricedDays: 1 } }));
   render(<Dashboard />);
   expect(await screen.findByText(/Histórico insuficiente/)).toBeVisible();
   expect(screen.getByText(/Dados desatualizados/)).toBeVisible();

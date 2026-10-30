@@ -25,7 +25,26 @@ IDs and cursors are decimal **strings**, preserving PostgreSQL bigint precision.
 Results sort by numeric ID ascending. `limit` defaults to 100 and accepts 1–200.
 `after` is an exclusive positive canonical ID; omit it for the first page.
 `nextCursor` is the last returned ID if another page exists, otherwise `null`.
-An empty catalog has `items: []`. The React client follows pages automatically.
+An empty catalog has `items: []`.
+
+Add `q` to search names and brands, for example
+`GET /api/v1/products?q=cafe+uniao&limit=20`. Search ignores case and Portuguese
+accents, matches every word in any order, and supports word prefixes (`torr`
+finds `torrado`). Punctuation is treated as separators, never as search operators.
+Quantities such as `500g` and `500 g` are tokenized alike. This is prefix search,
+not typo correction or substring matching. An explicitly supplied `q` must contain
+at least two letters/digits and at most 100 Unicode characters after trimming.
+Search defaults to 20 results; the same limit and ID cursor bounds apply.
+Names and brands have a generated PostgreSQL search document and a GIN index.
+Variants and historical-assignment rules remain unchanged.
+
+The React client makes **no catalog request on page load**. It waits for at least
+two letters/digits and 300 ms without typing, then requests a single page of at
+most 20 matches. It never follows cursors automatically or accumulates the full
+catalog. When more matches exist, users refine their search. Obsolete searches
+are aborted and their responses ignored; selecting a result updates the shareable
+product filter. Shared product URLs obtain the selected label from history.
+
 Pagination is not a transaction snapshot; newly ingested products may appear on
 later pages or after reloading the catalog.
 
@@ -62,6 +81,12 @@ Money and percentages cross the JSON boundary as safe integers. Intermediate
 averages and relative changes use exact rational arithmetic. Rounding occurs only
 for displayed centavos/basis points, half away from zero. Extreme percentage
 results outside JavaScript's safe integer range are `null`.
+
+The UI explains missing variation using `counts.pricedDays`: zero comparable days
+means no complete coverage; one comparable day needs another day for a change.
+The overview can remain unavailable even after several collections if no day
+covers its entire fixed panel. The UI offers product search in that case and never
+replaces unavailable variation with zero or changes the core's calculation.
 
 ## Methodology: fixed-panel-v1
 
@@ -122,7 +147,7 @@ Errors use `{"error":"code"}` without internal database details.
 
 | HTTP status | Code |
 | --- | --- |
-| 400 | `invalid_pagination` or `invalid_history_request` |
+| 400 | `invalid_pagination`, `invalid_product_search`, or `invalid_history_request` |
 | 404 | `product_not_found` |
 | 500 | `data_unavailable` (details are logged internally) |
 

@@ -25,7 +25,13 @@ type HistoryRequest struct {
 	End     string
 }
 
+type ProductRequest struct {
+	Query string
+	After int64
+	Limit int
+}
+
 type Store interface {
-	Products(context.Context, int64, int) (Products, error)
+	Products(context.Context, ProductRequest) (Products, error)
 	History(context.Context, HistoryRequest) (insights.History, error)
 }

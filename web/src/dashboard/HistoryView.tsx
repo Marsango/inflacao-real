@@ -3,11 +3,12 @@ import type { Period } from '../shared/dates';
 import { formatDate, timeZone } from '../shared/dates';
 import { chartValue, money, percentage, priceLabel } from '../shared/format';
 import { Chart } from './Chart';
+import { variationExplanation, variationStatus } from '../data/availability';
 
 function Summary({ history }: { history: History }) {
   return <div className="summary">
     {history.unit === 'BRL' && <div><span>{priceLabel(history.priceBasis)} · último no período</span><strong>{history.latestPriceMinor === null ? 'Indisponível' : money(history.latestPriceMinor)}</strong></div>}
-    <div><span>Variação no período</span><strong>{history.changeBasisPoints === null ? 'Indisponível' : percentage(history.changeBasisPoints)}</strong></div>
+    <div><span>Variação no período</span><strong aria-describedby={history.changeBasisPoints === null ? 'variation-explanation' : undefined}>{history.changeBasisPoints === null ? variationStatus(history) : percentage(history.changeBasisPoints)}</strong></div>
     {history.comparisonStart && history.comparisonEnd && <p>Comparação: {formatDate(history.comparisonStart)} a {formatDate(history.comparisonEnd)}</p>}
   </div>;
 }
@@ -31,11 +32,10 @@ function Context({ history }: { history: History }) {
 }
 
 function HistoryContent({ history }: { history: History }) {
-  const observed = history.points.filter((point) => point.value !== null);
-  if (observed.length === 0) return <><p className="notice" role="status">Nenhum preço comparável neste período. Escolha outro intervalo ou produto.</p><Context history={history} /></>;
   return <>
     {history.stale && <p className="notice" role="status">Dados desatualizados. A última coleta disponível pode não refletir os preços atuais.</p>}
-    {observed.length < 2 ? <p className="notice" role="status">Histórico insuficiente para mostrar uma tendência. Amplie o período.</p> : <Chart history={history} />}
+    {history.changeBasisPoints === null && <p className="notice" role="status" id="variation-explanation">{variationExplanation(history)}</p>}
+    {history.counts.pricedDays > 1 && <Chart history={history} />}
     <Context history={history} />
   </>;
 }

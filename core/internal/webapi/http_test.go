@@ -13,14 +13,13 @@ import (
 )
 
 type fakeStore struct {
-	failure error
-	request HistoryRequest
-	after   int64
-	limit   int
+	failure  error
+	request  HistoryRequest
+	products ProductRequest
 }
 
-func (store *fakeStore) Products(ctx context.Context, after int64, limit int) (Products, error) {
-	store.after, store.limit = after, limit
+func (store *fakeStore) Products(ctx context.Context, request ProductRequest) (Products, error) {
+	store.products = request
 	return Products{Items: []Product{}}, store.failure
 }
 
@@ -47,7 +46,7 @@ func TestPublicReadsAndFilterForwarding(test *testing.T) {
 		test.Fatal("history must not be cached")
 	}
 	response = getResponse(store, "/api/v1/products?after=123&limit=20")
-	if response.Code != 200 || store.after != 123 || store.limit != 20 {
+	if response.Code != 200 || store.products.After != 123 || store.products.Limit != 20 {
 		test.Fatal("pagination not forwarded")
 	}
 }

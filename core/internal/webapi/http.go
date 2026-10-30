@@ -21,14 +21,14 @@ func RegisterRoutes(router *gin.Engine, store Store) {
 func (handler handler) products(request *gin.Context) {
 	incoming := request.Request
 	incomingURL := incoming.URL
-	after, limit, err := pagination(incomingURL.Query())
+	parameters, err := productRequest(incomingURL.Query())
 	if err != nil {
-		request.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "invalid_pagination"})
+		request.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	requestContext, cancel := context.WithTimeout(incoming.Context(), 10*time.Second)
 	defer cancel()
-	products, err := handler.store.Products(requestContext, after, limit)
+	products, err := handler.store.Products(requestContext, parameters)
 	respond(request, products, err)
 }
 

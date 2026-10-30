@@ -4,7 +4,10 @@ import (
 	"errors"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
+	"unicode"
+	"unicode/utf8"
 )
 
 func identity(value string) (int64, error) {
@@ -52,4 +55,37 @@ func validProduct(product string) error {
 	}
 	_, err := identity(product)
 	return err
+}
+
+func productRequest(query url.Values) (ProductRequest, error) {
+	after, limit, err := pagination(query)
+	if err != nil {
+		return ProductRequest{}, errors.New("invalid_pagination")
+	}
+	search := strings.TrimSpace(query.Get("q"))
+	if query.Has("q") && !validSearch(search) {
+		return ProductRequest{}, errors.New("invalid_product_search")
+	}
+	if search != "" && !query.Has("limit") {
+		limit = 20
+	}
+	return ProductRequest{Query: search, After: after, Limit: limit}, nil
+}
+
+func validSearch(search string) bool {
+	if utf8.RuneCountInString(search) > 100 {
+		return false
+	}
+	characters := 0
+	for _, character := range search {
+		characters += searchCharacter(character)
+	}
+	return characters >= 2
+}
+
+func searchCharacter(character rune) int {
+	if unicode.IsLetter(character) || unicode.IsDigit(character) {
+		return 1
+	}
+	return 0
 }

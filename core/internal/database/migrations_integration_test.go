@@ -63,7 +63,7 @@ func TestMigrationsUpRepeatDownAndUp(test *testing.T) {
 	requireNoError(test, Migrate(requestContext, pool))
 	provider, err := migrationProvider(pool)
 	requireNoError(test, err)
-	assertMigrationVersion(test, requestContext, provider, 10)
+	assertMigrationVersion(test, requestContext, provider, 11)
 	_, err = provider.DownTo(requestContext, 0)
 	requireNoError(test, err)
 	assertApplicationTables(test, requestContext, pool, 0)

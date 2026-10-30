@@ -24,4 +24,5 @@ export type History = {
 };
 export type HistoryRequest = Period & { product: string };
 export type LoadState = { status: 'loading' | 'error' | 'ready'; history?: History };
-export type CatalogState = { status: 'loading' | 'error' | 'ready'; products: Product[] };
+export type ProductPage = { items: Product[]; nextCursor: string | null };
+export type SearchState = { status: 'idle' | 'loading' | 'error' | 'ready'; page?: ProductPage };

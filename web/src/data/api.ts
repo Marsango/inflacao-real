@@ -1,6 +1,4 @@
-import type { History, HistoryRequest, Product } from './model';
-
-type ProductPage = { items: Product[]; nextCursor: string | null };
+import type { History, HistoryRequest, ProductPage } from './model';
 
 export class ApiError extends Error {
   constructor(readonly status: number) {
@@ -19,15 +17,7 @@ export function loadHistory(request: HistoryRequest, signal: AbortSignal): Promi
   return get<History>(`history?${query}`, signal);
 }
 
-export async function loadProducts(signal: AbortSignal): Promise<Product[]> {
-  const products: Product[] = [];
-  let cursor: string | null = null;
-  do {
-    const query: string = cursor ? `?after=${encodeURIComponent(cursor)}` : '';
-    const page: ProductPage = await get<ProductPage>(`products${query}`, signal);
-    if (page.nextCursor !== null && page.nextCursor === cursor) throw new Error('Invalid catalog cursor');
-    products.push(...page.items);
-    cursor = page.nextCursor;
-  } while (cursor !== null);
-  return products;
+export function searchProducts(search: string, signal: AbortSignal): Promise<ProductPage> {
+  const query = new URLSearchParams({ q: search, limit: '20' });
+  return get<ProductPage>(`products?${query}`, signal);
 }
