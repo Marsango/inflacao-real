@@ -1,7 +1,7 @@
 # VPS deployment
 
 The production stack runs PostgreSQL, the Go core, and all three current scrapers.
-Collection runs daily at **09:00 America/Sao_Paulo**. There is no public website yet.
+Collection runs daily at **09:00 America/Sao_Paulo**. The frontend is optional and enabled by configuring a public domain.
 The scheduler does not catch up on missed runs; after 09:00 its first run is tomorrow.
 The existing local-development Compose configuration remains separate.
 
@@ -145,3 +145,72 @@ Both application images built locally before local testing was stopped at the ow
 No local integration or backup/restore test suite was run. VPS installation, repeated up,
 readiness, shop registration, 09:00 scheduling, private ports, persisted observations, and
 backup/restore recovery remain to be verified after the owner clones the committed files.
+
+## Public frontend and HTTPS
+
+The existing private deployment remains available with `./deploy up`. To enable the
+frontend and its public read API, use a clean committed checkout containing both
+frontend and backend changes:
+
+```sh
+./deploy up --domain nossainflacao.com.br
+```
+
+The domain is saved as `PUBLIC_DOMAIN` in `/etc/nossa-inflacao/production.env` without
+changing existing credentials or the 09:00 scheduler. Later `./deploy up` commands
+reuse it. The wrapper needs sudo and UFW for public web port configuration. Do not
+edit Compose files or put ingestion tokens in frontend environment variables.
+
+In Registro.br, keep the existing nameservers and add these DNS records:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | Root domain / empty name | 51.210.11.104 |
+| CNAME | www | nossainflacao.com.br |
+
+No AAAA record is required initially. Preserve unrelated mail/TXT records. Public
+DNS must resolve to the VPS before certificate issuance can succeed; negative DNS
+responses may remain cached while changes propagate. If CAA records are introduced,
+allow the certificate authority used by Caddy. No Registro.br credentials are needed
+by this deployment.
+
+A pinned multi-stage image builds static assets with npm ci and serves them using
+Caddy. Only TCP 80/443 are published by the website. HTTP redirects to HTTPS and www
+redirects to the root domain. SSH remains on 49999. Caddy proxies only GET requests to
+`/api/v1/products` and `/api/v1/history`; ingestion, monitoring, unknown API paths and
+other API methods return 404 at the public edge. The core still binds only to host
+loopback and PostgreSQL remains unpublished. The browser uses same-origin /api and
+never receives the ingestion token. Hashed assets use immutable caching, HTML is
+revalidated, and API no-store headers pass through unchanged.
+
+The domain activates the public Compose profile. The deployment builds before
+stopping collection, updates the core, verifies the web API exists, and starts the
+website after the core is healthy. An older core without the web API fails the
+readiness check instead of silently serving a broken dashboard. The website process
+runs as UID 10001 and persists TLS state in `nossa-inflacao_caddy_data` and
+`nossa-inflacao_caddy_config`. Do not delete these volumes during updates.
+Website container health checks confirm Caddy is running; they do not guarantee
+public DNS or certificate availability. Inspect TLS errors with `./deploy logs` and
+verify the actual public URL before declaring a rollout complete.
+
+Existing encrypted backups automatically include the domain inside production.env;
+the archive format is unchanged. Certificate volumes survive updates on this VPS.
+A fresh-server restore obtains replacement certificates automatically using the
+restored domain and public DNS. Preserve certificate volumes when possible to avoid
+unnecessary issuance and certificate-authority rate limits.
+
+For updates, commit and push locally, then update the VPS checkout and run `./deploy up`.
+If the VPS has the earlier agent-created deployment commit while your branch has a
+replacement commit with the same changes, preserve the deployed revision on a backup
+branch and align the clean checkout with your chosen release; do not create an
+unreviewed merge commit. Back up before any update containing database migrations.
+The frontend build is image-contained; no Node server or Vite development server runs
+in production. Rolling back means deploying the previous compatible code revision;
+it does not automatically downgrade database migrations.
+
+Verification covers frontend type checking, unit tests, production build, and isolated
+Testcontainers checks of static serving, frontend navigation, cache headers, domain
+configuration, redirects, public API proxying and private-route denial. Integration
+checks never use the existing VPS database. Final public acceptance includes valid TLS,
+root/www redirects, both public API routes, and confirmation that private API paths and
+the database remain unreachable externally. Do not start a collection for these checks.

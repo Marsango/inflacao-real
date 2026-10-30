@@ -12,10 +12,14 @@ def command(*arguments, **options):
 
 
 def compose(*arguments, **options):
-    environment = {**os.environ, "NOSSA_CONFIG_DIR": str(CONFIG)}
+    domain = production_domain()
+    environment = {**os.environ, "NOSSA_CONFIG_DIR": str(CONFIG), "PUBLIC_DOMAIN": domain}
+    profiles = []
+    if domain:
+        profiles = ["--profile", "public"]
     return command("docker", "compose", "--project-name", "nossa-inflacao",
                    "--env-file", str(CONFIG / "production.env"),
-                   "-f", str(ROOT / "deployment/compose.yaml"), *arguments,
+                   "-f", str(ROOT / "deployment/compose.yaml"), *profiles, *arguments,
                    env=environment, **options)
 
 
@@ -40,3 +44,13 @@ def spool_archive(*arguments, **options):
                    "--security-opt=no-new-privileges", "-v",
                    "nossa-inflacao_scraper_data:/app/data", image, "tar", *arguments,
                    **options)
+
+
+def production_domain():
+    path = CONFIG / "production.env"
+    if not path.exists():
+        return ""
+    for line in path.read_text().splitlines():
+        if line.startswith("PUBLIC_DOMAIN="):
+            return line.partition("=")[2].strip()
+    return ""

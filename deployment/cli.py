@@ -11,7 +11,7 @@ from archive import backup, restore
 
 
 def dispatch(arguments):
-    actions = {"up": start, "status": lambda: compose("ps"),
+    actions = {"up": lambda: start(arguments.domain), "status": lambda: compose("ps"),
                "logs": lambda: compose("logs", "--tail", "100", "-f"),
                "collect": lambda: scraper_command("collect"),
                "deliver": lambda: scraper_command("deliver"),
@@ -23,7 +23,8 @@ def dispatch(arguments):
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="action", required=True)
-    for action in ["up", "status", "logs", "collect", "deliver"]:
+    subparsers.add_parser("up").add_argument("--domain", help="public root domain; saved for later deployments")
+    for action in ["status", "logs", "collect", "deliver"]:
         subparsers.add_parser(action)
     for action in ["backup", "restore"]:
         subparsers.add_parser(action).add_argument("file")
@@ -44,6 +45,6 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except (OSError, RuntimeError, subprocess.CalledProcessError) as error:
+    except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as error:
         print(f"Deployment failed: {error}", file=sys.stderr)
         sys.exit(1)

@@ -34,8 +34,8 @@ O build estático fica em `dist/`. Não há comando de lint configurado. Os test
 interceptam `fetch` com respostas do contrato e não usam banco ou lojas reais.
 Cobrem catálogo paginado, filtros, valores do core, formatação brasileira,
 carregamento, falha, recuperação, ausência de dados, cobertura insuficiente,
-frescor, cancelamento e lacunas no gráfico. Deploy e hospedagem da interface
-continuam fora desta etapa; o build usa `/api` na mesma origem.
+frescor, cancelamento e lacunas no gráfico. O build usa `/api` na mesma origem. Para hospedar com HTTPS no VPS,
+veja o [guia de implantação](../docs/deployment.md#public-frontend-and-https).
 
 ## Interações e dados
 
@@ -74,3 +74,10 @@ somente no desenvolvimento e nos testes. As versões ficam fixadas no lockfile.
 Os controles usam HTML nativo e o gráfico usa SVG próprio: sem biblioteca de
 componentes, ícones, datas ou gráficos e sem fontes externas. A integração não
 adiciona dependências.
+
+## Implantação
+
+Na raiz do repositório, `./deploy up --domain nossainflacao.com.br` habilita a
+interface pública; atualizações usam `./deploy up`. Caddy serve o build estático,
+gerencia HTTPS e encaminha somente a API pública de leitura. O token de ingestão
+permanece no backend. Configure os registros DNS conforme o guia de implantação.

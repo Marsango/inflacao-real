@@ -8,3 +8,7 @@ scrapers/data
 scrapers/config.toml
 *.backup
 *.enc
+
+web/node_modules
+web/dist
+web/*.tsbuildinfo

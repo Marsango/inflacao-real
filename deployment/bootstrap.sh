@@ -4,7 +4,7 @@ if ! command -v docker >/dev/null; then
   . /etc/os-release
   [[ $ID == ubuntu && ( $VERSION_ID == 24.04 || $VERSION_ID == 26.04 ) ]] || { echo 'Fresh bootstrap requires Ubuntu 24.04 or 26.04 LTS.' >&2; exit 1; }
   apt-get update
-  apt-get install -y ca-certificates curl
+  apt-get install -y ca-certificates curl ufw
   install -m 0755 -d /etc/apt/keyrings
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   chmod a+r /etc/apt/keyrings/docker.asc
