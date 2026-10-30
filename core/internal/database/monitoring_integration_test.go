@@ -1,6 +1,8 @@
 package database
 
 import (
+	"context"
+	"database/sql"
 	"encoding/json"
 	"os"
 	"testing"
@@ -12,16 +14,16 @@ func TestMonitoringSeedAndEnabledScope(t *testing.T) {
 	ctx, db := testDatabase(t)
 	store := monitoring.PostgresStore{DB: db}
 	targets, err := store.List(ctx)
-	if err != nil || len(targets) != 65 {
-		t.Fatalf("expected sixty-five seeded targets; got %v, %v", targets, err)
+	if err != nil || len(targets) != 96 {
+		t.Fatalf("expected ninety-six seeded targets; got %v, %v", targets, err)
 	}
 	checkSeededMatchingExamples(t, targets)
 	if _, err := db.ExecContext(ctx, `UPDATE monitoring_targets SET enabled=false WHERE id='cafe-moido'`); err != nil {
 		t.Fatal(err)
 	}
 	targets, err = store.List(ctx)
-	if err != nil || len(targets) != 64 {
-		t.Fatalf("expected sixty-four enabled targets; got %v, %v", targets, err)
+	if err != nil || len(targets) != 95 {
+		t.Fatalf("expected ninety-five enabled targets; got %v, %v", targets, err)
 	}
 }
 
@@ -54,7 +56,7 @@ func TestEverydayFoodsMigrationPreservesExistingScope(t *testing.T) {
 	executeSQL(t, requestContext, pool, `UPDATE monitoring_targets
 		SET enabled=false, name='Local coffee target' WHERE id='cafe-moido'`)
 	requireNoError(t, Migrate(requestContext, pool))
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=65 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=96 FROM monitoring_targets`)
 	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local coffee target'
 		FROM monitoring_targets WHERE id='cafe-moido'`)
 }
@@ -70,12 +72,87 @@ func TestHouseholdMigrationPreservesExistingScope(t *testing.T) {
 		name='Local apple target', criteria=jsonb_set(criteria, '{excluded_terms}',
 		(criteria->'excluded_terms') || '["local-only"]'::jsonb) WHERE id='maca'`)
 	requireNoError(t, Migrate(requestContext, pool))
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=65 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=96 FROM monitoring_targets`)
 	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local apple target'
 		AND (criteria->'excluded_terms') ?& ARRAY['local-only', 'detergente']
 		FROM monitoring_targets WHERE id='maca'`)
 	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM monitoring_targets
 		WHERE id IN ('goma-tapioca','queijo-minas-frescal')`)
+}
+
+func TestFamilyEssentialsMigrationPreservesExistingScope(t *testing.T) {
+	requestContext, pool := testDatabase(t)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 8)
+	requireNoError(t, err)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=65 FROM monitoring_targets`)
+	executeSQL(t, requestContext, pool, `UPDATE monitoring_targets SET enabled=false,
+		name='Local banana target', criteria=jsonb_set(criteria, '{excluded_terms}',
+		(criteria->'excluded_terms') || '["local-only"]'::jsonb) WHERE id='banana'`)
+	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=96 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local banana target'
+		AND (criteria->'excluded_terms') ?& ARRAY['local-only', 'shampoo', 'sabao']
+		FROM monitoring_targets WHERE id='banana'`)
+	checkFamilyEssentialsRollback(t, requestContext, pool)
+}
+
+func checkFamilyEssentialsRollback(t *testing.T, requestContext context.Context, pool *sql.DB) {
+	t.Helper()
+	executeSQL(t, requestContext, pool, `WITH product AS (
+		INSERT INTO products (name) VALUES ('Migration test product') RETURNING id)
+		INSERT INTO product_monitoring_targets (product_id, target_id)
+		SELECT id, target FROM product CROSS JOIN unnest(ARRAY['banana','fralda-infantil']) AS target`)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 8)
+	requireNoError(t, err)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=65 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 AND bool_and(target_id='banana')
+		FROM product_monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local banana target'
+		AND (criteria->'excluded_terms') ? 'local-only'
+		AND NOT (criteria->'excluded_terms') ?| ARRAY['shampoo','sabao']
+		FROM monitoring_targets WHERE id='banana'`)
+	requireNoError(t, Migrate(requestContext, pool))
+}
+
+func TestSnacksMigrationPreservesExistingScope(t *testing.T) {
+	requestContext, pool := testDatabase(t)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 9)
+	requireNoError(t, err)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=77 FROM monitoring_targets`)
+	executeSQL(t, requestContext, pool, `UPDATE monitoring_targets SET enabled=false,
+		name='Local milk target', criteria=jsonb_set(criteria, '{excluded_terms}',
+		(criteria->'excluded_terms') || '["local-only"]'::jsonb) WHERE id='leite'`)
+	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=96 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local milk target'
+		AND (criteria->'excluded_terms') ?& ARRAY['local-only','condensado','sorvete']
+		FROM monitoring_targets WHERE id='leite'`)
+	checkSnacksRollback(t, requestContext, pool)
+}
+
+func checkSnacksRollback(t *testing.T, requestContext context.Context, pool *sql.DB) {
+	t.Helper()
+	executeSQL(t, requestContext, pool, `WITH product AS (
+		INSERT INTO products (name) VALUES ('Migration snack product') RETURNING id)
+		INSERT INTO product_monitoring_targets (product_id, target_id)
+		SELECT id, target FROM product CROSS JOIN unnest(ARRAY['leite','linguica']) AS target`)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 9)
+	requireNoError(t, err)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=77 FROM monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 AND bool_and(target_id='leite')
+		FROM product_monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT NOT enabled AND name='Local milk target'
+		AND (criteria->'excluded_terms') ?& ARRAY['local-only','condensado','shampoo']
+		AND NOT (criteria->'excluded_terms') ? 'sorvete' FROM monitoring_targets WHERE id='leite'`)
+	requireNoError(t, Migrate(requestContext, pool))
 }
 
 func checkSeededTarget(t *testing.T, actual, expected monitoring.Target) {

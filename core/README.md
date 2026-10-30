@@ -148,8 +148,12 @@ regional flour/sugar variants, plus the previously monitored pasta. See the
 [basket scope and research sources](../docs/contracts/monitoring/v1/basic-food-basket.md).
 Migration 00007 adds [21 everyday foods](../docs/contracts/monitoring/v1/everyday-foods.md).
 Migration 00008 adds [20 foods and eight household essentials](../docs/contracts/monitoring/v1/foods-and-household.md),
-for **65 targets** on a fresh database. Restart the updated core to apply pending
-forward migrations; scrapers receive the additions at their next run.
+migration 00009 adds [12 family essentials](../docs/contracts/monitoring/v1/family-essentials.md),
+and migration 00010 adds [19 snacks, sweets and convenience foods](../docs/contracts/monitoring/v1/snacks-and-convenience.md),
+for **96 targets** on a fresh database. Restart the updated core to apply pending
+forward migrations; scrapers receive the additions at their next run. Update and
+restart running scrapers once for the diaper/bag package-parsing guard described
+in the family essentials guide.
 Add or refine targets through new SQL migrations; scrapers fetch the scope at
 the start of every run. New targets require no scraper code or product-category
 configuration changes with the default configuration. Muffato and Festval search
@@ -219,7 +223,7 @@ it does not infer past identities from current catalog metadata.
 - `products`: canonical product variants, with name, brand, optional GTIN, and
   package quantity/unit/count. Different package sizes are different variants.
 - `monitoring_targets`: enabled collection groups and their shared discovery/name
-  rules, seeded by migrations 00006–00008 and served to all shop adapters.
+  rules, seeded by migrations 00006–00010 and served to all shop adapters.
 - `product_monitoring_targets`: associations between distinct canonical variants
   and their monitoring groups; membership does not imply price equivalence.
 - `shop_products`: a shop's listing, unique by `(shop_id, source_product_id)`,

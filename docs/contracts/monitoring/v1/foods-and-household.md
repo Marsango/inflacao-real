@@ -1,7 +1,10 @@
 # Additional foods and household essentials
 
 Migration **00008** adds **20 food targets and eight household targets**, expanding
-the previous 37 to **65 enabled targets** on a fresh database. Goma de tapioca
+the previous 37 to 65 targets at that version. Migration 00009 adds
+[12 family essentials](family-essentials.md), for 77 groups at that version.
+Migration 00010 adds [19 snacks, sweets and convenience foods](snacks-and-convenience.md),
+bringing the current fresh-database scope to **96 targets**. Goma de tapioca
 and queijo minas frescal are intentionally outside these additions.
 
 | Target ID | Product |

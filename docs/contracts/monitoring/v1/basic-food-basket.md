@@ -30,7 +30,10 @@ rules are preserved. The broader liquid/powdered milk scope also remains in plac
 Migration 00007 adds [21 everyday foods](everyday-foods.md), for **37 enabled
 targets** at that version. Migration 00008 adds
 [20 foods and eight household essentials](foods-and-household.md), bringing the
-current fresh-database scope to **65 targets**. The household additions are
+scope to 65 targets at that version. Migration 00009 adds
+[12 family essentials](family-essentials.md), for 77 groups at that version.
+Migration 00010 adds [19 snacks, sweets and convenience foods](snacks-and-convenience.md),
+bringing the current fresh-database scope to **96 targets**. The household additions are
 separate from the food-basket reference.
 
 For beef, discovery uses the methodology's boneless cuts: patinho, coxão mole

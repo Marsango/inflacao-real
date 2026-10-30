@@ -68,6 +68,11 @@ def test_invalid_contents_do_not_discard_valid_price(packaged_products, settings
         "Porção 30g",
         "Café 500g + 50g",
         "Café sem tamanho",
+        "Fralda Infantil G até 15kg",
+        "Fralda Adulta para 70kg",
+        "Saco para Lixo 50L",
+        "Sacos de Lixo 100 L",
+        "Saco Plástico para Lixo 30l",
     ],
 )
 def test_unknown_or_unverified_contents_stay_null(packaged_products, settings, name):

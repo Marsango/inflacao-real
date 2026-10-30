@@ -2,7 +2,11 @@
 
 Migration **00007** adds these 21 targets to the original 16, for **37 targets**
 at that version. Migration 00008 adds [more foods and household essentials](foods-and-household.md),
-bringing the current fresh-database scope to **65 targets**. These additions expand the independent collection
+bringing the scope to 65 targets at that version. Migration 00009 adds
+[12 family essentials](family-essentials.md), for 77 groups at that version.
+Migration 00010 adds [19 snacks, sweets and convenience foods](snacks-and-convenience.md),
+bringing the current fresh-database scope to **96 targets**.
+These additions expand the independent collection
 scope beyond the [DIEESE-inspired reference](basic-food-basket.md). They do not
 define a weighted inflation basket or establish national consumption rankings.
 

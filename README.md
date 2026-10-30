@@ -58,6 +58,10 @@ Os tamanhos atuais das embalagens são preservados quando conhecidos; não há
 detecção automática de reduflação. Cadastrar um grupo não significa que ele já
 tenha cobertura completa.
 
+O escopo configurado contém 96 grupos de produtos, incluindo alimentos, higiene,
+limpeza e cuidados familiares. As [adições de doces, lanches e alimentos práticos](docs/contracts/monitoring/v1/snacks-and-convenience.md)
+documentam os novos grupos e os passos de ativação.
+
 Ainda não há um índice de inflação calculado pelo projeto nem um painel público.
 Os detalhes do recorte estão na [documentação de cobertura](docs/contracts/monitoring/v1/basic-food-basket.md).
 
@@ -199,3 +203,9 @@ As verificações contra os sites reais são opcionais e estão descritas no gui
 - [Contrato de ingestão](docs/contracts/ingestion/v1/README.md)
 - [Regras compartilhadas de monitoramento](docs/contracts/monitoring/v1/README.md)
 - [Escopo da cesta básica e limites de cobertura](docs/contracts/monitoring/v1/basic-food-basket.md)
+
+## Instalação em VPS
+
+Para instalar o core, PostgreSQL e os coletores com execução diária às 09:00
+(America/Sao_Paulo), veja o [guia de implantação](docs/deployment.md).
+O comando `./deploy up` usa configuração e armazenamento separados do ambiente local.

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+if [[ $EUID -ne 0 ]]; then
+  exec sudo --preserve-env=NOSSA_CONFIG_DIR "$PWD/deploy" "$@"
+fi
+exec python3 deployment/cli.py "$@"

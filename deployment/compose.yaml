@@ -1,0 +1,70 @@
+name: nossa-inflacao
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+services:
+  postgres:
+    image: postgres:18.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nossa_inflacao
+      POSTGRES_USER: nossa_inflacao
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Required}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    logging: *logging
+  core:
+    build:
+      context: ..
+      dockerfile: deployment/core.Dockerfile
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: nossa_inflacao
+      POSTGRES_USER: nossa_inflacao
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Required}
+      HTTP_ADDR: 0.0.0.0:8080
+      INGESTION_TOKEN: ${INGESTION_TOKEN:?Required}
+      INGESTION_SCRAPER_ID: muffato-curitiba-01
+      INGESTION_SHOP_IDS: super-muffato,angeloni,festval
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD-SHELL, 'curl --fail --silent --output /dev/null -H "Authorization: Bearer $$INGESTION_TOKEN" http://127.0.0.1:8080/api/v1/monitoring-targets']
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    stop_grace_period: 30s
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    logging: *logging
+  scrapers:
+    build:
+      context: ..
+      dockerfile: deployment/scrapers.Dockerfile
+    restart: unless-stopped
+    environment:
+      INGESTION_TOKEN: ${INGESTION_TOKEN:?Required}
+    command: [inflacao-scraper-schedule, --config, /app/config.toml, --at, '${COLLECTION_TIME:-09:00}', --timezone, America/Sao_Paulo]
+    volumes:
+      - ${NOSSA_CONFIG_DIR:-/etc/nossa-inflacao}/scrapers.toml:/app/config.toml:ro
+      - scraper_data:/app/data
+    depends_on:
+      core:
+        condition: service_healthy
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    logging: *logging
+volumes:
+  postgres_data:
+  scraper_data:

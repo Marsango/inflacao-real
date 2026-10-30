@@ -21,6 +21,7 @@ AMBIGUOUS = re.compile(
 COMPONENTS = re.compile(
     r"\b\d+\s*(?:un(?:idades?)?|latas?|garrafas?|sach[eê]s?|c[aá]psulas?)\b", re.I
 )
+NON_CONTENT_MEASUREMENTS = re.compile(r"\bfraldas?\b|\bsacos?\b.*\blixo\b", re.I)
 
 
 def canonical_quantity(number: Decimal) -> str:
@@ -53,7 +54,7 @@ def reconcile(packages: list[Package]) -> Package | None:
 
 
 def name_declarations(name: str) -> list[Package]:
-    if AMBIGUOUS.search(name) or COMPONENTS.search(name):
+    if NON_CONTENT_MEASUREMENTS.search(name) or AMBIGUOUS.search(name) or COMPONENTS.search(name):
         return []
     return [package_value(match[1], match[2]) for match in MEASUREMENT.finditer(name)]
 
@@ -86,6 +87,8 @@ def resolve_package(sku: dict, basis: str, settings) -> Package | None:
     if basis != "package":
         return None
     names = sku_names(sku)
+    if any(NON_CONTENT_MEASUREMENTS.search(name) for name in names):
+        return None
     if any(AMBIGUOUS.search(name) for name in names):
         return None
     packages = [package for name in names for package in name_declarations(name)]

@@ -166,7 +166,11 @@
         "pronto",
         "sopa",
         "racao",
-        "com osso"
+        "com osso",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -216,6 +220,10 @@
       },
       {
         "name": "Picanha Bovina 1kg",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de patinho 500g",
         "matches": false
       }
     ]
@@ -539,7 +547,37 @@
         "suco",
         "pure",
         "geleia",
-        "bananada"
+        "bananada",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "sabao",
+        "desinfetante",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoito",
+        "biscoitos",
+        "bolacha",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerante",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -573,6 +611,42 @@
       },
       {
         "name": "Vitamina de Banana 1L",
+        "matches": false
+      },
+      {
+        "name": "Shampoo banana 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu banana 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante banana 150ml",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante banana 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão Barra banana 200g",
+        "matches": false
+      },
+      {
+        "name": "Bala banana 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom banana 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete banana 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer banana 100g",
         "matches": false
       }
     ]
@@ -608,7 +682,34 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "bala",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerante",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -646,6 +747,34 @@
       },
       {
         "name": "Sabonete com Manteiga de Karité 90g",
+        "matches": false
+      },
+      {
+        "name": "Shampoo manteiga 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu manteiga 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante manteiga 150ml",
+        "matches": false
+      },
+      {
+        "name": "Bala manteiga 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom manteiga 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete manteiga 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer manteiga 100g",
         "matches": false
       }
     ]
@@ -712,7 +841,11 @@
         "temperado",
         "caldo de feijao",
         "farinha",
-        "sopa"
+        "sopa",
+        "macarrao",
+        "lamen",
+        "instantaneo",
+        "instantanea"
       ]
     },
     "cases": [
@@ -730,6 +863,10 @@
       },
       {
         "name": "Feijão Pronto Temperado 500g",
+        "matches": false
+      },
+      {
+        "name": "Macarrão Instantâneo Feijão 85g",
         "matches": false
       }
     ]
@@ -755,7 +892,36 @@
         "composto",
         "chocolate",
         "biscoito",
-        "sabonete"
+        "sabonete",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "sabao",
+        "desinfetante",
+        "bala",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolacha",
+        "bolachas",
+        "wafer",
+        "refrigerante",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -777,6 +943,42 @@
       },
       {
         "name": "Leite de Coco 200ml",
+        "matches": false
+      },
+      {
+        "name": "Shampoo leite 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu leite 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante leite 150ml",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante leite 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão Barra leite 200g",
+        "matches": false
+      },
+      {
+        "name": "Bala leite 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom leite 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete leite 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer leite 100g",
         "matches": false
       }
     ]
@@ -841,7 +1043,10 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante"
       ]
     },
     "cases": [
@@ -859,6 +1064,18 @@
       },
       {
         "name": "Sabonete com Óleo de Soja 90g",
+        "matches": false
+      },
+      {
+        "name": "Shampoo oleo 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu oleo 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante oleo 150ml",
         "matches": false
       }
     ]
@@ -878,7 +1095,10 @@
       "excluded_terms": [
         "instantaneo",
         "pronto",
-        "congelado"
+        "congelado",
+        "instantanea",
+        "instantaneos",
+        "instantaneas"
       ]
     },
     "cases": [
@@ -892,6 +1112,10 @@
       },
       {
         "name": "Macarrão Pronto Congelado 500g",
+        "matches": false
+      },
+      {
+        "name": "Macarrão Instantâneos Carne 85g",
         "matches": false
       }
     ]
@@ -922,7 +1146,12 @@
         "macarrao",
         "bolo",
         "biscoito",
-        "bolacha"
+        "bolacha",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "sabao",
+        "desinfetante"
       ]
     },
     "cases": [
@@ -948,6 +1177,26 @@
       },
       {
         "name": "Ovos Líquidos Pasteurizados 1kg",
+        "matches": false
+      },
+      {
+        "name": "Shampoo ovo 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu ovo 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante ovo 150ml",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante ovo 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão Barra ovo 200g",
         "matches": false
       }
     ]
@@ -981,7 +1230,11 @@
         "nuggets",
         "pronto",
         "racao",
-        "recheado"
+        "recheado",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -1003,6 +1256,10 @@
       },
       {
         "name": "Peito de Frango Cozido Desfiado 400g",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de frango peito 500g",
         "matches": false
       }
     ]
@@ -1033,7 +1290,11 @@
         "assado",
         "assada",
         "pronto",
-        "racao"
+        "racao",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -1055,6 +1316,14 @@
       },
       {
         "name": "Coxa de Frango Temperada 1kg",
+        "matches": false
+      },
+      {
+        "name": "Coxa e Sobrecoxa de Frango Congelada 1kg",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de frango coxa 500g",
         "matches": false
       }
     ]
@@ -1085,7 +1354,11 @@
         "assado",
         "assada",
         "pronto",
-        "racao"
+        "racao",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -1107,6 +1380,14 @@
       },
       {
         "name": "Sobrecoxa de Frango Assada kg",
+        "matches": false
+      },
+      {
+        "name": "Coxa e Sobrecoxa de Frango Congelada 1kg",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de frango sobrecoxa 500g",
         "matches": false
       }
     ]
@@ -1137,7 +1418,12 @@
         "biscoito",
         "bolacha",
         "semente",
-        "sementes"
+        "sementes",
+        "chips",
+        "snack",
+        "snacks",
+        "sabor",
+        "fritas"
       ]
     },
     "cases": [
@@ -1159,6 +1445,10 @@
       },
       {
         "name": "Cebola Desidratada 20g",
+        "matches": false
+      },
+      {
+        "name": "Batatas Fritas Sabor Cebola 90g",
         "matches": false
       }
     ]
@@ -1191,7 +1481,12 @@
         "granulado",
         "po",
         "semente",
-        "sementes"
+        "sementes",
+        "chips",
+        "snack",
+        "snacks",
+        "sabor",
+        "fritas"
       ]
     },
     "cases": [
@@ -1213,6 +1508,10 @@
       },
       {
         "name": "Alho Triturado em Conserva 200g",
+        "matches": false
+      },
+      {
+        "name": "Batata Chips Sabor Alho 90g",
         "matches": false
       }
     ]
@@ -1290,7 +1589,38 @@
         "semente",
         "sementes",
         "papinha",
-        "mistura"
+        "mistura",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "sabao",
+        "desinfetante",
+        "bala",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoito",
+        "biscoitos",
+        "bolacha",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerante",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -1312,6 +1642,42 @@
       },
       {
         "name": "Suco de Cenoura 1L",
+        "matches": false
+      },
+      {
+        "name": "Shampoo cenoura 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu cenoura 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante cenoura 150ml",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante cenoura 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão Barra cenoura 200g",
+        "matches": false
+      },
+      {
+        "name": "Bala cenoura 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom cenoura 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete cenoura 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer cenoura 100g",
         "matches": false
       }
     ]
@@ -1400,7 +1766,32 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -1426,6 +1817,34 @@
       },
       {
         "name": "Limpador Laranja 500ml",
+        "matches": false
+      },
+      {
+        "name": "Shampoo laranja 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu laranja 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante laranja 150ml",
+        "matches": false
+      },
+      {
+        "name": "Bala laranja 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom laranja 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete laranja 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer laranja 100g",
         "matches": false
       }
     ]
@@ -1695,7 +2114,34 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "bala",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerante",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -1721,6 +2167,34 @@
       },
       {
         "name": "Detergente Maçã Verde 500ml",
+        "matches": false
+      },
+      {
+        "name": "Shampoo maca 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu maca 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante maca 150ml",
+        "matches": false
+      },
+      {
+        "name": "Bala maca 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom maca 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete maca 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer maca 100g",
         "matches": false
       }
     ]
@@ -1854,7 +2328,36 @@
         "sabonete",
         "shake",
         "vitamina",
-        "cereal matinal"
+        "cereal matinal",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "sabao",
+        "desinfetante",
+        "bala",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerante",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -1880,6 +2383,42 @@
       },
       {
         "name": "Barra de Cereal com Aveia 25g",
+        "matches": false
+      },
+      {
+        "name": "Shampoo aveia 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu aveia 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante aveia 150ml",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante aveia 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão Barra aveia 200g",
+        "matches": false
+      },
+      {
+        "name": "Bala aveia 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom aveia 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete aveia 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer aveia 100g",
         "matches": false
       }
     ]
@@ -2077,7 +2616,11 @@
         "pronto",
         "pronta",
         "sopa",
-        "racao"
+        "racao",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -2095,6 +2638,10 @@
       },
       {
         "name": "Acém Bovino Temperado 1kg",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de acem 500g",
         "matches": false
       }
     ]
@@ -2128,7 +2675,11 @@
         "pronto",
         "pronta",
         "sopa",
-        "racao"
+        "racao",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -2146,6 +2697,10 @@
       },
       {
         "name": "Músculo Bovino Cozido 500g",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de musculo 500g",
         "matches": false
       }
     ]
@@ -2187,7 +2742,11 @@
         "pronta",
         "empanado",
         "empanada",
-        "racao"
+        "racao",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -2205,6 +2764,10 @@
       },
       {
         "name": "Pernil Suíno Temperado 1kg",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de pernil suino 500g",
         "matches": false
       }
     ]
@@ -2246,7 +2809,11 @@
         "pronta",
         "empanado",
         "empanada",
-        "racao"
+        "racao",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
       ]
     },
     "cases": [
@@ -2264,6 +2831,10 @@
       },
       {
         "name": "Lombo Suíno Canadense Defumado 200g",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de lombo suino 500g",
         "matches": false
       }
     ]
@@ -2676,7 +3247,32 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -2698,6 +3294,34 @@
       },
       {
         "name": "Sementes de Mamão fresco 10g",
+        "matches": false
+      },
+      {
+        "name": "Shampoo mamao 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu mamao 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante mamao 150ml",
+        "matches": false
+      },
+      {
+        "name": "Bala mamao 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom mamao 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete mamao 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer mamao 100g",
         "matches": false
       }
     ]
@@ -2741,7 +3365,32 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -2767,6 +3416,34 @@
       },
       {
         "name": "Sementes de Limão fresco 10g",
+        "matches": false
+      },
+      {
+        "name": "Shampoo limao 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu limao 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante limao 150ml",
+        "matches": false
+      },
+      {
+        "name": "Bala limao 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom limao 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete limao 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer limao 100g",
         "matches": false
       }
     ]
@@ -2810,7 +3487,32 @@
         "sabao",
         "amaciante",
         "alvejante",
-        "creme dental"
+        "creme dental",
+        "shampoo",
+        "xampu",
+        "desodorante",
+        "balas",
+        "bombom",
+        "bombons",
+        "chiclete",
+        "chicletes",
+        "chicle",
+        "chicles",
+        "sorvete",
+        "sorvetes",
+        "picole",
+        "picoles",
+        "biscoitos",
+        "bolachas",
+        "wafer",
+        "chocolate",
+        "refrigerantes",
+        "salgadinho",
+        "cookie",
+        "cookies",
+        "achocolatado",
+        "jujuba",
+        "jujubas"
       ]
     },
     "cases": [
@@ -2832,6 +3534,34 @@
       },
       {
         "name": "Sementes de Melancia fresca 10g",
+        "matches": false
+      },
+      {
+        "name": "Shampoo melancia 300ml",
+        "matches": false
+      },
+      {
+        "name": "Xampu melancia 300ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante melancia 150ml",
+        "matches": false
+      },
+      {
+        "name": "Bala melancia 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom melancia 20g",
+        "matches": false
+      },
+      {
+        "name": "Sorvete melancia 1L",
+        "matches": false
+      },
+      {
+        "name": "Wafer melancia 100g",
         "matches": false
       }
     ]
@@ -3513,6 +4243,2226 @@
       },
       {
         "name": "Água Sanitária em Gel 500ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "fralda-infantil",
+      "name": "Fraldas infantis descartáveis",
+      "search_queries": [
+        "fralda infantil",
+        "fralda descartavel"
+      ],
+      "required_terms": [
+        [
+          "fralda",
+          "fraldas"
+        ]
+      ],
+      "excluded_terms": [
+        "adulto",
+        "adulta",
+        "adultos",
+        "adultas",
+        "geriatrico",
+        "geriatrica",
+        "geriatricos",
+        "geriatricas",
+        "incontinencia",
+        "roupa intima",
+        "pet",
+        "pets",
+        "cachorro",
+        "cachorros",
+        "gato",
+        "gatos",
+        "cao",
+        "caes",
+        "veterinario",
+        "antipulgas",
+        "pano",
+        "tecido",
+        "ecologica",
+        "ecologicas",
+        "reutilizavel",
+        "reutilizaveis",
+        "piscina",
+        "natacao",
+        "pomada",
+        "creme",
+        "lenco",
+        "lencos",
+        "trocador",
+        "porta fralda",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Fralda Infantil Marca A RN 36 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Fraldas Descartáveis Marca B G 60 Un",
+        "matches": true
+      },
+      {
+        "name": "Fralda Marca C Pants XXG 24 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Fralda Geriátrica G 20 Un",
+        "matches": false
+      },
+      {
+        "name": "Fraldas para Adultos M 30 Unidades",
+        "matches": false
+      },
+      {
+        "name": "Fralda para Incontinência G",
+        "matches": false
+      },
+      {
+        "name": "Fralda de Pano Infantil",
+        "matches": false
+      },
+      {
+        "name": "Fralda Ecológica Reutilizável",
+        "matches": false
+      },
+      {
+        "name": "Fralda para Cachorro P",
+        "matches": false
+      },
+      {
+        "name": "Pomada para Assadura de Fralda Infantil 60g",
+        "matches": false
+      },
+      {
+        "name": "Fralda para Piscina Infantil",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "fralda-adulta",
+      "name": "Fraldas adultas descartáveis",
+      "search_queries": [
+        "fralda adulta",
+        "fralda geriatrica"
+      ],
+      "required_terms": [
+        [
+          "fralda",
+          "fraldas"
+        ],
+        [
+          "adulto",
+          "adulta",
+          "adultos",
+          "adultas",
+          "geriatrico",
+          "geriatrica",
+          "geriatricos",
+          "geriatricas",
+          "incontinencia",
+          "roupa intima"
+        ]
+      ],
+      "excluded_terms": [
+        "pet",
+        "pets",
+        "cachorro",
+        "cachorros",
+        "gato",
+        "gatos",
+        "cao",
+        "caes",
+        "veterinario",
+        "antipulgas",
+        "infantil",
+        "infantis",
+        "bebe",
+        "bebes",
+        "pano",
+        "tecido",
+        "reutilizavel",
+        "reutilizaveis",
+        "pomada",
+        "creme",
+        "lenco",
+        "lencos",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Fralda Adulta Marca A M 20 Un",
+        "matches": true
+      },
+      {
+        "name": "Fraldas Geriátricas Marca B G 16 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Fralda Descartável para Incontinência G 30 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Fralda Infantil G 60 Unidades",
+        "matches": false
+      },
+      {
+        "name": "Fralda Descartável G 30 Unidades",
+        "matches": false
+      },
+      {
+        "name": "Absorvente para Incontinência 20 Un",
+        "matches": false
+      },
+      {
+        "name": "Roupa Íntima Adulta G 8 Unidades",
+        "matches": false
+      },
+      {
+        "name": "Fralda Geriátrica Reutilizável",
+        "matches": false
+      },
+      {
+        "name": "Fralda para Cachorro Adulto G",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "escova-dental",
+      "name": "Escova dental manual",
+      "search_queries": [
+        "escova dental",
+        "escova de dente"
+      ],
+      "required_terms": [
+        [
+          "escova dental",
+          "escovas dentais",
+          "escova de dente",
+          "escova de dentes"
+        ]
+      ],
+      "excluded_terms": [
+        "pet",
+        "pets",
+        "cachorro",
+        "cachorros",
+        "gato",
+        "gatos",
+        "cao",
+        "caes",
+        "veterinario",
+        "antipulgas",
+        "eletrica",
+        "eletricas",
+        "pilha",
+        "pilhas",
+        "refil",
+        "interdental",
+        "creme dental",
+        "pasta dental",
+        "pasta de dente",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Escova Dental Macia Marca A 1 Unidade",
+        "matches": true
+      },
+      {
+        "name": "Escova de Dentes Infantil Marca B",
+        "matches": true
+      },
+      {
+        "name": "Escovas Dentais Médias 3 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Escova Dental Elétrica",
+        "matches": false
+      },
+      {
+        "name": "Refil para Escova Dental",
+        "matches": false
+      },
+      {
+        "name": "Kit Escova Dental e Creme Dental 90g",
+        "matches": false
+      },
+      {
+        "name": "Escova Dental para Cães",
+        "matches": false
+      },
+      {
+        "name": "Escova Interdental",
+        "matches": false
+      },
+      {
+        "name": "Escova de Cabelo",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "shampoo",
+      "name": "Shampoo de uso humano",
+      "search_queries": [
+        "shampoo",
+        "xampu"
+      ],
+      "required_terms": [
+        [
+          "shampoo",
+          "xampu"
+        ]
+      ],
+      "excluded_terms": [
+        "pet",
+        "pets",
+        "cachorro",
+        "cachorros",
+        "gato",
+        "gatos",
+        "cao",
+        "caes",
+        "veterinario",
+        "antipulgas",
+        "condicionador",
+        "kit",
+        "automotivo",
+        "carro",
+        "carros",
+        "lava autos"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Shampoo Marca A 350ml",
+        "matches": true
+      },
+      {
+        "name": "Xampu Infantil Marca B 200 ml",
+        "matches": true
+      },
+      {
+        "name": "Shampoo Aveia 300ml",
+        "matches": true
+      },
+      {
+        "name": "Shampoo Leite 200ml",
+        "matches": true
+      },
+      {
+        "name": "Shampoo Banana 300ml",
+        "matches": true
+      },
+      {
+        "name": "Condicionador Marca A 350ml",
+        "matches": false
+      },
+      {
+        "name": "Kit Shampoo e Condicionador",
+        "matches": false
+      },
+      {
+        "name": "Shampoo para Cachorros",
+        "matches": false
+      },
+      {
+        "name": "Shampoo Automotivo 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sabao-roupas-barra",
+      "name": "Sabão em barra para roupas",
+      "search_queries": [
+        "sabao em barra",
+        "sabao barra"
+      ],
+      "required_terms": [
+        [
+          "sabao"
+        ],
+        [
+          "barra",
+          "barras"
+        ]
+      ],
+      "excluded_terms": [
+        "sabonete",
+        "po",
+        "liquido",
+        "liquida",
+        "pasta",
+        "maos",
+        "corporal",
+        "automotivo",
+        "louca",
+        "loucas"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sabão em Barra Neutro Marca A 200g",
+        "matches": true
+      },
+      {
+        "name": "Sabão de Coco em Barras Marca B 5 Un",
+        "matches": true
+      },
+      {
+        "name": "Sabão Barra Glicerinado 180 g",
+        "matches": true
+      },
+      {
+        "name": "Sabonete em Barra 90g",
+        "matches": false
+      },
+      {
+        "name": "Sabão Líquido para Roupas 1L",
+        "matches": false
+      },
+      {
+        "name": "Sabão em Pó 800g",
+        "matches": false
+      },
+      {
+        "name": "Sabão em Barra para Mãos",
+        "matches": false
+      },
+      {
+        "name": "Detergente em Barra para Louças",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "saco-lixo",
+      "name": "Sacos para lixo",
+      "search_queries": [
+        "saco lixo",
+        "sacos para lixo"
+      ],
+      "required_terms": [
+        [
+          "saco",
+          "sacos"
+        ],
+        [
+          "lixo"
+        ]
+      ],
+      "excluded_terms": [
+        "lixeira",
+        "suporte",
+        "dispensador",
+        "dispenser",
+        "porta saco",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Saco para Lixo Reforçado 50L 30 Un",
+        "matches": true
+      },
+      {
+        "name": "Sacos de Lixo 100 Litros 10 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Saco Lixo Banheiro 15L 40 Un",
+        "matches": true
+      },
+      {
+        "name": "Saco para Freezer 3L",
+        "matches": false
+      },
+      {
+        "name": "Lixeira com Saco para Lixo",
+        "matches": false
+      },
+      {
+        "name": "Suporte para Saco de Lixo",
+        "matches": false
+      },
+      {
+        "name": "Saco para Aspirador de Pó",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "esponja-louca",
+      "name": "Esponja para lavar louça",
+      "search_queries": [
+        "esponja louca",
+        "esponja multiuso"
+      ],
+      "required_terms": [
+        [
+          "esponja",
+          "esponjas"
+        ],
+        [
+          "louca",
+          "loucas",
+          "multiuso",
+          "dupla face",
+          "nao risca"
+        ]
+      ],
+      "excluded_terms": [
+        "aco",
+        "banho",
+        "corporal",
+        "maquiagem",
+        "automotiva",
+        "automotivo",
+        "magica",
+        "melamina",
+        "sabonete",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Esponja Multiuso Dupla Face Marca A 3 Unidades",
+        "matches": true
+      },
+      {
+        "name": "Esponja para Louça Não Risca Marca B",
+        "matches": true
+      },
+      {
+        "name": "Esponjas Dupla Face 4 Un",
+        "matches": true
+      },
+      {
+        "name": "Esponja de Aço para Louça",
+        "matches": false
+      },
+      {
+        "name": "Esponja de Banho Multiuso",
+        "matches": false
+      },
+      {
+        "name": "Esponja para Maquiagem",
+        "matches": false
+      },
+      {
+        "name": "Esponja Mágica Multiuso",
+        "matches": false
+      },
+      {
+        "name": "Esponja Automotiva Multiuso",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "desodorante",
+      "name": "Desodorante corporal",
+      "search_queries": [
+        "desodorante"
+      ],
+      "required_terms": [
+        [
+          "desodorante"
+        ]
+      ],
+      "excluded_terms": [
+        "pet",
+        "pets",
+        "cachorro",
+        "cachorros",
+        "gato",
+        "gatos",
+        "cao",
+        "caes",
+        "veterinario",
+        "antipulgas",
+        "ambiente",
+        "ambientes",
+        "sanitario",
+        "sanitaria",
+        "vaso",
+        "pes",
+        "pedico",
+        "calcado",
+        "calcados",
+        "tenis",
+        "intimo",
+        "intima",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Desodorante Antitranspirante Aerosol Marca A 150ml",
+        "matches": true
+      },
+      {
+        "name": "Desodorante Roll-On Marca B 50ml",
+        "matches": true
+      },
+      {
+        "name": "Desodorante Creme Marca C 55g",
+        "matches": true
+      },
+      {
+        "name": "Desodorante de Ambiente 360ml",
+        "matches": false
+      },
+      {
+        "name": "Desodorante Sanitário 35g",
+        "matches": false
+      },
+      {
+        "name": "Desodorante para Pés",
+        "matches": false
+      },
+      {
+        "name": "Desodorante para Cães",
+        "matches": false
+      },
+      {
+        "name": "Kit Desodorante e Sabonete",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "fio-dental",
+      "name": "Fio ou fita dental",
+      "search_queries": [
+        "fio dental",
+        "fita dental"
+      ],
+      "required_terms": [
+        [
+          "fio dental",
+          "fita dental"
+        ]
+      ],
+      "excluded_terms": [
+        "passador",
+        "suporte",
+        "porta fio",
+        "haste",
+        "hastes",
+        "kit",
+        "escova",
+        "creme dental"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Fio Dental Encerado Marca A 50m",
+        "matches": true
+      },
+      {
+        "name": "Fita Dental Marca B 25 Metros",
+        "matches": true
+      },
+      {
+        "name": "Fio Dental Infantil 50m",
+        "matches": true
+      },
+      {
+        "name": "Passador de Fio Dental 30 Un",
+        "matches": false
+      },
+      {
+        "name": "Kit Escova e Fio Dental",
+        "matches": false
+      },
+      {
+        "name": "Haste com Fio Dental 50 Unidades",
+        "matches": false
+      },
+      {
+        "name": "Creme Dental Fio Dental Kit",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "frango-inteiro",
+      "name": "Frango inteiro cru",
+      "search_queries": [
+        "frango inteiro"
+      ],
+      "required_terms": [
+        [
+          "frango"
+        ],
+        [
+          "inteiro"
+        ]
+      ],
+      "excluded_terms": [
+        "empanado",
+        "empanada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "recheado",
+        "recheada",
+        "defumado",
+        "defumada",
+        "racao",
+        "petisco",
+        "sopa",
+        "caldo",
+        "lasanha",
+        "peito",
+        "coxa",
+        "sobrecoxa",
+        "asa",
+        "file",
+        "files",
+        "kit",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Frango Inteiro Congelado Marca A 2kg",
+        "matches": true
+      },
+      {
+        "name": "Frango Inteiro Resfriado Marca B Kg",
+        "matches": true
+      },
+      {
+        "name": "Frango Inteiro com Miúdos Kg",
+        "matches": true
+      },
+      {
+        "name": "Frango Inteiro Assado",
+        "matches": false
+      },
+      {
+        "name": "Frango Inteiro Temperado Congelado",
+        "matches": false
+      },
+      {
+        "name": "Peito de Frango Inteiro",
+        "matches": false
+      },
+      {
+        "name": "Frango Inteiro Recheado",
+        "matches": false
+      },
+      {
+        "name": "Ração Sabor Frango Inteiro",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de frango inteiro 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "frango-coxa-sobrecoxa",
+      "name": "Coxa e sobrecoxa de frango juntas",
+      "search_queries": [
+        "coxa sobrecoxa frango",
+        "coxa com sobrecoxa"
+      ],
+      "required_terms": [
+        [
+          "frango"
+        ],
+        [
+          "coxa"
+        ],
+        [
+          "sobrecoxa"
+        ]
+      ],
+      "excluded_terms": [
+        "empanado",
+        "empanada",
+        "temperado",
+        "temperada",
+        "cozido",
+        "cozida",
+        "assado",
+        "assada",
+        "pronto",
+        "pronta",
+        "recheado",
+        "recheada",
+        "defumado",
+        "defumada",
+        "racao",
+        "petisco",
+        "sopa",
+        "caldo",
+        "lasanha",
+        "peito",
+        "asa",
+        "kit",
+        "linguica",
+        "salsicha",
+        "presunto",
+        "mortadela"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Coxa e Sobrecoxa de Frango Marca A Congelada 1kg",
+        "matches": true
+      },
+      {
+        "name": "Coxa com Sobrecoxa de Frango Resfriada Kg",
+        "matches": true
+      },
+      {
+        "name": "Coxa/Sobrecoxa Frango 1kg",
+        "matches": true
+      },
+      {
+        "name": "Coxa de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Sobrecoxa de Frango 1kg",
+        "matches": false
+      },
+      {
+        "name": "Coxa e Sobrecoxa de Frango Temperada",
+        "matches": false
+      },
+      {
+        "name": "Coxa e Sobrecoxa de Frango Assada",
+        "matches": false
+      },
+      {
+        "name": "Kit Peito Coxa e Sobrecoxa de Frango",
+        "matches": false
+      },
+      {
+        "name": "Linguiça de frango coxa sobrecoxa 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "desinfetante",
+      "name": "Desinfetante doméstico líquido",
+      "search_queries": [
+        "desinfetante"
+      ],
+      "required_terms": [
+        [
+          "desinfetante"
+        ]
+      ],
+      "excluded_terms": [
+        "aerossol",
+        "aerosol",
+        "spray",
+        "gel",
+        "pastilha",
+        "pastilhas",
+        "lenco",
+        "lencos",
+        "hospitalar",
+        "veterinario",
+        "piscina",
+        "roupa",
+        "roupas",
+        "maos",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Desinfetante Líquido Lavanda Marca A 2L",
+        "matches": true
+      },
+      {
+        "name": "Desinfetante Pinho Marca B 500ml",
+        "matches": true
+      },
+      {
+        "name": "Desinfetante Limão 1L",
+        "matches": true
+      },
+      {
+        "name": "Desinfetante Aerossol 360ml",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante em Gel 500g",
+        "matches": false
+      },
+      {
+        "name": "Lenços Desinfetantes 20 Un",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante Hospitalar",
+        "matches": false
+      },
+      {
+        "name": "Desinfetante para Roupas 1L",
+        "matches": false
+      },
+      {
+        "name": "Água Sanitária 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "refrigerante",
+      "name": "Refrigerantes",
+      "search_queries": [
+        "refrigerante"
+      ],
+      "required_terms": [
+        [
+          "refrigerante",
+          "refrigerantes"
+        ]
+      ],
+      "excluded_terms": [
+        "xarope",
+        "concentrado",
+        "po",
+        "bala",
+        "balas",
+        "goma",
+        "sorvete",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Refrigerante Cola Marca A 2L",
+        "matches": true
+      },
+      {
+        "name": "Refrigerante Guaraná Zero Açúcar Marca B 350ml",
+        "matches": true
+      },
+      {
+        "name": "Refrigerante Limão 600ml",
+        "matches": true
+      },
+      {
+        "name": "Xarope para Refrigerante Cola 500ml",
+        "matches": false
+      },
+      {
+        "name": "Refresco em Pó Sabor Refrigerante",
+        "matches": false
+      },
+      {
+        "name": "Bala Sabor Refrigerante",
+        "matches": false
+      },
+      {
+        "name": "Néctar de Frutas 1L",
+        "matches": false
+      },
+      {
+        "name": "Água com Gás 500ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "chocolate-barra",
+      "name": "Chocolate em barra ou tablete",
+      "search_queries": [
+        "chocolate",
+        "chocolate barra"
+      ],
+      "required_terms": [
+        [
+          "chocolate",
+          "chocolates"
+        ]
+      ],
+      "excluded_terms": [
+        "bombom",
+        "bombons",
+        "trufa",
+        "trufas",
+        "achocolatado",
+        "po",
+        "bebida",
+        "cereal",
+        "biscoito",
+        "biscoitos",
+        "bolacha",
+        "bolachas",
+        "cookie",
+        "cookies",
+        "wafer",
+        "sorvete",
+        "picole",
+        "ovo",
+        "ovos",
+        "pascoa",
+        "cobertura",
+        "fracionado",
+        "fracionada",
+        "gota",
+        "gotas",
+        "granulado",
+        "creme",
+        "pasta",
+        "bolo",
+        "pao",
+        "leite condensado",
+        "iogurte",
+        "mistura",
+        "sabonete",
+        "shampoo",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Chocolate ao Leite Marca A 80g",
+        "matches": true
+      },
+      {
+        "name": "Chocolate Branco em Barra Marca B 90g",
+        "matches": true
+      },
+      {
+        "name": "Tablete de Chocolate Meio Amargo Marca C 100g",
+        "matches": true
+      },
+      {
+        "name": "Chocolate Zero Açúcar 80g",
+        "matches": true
+      },
+      {
+        "name": "Bombom de Chocolate ao Leite 250g",
+        "matches": false
+      },
+      {
+        "name": "Achocolatado em Pó 400g",
+        "matches": false
+      },
+      {
+        "name": "Chocolate em Pó 200g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito de Chocolate 120g",
+        "matches": false
+      },
+      {
+        "name": "Ovo de Chocolate 150g",
+        "matches": false
+      },
+      {
+        "name": "Cobertura de Chocolate Fracionado 1kg",
+        "matches": false
+      },
+      {
+        "name": "Chocolate em Gotas 100g",
+        "matches": false
+      },
+      {
+        "name": "Barra de Cereal com Chocolate",
+        "matches": false
+      },
+      {
+        "name": "Sorvete de Chocolate 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "bombom",
+      "name": "Bombons",
+      "search_queries": [
+        "bombom",
+        "bombons"
+      ],
+      "required_terms": [
+        [
+          "bombom",
+          "bombons"
+        ]
+      ],
+      "excluded_terms": [
+        "sorvete",
+        "picole",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "wafer",
+        "pave",
+        "torta",
+        "iogurte",
+        "essencia",
+        "sabor bombom",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Bombom de Chocolate Marca A 20g",
+        "matches": true
+      },
+      {
+        "name": "Caixa de Bombons Sortidos Marca B 250g",
+        "matches": true
+      },
+      {
+        "name": "Bombom Recheado ao Leite 18g",
+        "matches": true
+      },
+      {
+        "name": "Sorvete Sabor Bombom 1L",
+        "matches": false
+      },
+      {
+        "name": "Bolo de Bombom 400g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Sabor Bombom",
+        "matches": false
+      },
+      {
+        "name": "Chocolate ao Leite 80g",
+        "matches": false
+      },
+      {
+        "name": "Essência de Bombom 30ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "achocolatado-po",
+      "name": "Achocolatado em pó",
+      "search_queries": [
+        "achocolatado em po"
+      ],
+      "required_terms": [
+        [
+          "achocolatado",
+          "achocolatados"
+        ],
+        [
+          "po"
+        ]
+      ],
+      "excluded_terms": [
+        "liquido",
+        "liquida",
+        "pronto",
+        "pronta",
+        "bebida",
+        "biscoito",
+        "bolacha",
+        "bolo",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Achocolatado em Pó Marca A 400g",
+        "matches": true
+      },
+      {
+        "name": "Achocolatado Pó Zero Açúcar Marca B 200g",
+        "matches": true
+      },
+      {
+        "name": "Bebida Láctea Achocolatada 200ml",
+        "matches": false
+      },
+      {
+        "name": "Achocolatado Líquido 1L",
+        "matches": false
+      },
+      {
+        "name": "Chocolate em Pó 50% Cacau 200g",
+        "matches": false
+      },
+      {
+        "name": "Cacau em Pó 100g",
+        "matches": false
+      },
+      {
+        "name": "Achocolatado 200ml",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "bala",
+      "name": "Balas e gomas doces",
+      "search_queries": [
+        "bala",
+        "balas"
+      ],
+      "required_terms": [
+        [
+          "bala",
+          "balas",
+          "jujuba",
+          "jujubas"
+        ]
+      ],
+      "excluded_terms": [
+        "chiclete",
+        "chicletes",
+        "goma de mascar",
+        "gomas de mascar",
+        "pirulito",
+        "vitamina",
+        "vitaminas",
+        "suplemento",
+        "medicinal",
+        "sorvete",
+        "picole",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Bala de Banana Marca A 100g",
+        "matches": true
+      },
+      {
+        "name": "Balas de Leite Marca B 150g",
+        "matches": true
+      },
+      {
+        "name": "Bala de Goma Frutas 90g",
+        "matches": true
+      },
+      {
+        "name": "Jujubas Coloridas 100g",
+        "matches": true
+      },
+      {
+        "name": "Bala Zero Açúcar 50g",
+        "matches": true
+      },
+      {
+        "name": "Goma de Mascar 14g",
+        "matches": false
+      },
+      {
+        "name": "Suplemento Vitamina C em Balas",
+        "matches": false
+      },
+      {
+        "name": "Kit Balas e Pirulitos",
+        "matches": false
+      },
+      {
+        "name": "Sorvete Sabor Bala 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "chiclete",
+      "name": "Chicletes e gomas de mascar",
+      "search_queries": [
+        "chiclete",
+        "goma de mascar"
+      ],
+      "required_terms": [
+        [
+          "chiclete",
+          "chicletes",
+          "chicle",
+          "chicles",
+          "goma de mascar",
+          "gomas de mascar"
+        ]
+      ],
+      "excluded_terms": [
+        "nicotina",
+        "medicinal",
+        "suplemento",
+        "sorvete",
+        "picole",
+        "bala",
+        "balas",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Chiclete Hortelã Marca A 14g",
+        "matches": true
+      },
+      {
+        "name": "Goma de Mascar Sem Açúcar Marca B 8g",
+        "matches": true
+      },
+      {
+        "name": "Chicles Sabor Melancia 20g",
+        "matches": true
+      },
+      {
+        "name": "Goma de Mascar com Nicotina",
+        "matches": false
+      },
+      {
+        "name": "Sorvete Sabor Chiclete 1L",
+        "matches": false
+      },
+      {
+        "name": "Bala de Goma 100g",
+        "matches": false
+      },
+      {
+        "name": "Goma de Tapioca 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "biscoito-doce",
+      "name": "Biscoitos doces sem recheio",
+      "search_queries": [
+        "biscoito doce",
+        "biscoito maisena",
+        "biscoito maria",
+        "cookie"
+      ],
+      "required_terms": [
+        [
+          "biscoito",
+          "biscoitos",
+          "bolacha",
+          "bolachas",
+          "cookie",
+          "cookies"
+        ],
+        [
+          "doce",
+          "doces",
+          "maisena",
+          "maizena",
+          "maria",
+          "leite",
+          "coco",
+          "amanteigado",
+          "amanteigados",
+          "chocolate",
+          "cookie",
+          "cookies"
+        ]
+      ],
+      "excluded_terms": [
+        "recheado",
+        "recheados",
+        "recheada",
+        "recheadas",
+        "wafer",
+        "wafers",
+        "salgado",
+        "salgados",
+        "cracker",
+        "crackers",
+        "agua e sal",
+        "racao",
+        "pet",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Biscoito Maisena Marca A 350g",
+        "matches": true
+      },
+      {
+        "name": "Bolacha Maria Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Biscoito Doce de Leite 200g",
+        "matches": true
+      },
+      {
+        "name": "Cookies com Gotas de Chocolate 100g",
+        "matches": true
+      },
+      {
+        "name": "Biscoito Amanteigado de Coco 150g",
+        "matches": true
+      },
+      {
+        "name": "Biscoito Recheado Chocolate 120g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Wafer 100g",
+        "matches": false
+      },
+      {
+        "name": "Bolacha Salgada Cream Cracker 350g",
+        "matches": false
+      },
+      {
+        "name": "Cookie Recheado 100g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Integral sem Tipo Identificado 150g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "biscoito-recheado",
+      "name": "Biscoitos recheados",
+      "search_queries": [
+        "biscoito recheado",
+        "bolacha recheada"
+      ],
+      "required_terms": [
+        [
+          "biscoito",
+          "biscoitos",
+          "bolacha",
+          "bolachas",
+          "cookie",
+          "cookies"
+        ],
+        [
+          "recheado",
+          "recheados",
+          "recheada",
+          "recheadas"
+        ]
+      ],
+      "excluded_terms": [
+        "wafer",
+        "wafers",
+        "salgado",
+        "salgados",
+        "racao",
+        "pet",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Biscoito Recheado Chocolate Marca A 120g",
+        "matches": true
+      },
+      {
+        "name": "Bolacha Recheada Morango 130g",
+        "matches": true
+      },
+      {
+        "name": "Cookie Recheado Creme de Avelã 100g",
+        "matches": true
+      },
+      {
+        "name": "Biscoito Maisena 350g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Wafer Recheado 100g",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Salgado Recheado Queijo 100g",
+        "matches": false
+      },
+      {
+        "name": "Bombom Recheado 20g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "biscoito-wafer",
+      "name": "Biscoitos wafer",
+      "search_queries": [
+        "biscoito wafer",
+        "wafer"
+      ],
+      "required_terms": [
+        [
+          "wafer",
+          "wafers"
+        ]
+      ],
+      "excluded_terms": [
+        "sorvete",
+        "picole",
+        "bombom",
+        "bombons",
+        "casquinha",
+        "cone",
+        "bolo",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Biscoito Wafer Chocolate Marca A 100g",
+        "matches": true
+      },
+      {
+        "name": "Wafer Recheado Baunilha 110g",
+        "matches": true
+      },
+      {
+        "name": "Wafer Sabor Manteiga 100g",
+        "matches": true
+      },
+      {
+        "name": "Sorvete com Wafer 1L",
+        "matches": false
+      },
+      {
+        "name": "Bombom com Wafer 20g",
+        "matches": false
+      },
+      {
+        "name": "Casquinha Wafer para Sorvete",
+        "matches": false
+      },
+      {
+        "name": "Biscoito Recheado 120g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "salgadinho",
+      "name": "Salgadinhos de pacote",
+      "search_queries": [
+        "salgadinho",
+        "snack salgado"
+      ],
+      "required_terms": [
+        [
+          "salgadinho",
+          "salgadinhos",
+          "snack",
+          "snacks"
+        ]
+      ],
+      "excluded_terms": [
+        "batata",
+        "banana",
+        "fruta",
+        "frutas",
+        "doce",
+        "doces",
+        "chocolate",
+        "biscoito",
+        "bolacha",
+        "amendoim",
+        "castanha",
+        "racao",
+        "pet",
+        "cachorro",
+        "gato",
+        "congelado",
+        "congelados",
+        "coxinha",
+        "risole",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Salgadinho de Milho Queijo Marca A 90g",
+        "matches": true
+      },
+      {
+        "name": "Snack Salgado de Polvilho 50g",
+        "matches": true
+      },
+      {
+        "name": "Salgadinhos de Trigo Assados 80g",
+        "matches": true
+      },
+      {
+        "name": "Salgadinho Batata Chips 80g",
+        "matches": false
+      },
+      {
+        "name": "Snack Doce de Chocolate 50g",
+        "matches": false
+      },
+      {
+        "name": "Snack de Banana 50g",
+        "matches": false
+      },
+      {
+        "name": "Snack para Cachorro 100g",
+        "matches": false
+      },
+      {
+        "name": "Salgadinhos Congelados Coxinha 500g",
+        "matches": false
+      },
+      {
+        "name": "Amendoim Snack Salgado 100g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "batata-chips",
+      "name": "Batata chips de pacote",
+      "search_queries": [
+        "batata chips",
+        "batata frita"
+      ],
+      "required_terms": [
+        [
+          "batata",
+          "batatas"
+        ],
+        [
+          "chips",
+          "frita",
+          "fritas",
+          "ondulada",
+          "onduladas"
+        ]
+      ],
+      "excluded_terms": [
+        "palha",
+        "congelada",
+        "congeladas",
+        "congelado",
+        "congelados",
+        "pure",
+        "farinha",
+        "massa",
+        "doce",
+        "racao",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Batata Chips Original Marca A 80g",
+        "matches": true
+      },
+      {
+        "name": "Batata Frita Ondulada Marca B 100g",
+        "matches": true
+      },
+      {
+        "name": "Batatas Fritas Sabor Cebola 90g",
+        "matches": true
+      },
+      {
+        "name": "Batata Palha 100g",
+        "matches": false
+      },
+      {
+        "name": "Batata Frita Congelada 1kg",
+        "matches": false
+      },
+      {
+        "name": "Batata Doce Chips 50g",
+        "matches": false
+      },
+      {
+        "name": "Batata Fresca 1kg",
+        "matches": false
+      },
+      {
+        "name": "Massa Sabor Batata Chips 100g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "milho-pipoca",
+      "name": "Milho para pipoca em grãos",
+      "search_queries": [
+        "milho pipoca"
+      ],
+      "required_terms": [
+        [
+          "milho"
+        ],
+        [
+          "pipoca"
+        ]
+      ],
+      "excluded_terms": [
+        "microondas",
+        "micro ondas",
+        "pronta",
+        "pronto",
+        "doce",
+        "caramelizada",
+        "caramelizado",
+        "manteiga",
+        "oleo",
+        "semente",
+        "sementes",
+        "plantio",
+        "racao",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Milho para Pipoca Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Milho Pipoca Premium Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Pipoca de Micro-ondas de Milho 100g",
+        "matches": false
+      },
+      {
+        "name": "Pipoca Doce de Milho Pronta 80g",
+        "matches": false
+      },
+      {
+        "name": "Milho Pipoca para Plantio",
+        "matches": false
+      },
+      {
+        "name": "Milho Verde em Conserva 170g",
+        "matches": false
+      },
+      {
+        "name": "Flocão de Milho 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "sorvete",
+      "name": "Sorvetes",
+      "search_queries": [
+        "sorvete"
+      ],
+      "required_terms": [
+        [
+          "sorvete",
+          "sorvetes"
+        ]
+      ],
+      "excluded_terms": [
+        "mistura",
+        "preparo",
+        "po",
+        "cobertura",
+        "calda",
+        "casquinha",
+        "cone",
+        "base",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Sorvete Chocolate Marca A 1L",
+        "matches": true
+      },
+      {
+        "name": "Sorvete de Leite Marca B 1,5L",
+        "matches": true
+      },
+      {
+        "name": "Sorvete Banana 500ml",
+        "matches": true
+      },
+      {
+        "name": "Sorvetes Sortidos 1L",
+        "matches": true
+      },
+      {
+        "name": "Mistura em Pó para Sorvete 100g",
+        "matches": false
+      },
+      {
+        "name": "Cobertura para Sorvete 300g",
+        "matches": false
+      },
+      {
+        "name": "Casquinha de Sorvete 10 Unidades",
+        "matches": false
+      },
+      {
+        "name": "Base para Sorvete 1kg",
+        "matches": false
+      },
+      {
+        "name": "Iogurte 170g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "leite-condensado",
+      "name": "Leite condensado",
+      "search_queries": [
+        "leite condensado"
+      ],
+      "required_terms": [
+        [
+          "leite"
+        ],
+        [
+          "condensado"
+        ]
+      ],
+      "excluded_terms": [
+        "mistura",
+        "composto",
+        "bebida",
+        "sorvete",
+        "picole",
+        "bolo",
+        "biscoito",
+        "bolacha",
+        "bala",
+        "balas",
+        "bombom",
+        "bombons",
+        "sabor",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Leite Condensado Integral Marca A 395g",
+        "matches": true
+      },
+      {
+        "name": "Leite Condensado Semidesnatado 395g",
+        "matches": true
+      },
+      {
+        "name": "Leite Condensado Zero Lactose Marca B 395g",
+        "matches": true
+      },
+      {
+        "name": "Mistura Láctea Condensada 395g",
+        "matches": false
+      },
+      {
+        "name": "Mistura de Leite Condensado e Soro",
+        "matches": false
+      },
+      {
+        "name": "Sorvete de Leite Condensado 1L",
+        "matches": false
+      },
+      {
+        "name": "Bala Sabor Leite Condensado 100g",
+        "matches": false
+      },
+      {
+        "name": "Leite Integral UHT 1L",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "macarrao-instantaneo",
+      "name": "Macarrão instantâneo",
+      "search_queries": [
+        "macarrao instantaneo",
+        "lamen"
+      ],
+      "required_terms": [
+        [
+          "macarrao",
+          "massa",
+          "massas",
+          "lamen",
+          "noodles"
+        ],
+        [
+          "instantaneo",
+          "instantanea",
+          "instantaneos",
+          "instantaneas"
+        ]
+      ],
+      "excluded_terms": [
+        "tempero",
+        "molho",
+        "sopa",
+        "biscoito",
+        "racao",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Macarrão Instantâneo Galinha Marca A 85g",
+        "matches": true
+      },
+      {
+        "name": "Lámen Instantâneo Carne 85g",
+        "matches": true
+      },
+      {
+        "name": "Massa Instantânea Copo Legumes 70g",
+        "matches": true
+      },
+      {
+        "name": "Macarrão Instantâneo Feijão 85g",
+        "matches": true
+      },
+      {
+        "name": "Macarrão Espaguete 500g",
+        "matches": false
+      },
+      {
+        "name": "Tempero para Macarrão Instantâneo 10g",
+        "matches": false
+      },
+      {
+        "name": "Sopa Instantânea 20g",
+        "matches": false
+      },
+      {
+        "name": "Molho para Macarrão Instantâneo 100g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "salsicha",
+      "name": "Salsichas",
+      "search_queries": [
+        "salsicha"
+      ],
+      "required_terms": [
+        [
+          "salsicha",
+          "salsichas"
+        ]
+      ],
+      "excluded_terms": [
+        "pizza",
+        "sanduiche",
+        "sanduiches",
+        "pao",
+        "lasanha",
+        "farofa",
+        "feijoada",
+        "pate",
+        "racao",
+        "salgadinho",
+        "bolo",
+        "torta",
+        "tortas",
+        "molho",
+        "macarrao",
+        "risoto",
+        "kit",
+        "linguica"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Salsicha Hot Dog Marca A 500g",
+        "matches": true
+      },
+      {
+        "name": "Salsichas de Frango Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Salsicha Viena em Conserva 300g",
+        "matches": true
+      },
+      {
+        "name": "Pão para Salsicha 300g",
+        "matches": false
+      },
+      {
+        "name": "Molho com Salsicha 300g",
+        "matches": false
+      },
+      {
+        "name": "Salsicha para Cachorro Ração 100g",
+        "matches": false
+      },
+      {
+        "name": "Linguiça Tipo Salsicha 500g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "presunto",
+      "name": "Presunto",
+      "search_queries": [
+        "presunto"
+      ],
+      "required_terms": [
+        [
+          "presunto"
+        ]
+      ],
+      "excluded_terms": [
+        "pizza",
+        "sanduiche",
+        "sanduiches",
+        "pao",
+        "lasanha",
+        "farofa",
+        "feijoada",
+        "pate",
+        "racao",
+        "salgadinho",
+        "bolo",
+        "torta",
+        "tortas",
+        "molho",
+        "macarrao",
+        "risoto",
+        "kit",
+        "apresuntado",
+        "peito de peru"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Presunto Cozido Marca A Fatiado 200g",
+        "matches": true
+      },
+      {
+        "name": "Presunto Tipo Parma Marca B 100g",
+        "matches": true
+      },
+      {
+        "name": "Presunto Cozido Kg",
+        "matches": true
+      },
+      {
+        "name": "Apresuntado 200g",
+        "matches": false
+      },
+      {
+        "name": "Pizza de Presunto 400g",
+        "matches": false
+      },
+      {
+        "name": "Sanduíche de Presunto e Queijo",
+        "matches": false
+      },
+      {
+        "name": "Patê de Presunto 100g",
+        "matches": false
+      },
+      {
+        "name": "Peito de Peru Tipo Presunto 200g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "mortadela",
+      "name": "Mortadela",
+      "search_queries": [
+        "mortadela"
+      ],
+      "required_terms": [
+        [
+          "mortadela"
+        ]
+      ],
+      "excluded_terms": [
+        "pizza",
+        "sanduiche",
+        "sanduiches",
+        "pao",
+        "lasanha",
+        "farofa",
+        "feijoada",
+        "pate",
+        "racao",
+        "salgadinho",
+        "bolo",
+        "torta",
+        "tortas",
+        "molho",
+        "macarrao",
+        "risoto",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Mortadela Marca A Fatiada 200g",
+        "matches": true
+      },
+      {
+        "name": "Mortadela de Frango Marca B 400g",
+        "matches": true
+      },
+      {
+        "name": "Mortadela Defumada Kg",
+        "matches": true
+      },
+      {
+        "name": "Sanduíche de Mortadela 150g",
+        "matches": false
+      },
+      {
+        "name": "Patê de Mortadela 100g",
+        "matches": false
+      },
+      {
+        "name": "Pizza de Mortadela 400g",
+        "matches": false
+      },
+      {
+        "name": "Salgadinho Sabor Mortadela 50g",
+        "matches": false
+      }
+    ]
+  },
+  {
+    "target": {
+      "id": "linguica",
+      "name": "Linguiça",
+      "search_queries": [
+        "linguica"
+      ],
+      "required_terms": [
+        [
+          "linguica",
+          "linguicas"
+        ]
+      ],
+      "excluded_terms": [
+        "pizza",
+        "sanduiche",
+        "sanduiches",
+        "pao",
+        "lasanha",
+        "farofa",
+        "feijoada",
+        "pate",
+        "racao",
+        "salgadinho",
+        "bolo",
+        "torta",
+        "tortas",
+        "molho",
+        "macarrao",
+        "risoto",
+        "kit"
+      ]
+    },
+    "cases": [
+      {
+        "name": "Linguiça Toscana Suína Marca A 700g",
+        "matches": true
+      },
+      {
+        "name": "Linguiça Calabresa Defumada 400g",
+        "matches": true
+      },
+      {
+        "name": "Linguiças de Frango Marca B 500g",
+        "matches": true
+      },
+      {
+        "name": "Linguiça de Peito de Frango 500g",
+        "matches": true
+      },
+      {
+        "name": "Linguiça de Pernil Suíno 500g",
+        "matches": true
+      },
+      {
+        "name": "Farofa de Linguiça 250g",
+        "matches": false
+      },
+      {
+        "name": "Pizza de Linguiça 400g",
+        "matches": false
+      },
+      {
+        "name": "Feijoada com Linguiça 500g",
+        "matches": false
+      },
+      {
+        "name": "Pão com Linguiça 200g",
+        "matches": false
+      },
+      {
+        "name": "Patê de Linguiça 100g",
         "matches": false
       }
     ]

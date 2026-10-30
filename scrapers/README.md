@@ -4,11 +4,11 @@ The registered adapters collect public VTEX catalogs for **Super Muffato,
 Angeloni, and Festval** around Curitiba. The core supplies brand-independent
 monitoring targets through its authenticated scope endpoint. Migration 00006
 seeds 16 targets covering the DIEESE basket's 13 food groups, regional flour/sugar
-variants, and pasta. Migrations 00007–00008 expand the scope to **65 targets**,
+variants, and pasta. Migrations 00007–00010 expand the scope to **96 targets**,
 including eggs, chicken, more meat cuts, produce, dairy, pantry foods, hygiene,
-and cleaning products.
+cleaning products, sweets, snacks, soft drinks, and processed meats.
 See the [basket scope and sources](../docs/contracts/monitoring/v1/basic-food-basket.md)
-and the [latest additions, activation steps, and package limits](../docs/contracts/monitoring/v1/foods-and-household.md).
+and the [latest additions, activation steps, and coverage limits](../docs/contracts/monitoring/v1/snacks-and-convenience.md).
 Variable-weight meat, produce and bakery items still require adapter support;
 the seed does not make their collection complete. Matching brands, variants and
 package sizes stay separate products.
@@ -17,7 +17,7 @@ These groups are not a statistically representative inflation basket.
 | Adapter | Verified context | Discovery |
 | --- | --- | --- |
 | `super-muffato` | Champagnat online branch, sales channel `8`; no CEP selected | Paginated target searches |
-| `angeloni` | Delivery catalog for CEP `80730201`, mapped to Angeloni Bigorrilho | Food-category browsing, filtered by core targets |
+| `angeloni` | Delivery catalog for CEP `80730201`, mapped to Angeloni Bigorrilho | Catalog category browsing, filtered by core targets |
 | `festval` | Delivery catalog for CEP `80730201`, mapped to regional seller `meufestvaldark` | Paginated target searches on sales channel `2` |
 
 The two delivery adapters resolve their configured CEP through the public regions
@@ -162,7 +162,7 @@ incomplete run exits nonzero; batches already accepted by the core remain there.
 Restarting collection creates a new run. An interruption before a failed batch
 is saved can lose that in-memory batch.
 
-The core seeds the scope through migrations 00006–00008; add/refine targets with
+The core seeds the scope through migrations 00006–00010; add/refine targets with
 forward migrations. Restart the updated core to apply pending migrations; the
 daily scheduler receives the expanded scope on its next collection. Remove the
 old `sku_ids` field from existing local TOML files.
