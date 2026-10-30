@@ -107,9 +107,9 @@ Errors use `{"error":"<code>"}`. The endpoint returns `400` for invalid JSON, sc
 Run the executable contract checks without installing scraper/browser dependencies:
 
 ```sh
-python3 -m venv /tmp/inflacao-real-contracts-venv
-/tmp/inflacao-real-contracts-venv/bin/pip install -r docs/contracts/ingestion/v1/requirements.txt
-/tmp/inflacao-real-contracts-venv/bin/python -B -m unittest discover -s docs/contracts/ingestion/v1 -p 'test_*.py'
+python3 -m venv /tmp/nossa-inflacao-contracts-venv
+/tmp/nossa-inflacao-contracts-venv/bin/pip install -r docs/contracts/ingestion/v1/requirements.txt
+/tmp/nossa-inflacao-contracts-venv/bin/python -B -m unittest discover -s docs/contracts/ingestion/v1 -p 'test_*.py'
 ```
 
 Checks validate the schema, examples, representative invalid inputs, and canonicalization behavior. Runtime integration tests must additionally cover the API and worker guarantees above when implemented.

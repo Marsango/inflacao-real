@@ -1,0 +1,683 @@
+[
+  {
+    "productId": "5523711",
+    "productName": "Batata PRINGLES Original 104g, Creme e Cebola 109 e Churrasco 109g Edição Limitada para Colecionador",
+    "brand": "PRINGLES",
+    "link": "/batata-pringles-original-104g--creme-e-cebola-109-e-churrasco-109g-edicao-limitada-para-colecionador-5523711/p",
+    "properties": [
+      {
+        "name": "Quantidade Mínima",
+        "originalName": "Quantidade Mínima",
+        "values": [
+          "1"
+        ]
+      },
+      {
+        "name": "Quantidade Máxima",
+        "originalName": "Quantidade Máxima",
+        "values": [
+          "120"
+        ]
+      },
+      {
+        "name": "Unidade de medida",
+        "originalName": "Unidade de medida",
+        "values": [
+          "un"
+        ]
+      },
+      {
+        "name": "Quantidade da embalagem",
+        "originalName": "Quantidade da embalagem",
+        "values": [
+          "1"
+        ]
+      },
+      {
+        "name": "Produto pesado",
+        "originalName": "Produto pesado",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Produtos Alcoólicos",
+        "originalName": "Produtos Alcoólicos",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Origem",
+        "originalName": "Origem",
+        "values": [
+          "Nacional"
+        ]
+      },
+      {
+        "name": "País de Origem",
+        "originalName": "País de Origem",
+        "values": [
+          "Brasil"
+        ]
+      },
+      {
+        "name": "AtributosProdutoERP",
+        "originalName": "AtributosProdutoERP",
+        "values": [
+          "Denominação: Batata, Marca/Submarca: PRINGLES, Peso: Original 104g, Creme e Cebola 109 e Churrasco 109g, Caracteristica promo: Edição Limitada para Colecionador"
+        ]
+      },
+      {
+        "name": "sellerId",
+        "originalName": "sellerId",
+        "values": [
+          "1"
+        ]
+      }
+    ],
+    "items": [
+      {
+        "itemId": "5523711",
+        "name": "Batata PRINGLES Original 104g, Creme e Cebola 109 e Churrasco 109g Edição Limitada para Colecionador",
+        "nameComplete": "Batata PRINGLES Original 104g, Creme e Cebola 109 e Churrasco 109g Edição Limitada para Colecionador",
+        "complementName": "Batata PRINGLES Original 104g, Creme e Cebola 109 e Churrasco 109g Edição Limitada para Colecionador",
+        "ean": "7896004012049",
+        "measurementUnit": "un",
+        "unitMultiplier": 1,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "A. ANGELONI & CIA. LTDA,",
+            "addToCartLink": "",
+            "sellerDefault": false,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {},
+              "DeliverySlaSamples": [],
+              "AvailableQuantity": 0,
+              "discountHighlights": [],
+              "Installments": [],
+              "Price": 0,
+              "ListPrice": 0,
+              "spotPrice": 0,
+              "taxPercentage": null,
+              "PriceWithoutDiscount": 0,
+              "Tax": 0,
+              "GiftSkuIds": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "RewardValue": 0,
+              "PriceValidUntil": null,
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "",
+              "teasers": []
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "5086142",
+    "productName": "Barra de Proteína INTEGRALMÉDICA Crisp Bar Cookies and Cream 12g Protein Sem Glúten 45g",
+    "brand": "INTEGRALMÉDICA",
+    "link": "/5086142-barra-de-proteina-integralmedica-crisp-bar-cookies-and-cream-12g-protein-sem-gluten-45g/p",
+    "properties": [
+      {
+        "name": "Quantidade Mínima",
+        "originalName": "Quantidade Mínima",
+        "values": [
+          "1"
+        ]
+      },
+      {
+        "name": "Quantidade Máxima",
+        "originalName": "Quantidade Máxima",
+        "values": [
+          "120"
+        ]
+      },
+      {
+        "name": "Unidade de medida",
+        "originalName": "Unidade de medida",
+        "values": [
+          "kg"
+        ]
+      },
+      {
+        "name": "Quantidade da embalagem",
+        "originalName": "Quantidade da embalagem",
+        "values": [
+          "0.045"
+        ]
+      },
+      {
+        "name": "Produto pesado",
+        "originalName": "Produto pesado",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Produtos Alcoólicos",
+        "originalName": "Produtos Alcoólicos",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Restrição",
+        "originalName": "Restrição",
+        "values": [
+          "Sem glúten"
+        ]
+      },
+      {
+        "name": "Origem",
+        "originalName": "Origem",
+        "values": [
+          "Nacional"
+        ]
+      },
+      {
+        "name": "AtributosProdutoERP",
+        "originalName": "AtributosProdutoERP",
+        "values": [
+          "Denominação: Barra de Proteína, Marca/Submarca: INTEGRALMÉDICA, Linha: Crisp Bar, sabor: Cookies and Cream, Caracteristica: 12g Protein Sem Glúten, Peso: 45g"
+        ]
+      },
+      {
+        "name": "sellerId",
+        "originalName": "sellerId",
+        "values": [
+          "1"
+        ]
+      }
+    ],
+    "items": [
+      {
+        "itemId": "5086142",
+        "name": "Barra de Proteína INTEGRALMÉDICA Crisp Bar Cookies and Cream 12g Protein Sem Glúten 45g",
+        "nameComplete": "Barra de Proteína INTEGRALMÉDICA Crisp Bar Cookies and Cream 12g Protein Sem Glúten 45g",
+        "complementName": "Barra de Proteína INTEGRALMÉDICA Crisp Bar Cookies and Cream 12g Protein Sem Glúten 45g",
+        "ean": "7896311773275",
+        "measurementUnit": "un",
+        "unitMultiplier": 1,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "A. ANGELONI & CIA. LTDA,",
+            "addToCartLink": "",
+            "sellerDefault": false,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {},
+              "DeliverySlaSamples": [],
+              "AvailableQuantity": 0,
+              "discountHighlights": [],
+              "Installments": [],
+              "Price": 0,
+              "ListPrice": 0,
+              "spotPrice": 0,
+              "taxPercentage": null,
+              "PriceWithoutDiscount": 0,
+              "Tax": 0,
+              "GiftSkuIds": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "RewardValue": 0,
+              "PriceValidUntil": null,
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "",
+              "teasers": []
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "4764846",
+    "productName": "Barra de Proteína BOLD 20g de Proteína Paçoca e Chocolate 60g",
+    "brand": "BOLD",
+    "link": "/barra-de-proteina-bold-20g-de-proteina-pacoca-e-chocolate-60g-4764846/p",
+    "properties": [
+      {
+        "name": "Quantidade Mínima",
+        "originalName": "Quantidade Mínima",
+        "values": [
+          "1"
+        ]
+      },
+      {
+        "name": "Quantidade Máxima",
+        "originalName": "Quantidade Máxima",
+        "values": [
+          "120"
+        ]
+      },
+      {
+        "name": "Unidade de medida",
+        "originalName": "Unidade de medida",
+        "values": [
+          "kg"
+        ]
+      },
+      {
+        "name": "Quantidade da embalagem",
+        "originalName": "Quantidade da embalagem",
+        "values": [
+          "0.060"
+        ]
+      },
+      {
+        "name": "Produto pesado",
+        "originalName": "Produto pesado",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Produtos Alcoólicos",
+        "originalName": "Produtos Alcoólicos",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Origem",
+        "originalName": "Origem",
+        "values": [
+          "Nacional"
+        ]
+      },
+      {
+        "name": "AtributosProdutoERP",
+        "originalName": "AtributosProdutoERP",
+        "values": [
+          "Denominação: Barra de Proteína, Marca/Submarca: BOLD, Linha: 20g de Proteína, sabor: Paçoca e Chocolate, Peso: 60g"
+        ]
+      },
+      {
+        "name": "sellerId",
+        "originalName": "sellerId",
+        "values": [
+          "1"
+        ]
+      }
+    ],
+    "items": [
+      {
+        "itemId": "4764846",
+        "name": "Barra de Proteína BOLD 20g de Proteína Paçoca e Chocolate 60g",
+        "nameComplete": "Barra de Proteína BOLD 20g de Proteína Paçoca e Chocolate 60g",
+        "complementName": "Barra de Proteína BOLD 20g de Proteína Paçoca e Chocolate 60g",
+        "ean": "602883960497",
+        "measurementUnit": "un",
+        "unitMultiplier": 1,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "A. ANGELONI & CIA. LTDA,",
+            "addToCartLink": "",
+            "sellerDefault": false,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {},
+              "DeliverySlaSamples": [],
+              "AvailableQuantity": 0,
+              "discountHighlights": [],
+              "Installments": [],
+              "Price": 0,
+              "ListPrice": 0,
+              "spotPrice": 0,
+              "taxPercentage": null,
+              "PriceWithoutDiscount": 0,
+              "Tax": 0,
+              "GiftSkuIds": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "RewardValue": 0,
+              "PriceValidUntil": null,
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "",
+              "teasers": []
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "4706969",
+    "productName": "Presunto CERATTI Defumado kg",
+    "brand": "CERATTI",
+    "link": "/4706969-presunto-ceratti-defumado-kg/p",
+    "properties": [
+      {
+        "name": "Quantidade Mínima",
+        "originalName": "Quantidade Mínima",
+        "values": [
+          "0.250"
+        ]
+      },
+      {
+        "name": "Quantidade Máxima",
+        "originalName": "Quantidade Máxima",
+        "values": [
+          "120"
+        ]
+      },
+      {
+        "name": "Unidade de medida",
+        "originalName": "Unidade de medida",
+        "values": [
+          "kg"
+        ]
+      },
+      {
+        "name": "Quantidade da embalagem",
+        "originalName": "Quantidade da embalagem",
+        "values": [
+          "1"
+        ]
+      },
+      {
+        "name": "Produto pesado",
+        "originalName": "Produto pesado",
+        "values": [
+          "Sim"
+        ]
+      },
+      {
+        "name": "Produtos Alcoólicos",
+        "originalName": "Produtos Alcoólicos",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Tipo",
+        "originalName": "Tipo",
+        "values": [
+          "Presunto"
+        ]
+      },
+      {
+        "name": "Corte",
+        "originalName": "Corte",
+        "values": [
+          "Fatiado"
+        ]
+      },
+      {
+        "name": "AtributosProdutoERP",
+        "originalName": "AtributosProdutoERP",
+        "values": [
+          "Denominação: Presunto, Marca: CERATTI, Tipo: Defumado, Peso/Volume: kg"
+        ]
+      },
+      {
+        "name": "sellerId",
+        "originalName": "sellerId",
+        "values": [
+          "1"
+        ]
+      }
+    ],
+    "items": [
+      {
+        "itemId": "4706969",
+        "name": "Presunto CERATTI Defumado kg",
+        "nameComplete": "Presunto CERATTI Defumado kg",
+        "complementName": "Presunto CERATTI Defumado kg",
+        "ean": "725",
+        "measurementUnit": "kg",
+        "unitMultiplier": 200,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "A. ANGELONI & CIA. LTDA,",
+            "addToCartLink": "",
+            "sellerDefault": false,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {},
+              "DeliverySlaSamples": [],
+              "AvailableQuantity": 0,
+              "discountHighlights": [],
+              "Installments": [],
+              "Price": 0,
+              "ListPrice": 0,
+              "spotPrice": 0,
+              "taxPercentage": null,
+              "PriceWithoutDiscount": 0,
+              "Tax": 0,
+              "GiftSkuIds": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "RewardValue": 0,
+              "PriceValidUntil": null,
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "",
+              "teasers": []
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "8117",
+    "productName": "Melancia Inteira Kg",
+    "brand": "HORTIFRUTI",
+    "link": "/melancia-inteira-kg-8117/p",
+    "properties": [
+      {
+        "name": "Quantidade Mínima",
+        "originalName": "Quantidade Mínima",
+        "values": [
+          "10.000"
+        ]
+      },
+      {
+        "name": "Quantidade Máxima",
+        "originalName": "Quantidade Máxima",
+        "values": [
+          "120"
+        ]
+      },
+      {
+        "name": "Unidade de medida",
+        "originalName": "Unidade de medida",
+        "values": [
+          "kg"
+        ]
+      },
+      {
+        "name": "Quantidade da embalagem",
+        "originalName": "Quantidade da embalagem",
+        "values": [
+          "1.000"
+        ]
+      },
+      {
+        "name": "Produto pesado",
+        "originalName": "Produto pesado",
+        "values": [
+          "Sim"
+        ]
+      },
+      {
+        "name": "Produtos Alcoólicos",
+        "originalName": "Produtos Alcoólicos",
+        "values": [
+          "Não"
+        ]
+      },
+      {
+        "name": "Tipo de Fruta",
+        "originalName": "Tipo de Fruta",
+        "values": [
+          "Melancia"
+        ]
+      },
+      {
+        "name": "AtributosProdutoERP",
+        "originalName": "AtributosProdutoERP",
+        "values": [
+          "Denominação: Melancia, Caracteristica: Inteira, Peso: kg"
+        ]
+      },
+      {
+        "name": "sellerId",
+        "originalName": "sellerId",
+        "values": [
+          "1"
+        ]
+      }
+    ],
+    "items": [
+      {
+        "itemId": "8117",
+        "name": "Melancia Inteira Kg",
+        "nameComplete": "Melancia Inteira Kg",
+        "complementName": "Melancia Inteira Kg",
+        "ean": "1116",
+        "measurementUnit": "kg",
+        "unitMultiplier": 5,
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "sellerName": "A. ANGELONI & CIA. LTDA,",
+            "addToCartLink": "",
+            "sellerDefault": true,
+            "commertialOffer": {
+              "DeliverySlaSamplesPerRegion": {},
+              "DeliverySlaSamples": [],
+              "AvailableQuantity": 10000,
+              "discountHighlights": [],
+              "Installments": [
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "American Express",
+                  "PaymentSystemGroupName": "creditCardPaymentGroup",
+                  "Name": "American Express à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Visa",
+                  "PaymentSystemGroupName": "creditCardPaymentGroup",
+                  "Name": "Visa à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Diners",
+                  "PaymentSystemGroupName": "creditCardPaymentGroup",
+                  "Name": "Diners à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Mastercard",
+                  "PaymentSystemGroupName": "creditCardPaymentGroup",
+                  "Name": "Mastercard à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Hipercard",
+                  "PaymentSystemGroupName": "creditCardPaymentGroup",
+                  "Name": "Hipercard à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Elo",
+                  "PaymentSystemGroupName": "creditCardPaymentGroup",
+                  "Name": "Elo à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Vale alimentação",
+                  "PaymentSystemGroupName": "custom201PaymentGroupPaymentGroup",
+                  "Name": "Vale alimentação à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Dinheiro",
+                  "PaymentSystemGroupName": "custom202PaymentGroupPaymentGroup",
+                  "Name": "Dinheiro à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Convênio",
+                  "PaymentSystemGroupName": "custom203PaymentGroupPaymentGroup",
+                  "Name": "Convênio à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "Cartão Angeloni",
+                  "PaymentSystemGroupName": "customPrivate_401PaymentGroup",
+                  "Name": "Cartão Angeloni à vista"
+                },
+                {
+                  "Value": "23.95",
+                  "InterestRate": 0,
+                  "TotalValuePlusInterestRate": "23.95",
+                  "NumberOfInstallments": 1,
+                  "PaymentSystemName": "WH Google Pay",
+                  "PaymentSystemGroupName": "WH Google PayPaymentGroup",
+                  "Name": "WH Google Pay à vista"
+                }
+              ],
+              "Price": "4.79",
+              "ListPrice": "4.79",
+              "spotPrice": "4.79",
+              "taxPercentage": 0,
+              "PriceWithoutDiscount": "4.79",
+              "Tax": 0,
+              "GiftSkuIds": [],
+              "BuyTogether": [],
+              "ItemMetadataAttachment": [],
+              "RewardValue": 0,
+              "PriceValidUntil": "2027-10-30T15:33:21Z",
+              "GetInfoErrorMessage": null,
+              "CacheVersionUsedToCallCheckout": "",
+              "teasers": []
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

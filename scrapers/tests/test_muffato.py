@@ -158,12 +158,13 @@ def test_conditional_payment_uses_full_total(source_bytes, settings):
     assert "minimumQuantity" in alternative.conditions.description
 
 
-def test_bad_product_is_reported_instead_of_empty_success(source_bytes, settings):
+def test_bad_barcode_preserves_observation_with_unknown_gtin(source_bytes, settings):
     data = json.loads(source_bytes)
     data[0]["items"][0]["ean"] = "7894904296300"
     page = parse(json.dumps(data).encode(), settings)
-    assert page.issues
-    assert page.observations == []
+    assert any("barcode:" in issue for issue in page.issues)
+    assert len(page.observations) == 1
+    assert page.observations[0].product.gtin is None
     assert parse(b"[]", settings).issues
     assert parse(source_bytes, settings).observations
 

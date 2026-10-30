@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:inflacao-real:ingestion:v1",
-  "title": "Inflação Real scraper ingestion v1",
+  "title": "Nossa inflação scraper ingestion v1",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "submission_id", "scraper_id", "shop_id", "run_id", "created_at", "collector", "observations"],

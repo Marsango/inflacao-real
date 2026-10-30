@@ -1,0 +1,1504 @@
+[
+  {
+    "productId": "2960",
+    "productName": "Mamão Formosa Aproximadamente 1,8 kg/un",
+    "brand": "Festval",
+    "link": "https://www.festval.com/mamao-formosa-kg/p",
+    "items": [
+      {
+        "itemId": "2967",
+        "name": "Mamão Formosa Aproximadamente 1,8 kg/un",
+        "nameComplete": "Mamão Formosa Aproximadamente 1,8 kg/un",
+        "ean": "2294",
+        "measurementUnit": "kg",
+        "unitMultiplier": "1.8000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "14.99",
+              "ListPrice": "14.99",
+              "AvailableQuantity": 99999,
+              "IsAvailable": true,
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 2698,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 2698,
+                        "total": 2698,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 2698,
+                            "total": 2698
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "2894",
+    "productName": "Melancia Comum Aproximadamente 10kg/un",
+    "brand": "Festval",
+    "link": "https://www.festval.com/melancia-comum-10kg/p",
+    "items": [
+      {
+        "itemId": "2901",
+        "name": "Melancia Comum Aproximadamente 10kg/un",
+        "nameComplete": "Melancia Comum Aproximadamente 10kg/un",
+        "ean": "2301",
+        "measurementUnit": "kg",
+        "unitMultiplier": "10.0000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "4.99",
+              "ListPrice": "4.99",
+              "AvailableQuantity": 99999,
+              "IsAvailable": true,
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 4990,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4990,
+                        "total": 4990,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4990,
+                            "total": 4990
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "2893",
+    "productName": "Melancia Especial Aproximadamente 6kg/un",
+    "brand": "Festval",
+    "link": "https://www.festval.com/melancia-especial-kg/p",
+    "items": [
+      {
+        "itemId": "2900",
+        "name": "Melancia Especial Aproximadamente 6kg/un",
+        "nameComplete": "Melancia Especial Aproximadamente 6kg/un",
+        "ean": "4065",
+        "measurementUnit": "kg",
+        "unitMultiplier": "6.0000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "7.89",
+              "ListPrice": "7.89",
+              "AvailableQuantity": 99999,
+              "IsAvailable": true,
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 4734,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 4734,
+                        "total": 4734,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 4734,
+                            "total": 4734
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "15409",
+    "productName": "Melancia Magali Benassi Aproximadamente 2kg",
+    "brand": "Benassi",
+    "link": "https://www.festval.com/melancia-magali-benassi-kg-1911783/p",
+    "items": [
+      {
+        "itemId": "31332",
+        "name": "Melancia Magali Benassi Aproximadamente 2kg",
+        "nameComplete": "Melancia Magali Benassi Aproximadamente 2kg",
+        "ean": "5865",
+        "measurementUnit": "kg",
+        "unitMultiplier": "2.0000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "9.9",
+              "ListPrice": "9.9",
+              "AvailableQuantity": 100,
+              "IsAvailable": true,
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 1980,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1980,
+                        "total": 1980,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1980,
+                            "total": 1980
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "10575",
+    "productName": "Repolho Verde Aproximadamente 1.100kg/un",
+    "brand": "Omega",
+    "link": "https://www.festval.com/repolho-verde-kg/p",
+    "items": [
+      {
+        "itemId": "26427",
+        "name": "Repolho Verde Aproximadamente 1.100kg/un",
+        "nameComplete": "Repolho Verde Aproximadamente 1.100kg/un",
+        "ean": "5875",
+        "measurementUnit": "kg",
+        "unitMultiplier": "1.1000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "4.99",
+              "ListPrice": "4.99",
+              "AvailableQuantity": 0,
+              "IsAvailable": false,
+              "PaymentOptions": {
+                "installmentOptions": []
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "10623",
+    "productName": "Panceta Recheada com Ervas e Tomate Seara Gourmet 1.1kg",
+    "brand": "Seara Gourmet",
+    "link": "https://www.festval.com/panceta-recheada-com-ervas-e-tomate-seara-gourmet/p",
+    "items": [
+      {
+        "itemId": "26475",
+        "name": "Panceta Recheada com Ervas e Tomate Seara Gourmet 1.1kg",
+        "nameComplete": "Panceta Recheada com Ervas e Tomate Seara Gourmet 1.1kg",
+        "ean": "7893000023185",
+        "measurementUnit": "kg",
+        "unitMultiplier": "1.1000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "52.98",
+              "ListPrice": "52.98",
+              "AvailableQuantity": 0,
+              "IsAvailable": false,
+              "PaymentOptions": {
+                "installmentOptions": []
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "12578",
+    "productName": "Goma de Mascar Spearmint Zero Açúcar Mentos Pure Fresh Envelope 8,5g 5 Unidades",
+    "brand": "Mentos",
+    "link": "https://www.festval.com/goma-mentos-3l-pure-spearmint-85g-1562312/p",
+    "items": [
+      {
+        "itemId": "28432",
+        "name": "Goma Mentos 3L Pure Spearmint Refrescante Mentos 8,5g",
+        "nameComplete": "Goma de Mascar Spearmint Zero Açúcar Mentos Pure Fresh Envelope 8,5g 5 Unidades Goma Mentos 3L Pure Spearmint Refrescante Mentos 8,5g",
+        "ean": "7895144892931",
+        "measurementUnit": "un",
+        "unitMultiplier": "1.0000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "3.99",
+              "ListPrice": "3.99",
+              "AvailableQuantity": 99999,
+              "IsAvailable": true,
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 399,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 399,
+                        "total": 399,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 399,
+                            "total": 399
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "productId": "3461",
+    "productName": "Feijão Carioca Cozido no Vapor Vapza 500g",
+    "brand": "Vapza",
+    "link": "https://www.festval.com/feijao-carioca-cozido-no-vapor-vapza-500g/p",
+    "items": [
+      {
+        "itemId": "3468",
+        "name": "Feijão Carioca Vapza 250g: Praticidade em 5 Minutos",
+        "nameComplete": "Feijão Carioca Cozido no Vapor Vapza 500g Feijão Carioca Vapza 250g: Praticidade em 5 Minutos",
+        "ean": "7897122600071",
+        "measurementUnit": "un",
+        "unitMultiplier": "1.0000",
+        "isKit": false,
+        "sellers": [
+          {
+            "sellerId": "1",
+            "commertialOffer": {
+              "Price": "18.99",
+              "ListPrice": "18.99",
+              "AvailableQuantity": 100,
+              "IsAvailable": true,
+              "PaymentOptions": {
+                "installmentOptions": [
+                  {
+                    "paymentSystem": "1",
+                    "bin": null,
+                    "paymentName": "American Express",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "2",
+                    "bin": null,
+                    "paymentName": "Visa",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "3",
+                    "bin": null,
+                    "paymentName": "Diners",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "4",
+                    "bin": null,
+                    "paymentName": "Mastercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "8",
+                    "bin": null,
+                    "paymentName": "Hipercard",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "9",
+                    "bin": null,
+                    "paymentName": "Elo",
+                    "paymentGroupName": "creditCardPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "125",
+                    "bin": null,
+                    "paymentName": "Pix",
+                    "paymentGroupName": "instantPaymentPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "paymentSystem": "900",
+                    "bin": null,
+                    "paymentName": "WH Google Pay",
+                    "paymentGroupName": "WH Google PayPaymentGroup",
+                    "value": 1899,
+                    "installments": [
+                      {
+                        "count": 1,
+                        "hasInterestRate": false,
+                        "interestRate": 0,
+                        "value": 1899,
+                        "total": 1899,
+                        "sellerMerchantInstallments": [
+                          {
+                            "id": "MEUFESTVALDARK",
+                            "count": 1,
+                            "hasInterestRate": false,
+                            "interestRate": 0,
+                            "value": 1899,
+                            "total": 1899
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

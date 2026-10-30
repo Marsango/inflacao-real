@@ -310,7 +310,9 @@ Shared fetching, parsing, pagination and regionalization now live in `vtex/`.
 Saved fixtures cover both response formats; Angeloni's Intelligent Search format
 uses `AvailableQuantity` when `IsAvailable` is absent. Both retain unavailable
 displayed offers, promotions and payment alternatives. Equivalent repeated package
-sizes agree; conflicting declarations stay null with a collection issue.
+sizes agree; disagreements between SKU fields stay null with a collection issue.
+Explicit protein amounts are excluded from net contents; a single name listing
+different package sizes is skipped as ambiguous.
 Angeloni and Festval also support advertised kilogram prices in their verified
 Curitiba API contexts. Independent storefront checks establish the price unit;
 the comparison may use another Curitiba pickup location. API availability and
@@ -362,7 +364,8 @@ storefront. `Price` and `ListPrice` are kilogram amounts; the multiplier is neve
 applied to them. Package is null even when a name contains `1kg` or an approximate
 portion weight. The latter wording is preserved in offer conditions. Short numeric
 retailer codes on these loose products become null GTINs; malformed full-length
-GTINs still fail validation. Kits, other units, invalid multipliers and unverified
+GTINs are reported and omitted while otherwise valid observations survive.
+Kits, other units, invalid multipliers and unverified
 shop/context mappings remain explicit issues.
 
 Angeloni enables this mapping on channel `1` with regional seller
@@ -521,3 +524,37 @@ HTTP 400 with form-encoded spaces and HTTP 200 with percent-encoded spaces.
 The change preserves query text, accented characters, literal plus signs, pagination,
 SKU filters and regional parameters; it applies to Muffato and Festval searches.
 Angeloni continues using its category-based collection route.
+
+### Invalid product metadata
+
+Product links are URI-encoded before submission, preserving existing percent escapes.
+Invalid source barcodes are reported as `barcode:` diagnostics and submitted as unknown
+GTINs, preserving otherwise valid observations and retailer SKU identities. No digits
+are added, corrected, or inferred; valid barcodes retain their original representation.
+Known short retailer codes for verified kilogram listings remain unknown GTINs.
+
+### Nutrition quantities and ambiguous listings
+
+Explicit protein claims such as `20g de proteína` and `12g Protein` are excluded
+from net-content measurements. Remaining measurements must agree; the final weight
+is not selected blindly. A SKU name listing multiple different sizes (such as the
+104g/109g Pringles collector listing) is skipped with an explicit diagnostic.
+Disagreement between otherwise unambiguous SKU name fields still preserves the price
+with unknown package contents.
+
+The verified Angeloni Curitiba kilogram context accepts positive unit multipliers
+up to 5, covering whole watermelon. Advertised kilogram prices are never scaled by
+the multiplier; estimated item/payment totals remain excluded. Larger multipliers,
+such as 200 on the ham listing, remain unsupported. Muffato retains its original bound; Festval's expanded bound is documented below.
+
+### Festval weights and Mentos product-line labels
+
+The verified Festval Curitiba kilogram context accepts positive multipliers up to
+10, covering the observed 1.1kg, 1.8kg, 2kg, 6kg and 10kg listings. Prices remain
+per kilogram; whole-item payment totals are excluded. Larger values and unverified
+regional contexts remain unsupported. Angeloni's verified bound remains 5; Muffato's
+remains 1.
+
+The verified `Mentos 3L` product-line label is excluded from package measurements.
+Its separately stated 8.5g remains the package size; unrelated `3L` quantities
+remain liters. Genuine conflicting SKU sizes are still skipped.

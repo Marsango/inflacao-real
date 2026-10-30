@@ -97,3 +97,16 @@ remain unsupported. Festval's weight-payment portion totals are omitted with
 issues; Angeloni's sampled kg responses expose no alternatives. Six opt-in live
 checks cover each shop's produce, beef and bakery routes. No extra per-product
 request, pickup substitution or browser dependency was added to collection.
+
+`angeloni-size-policy.json` contains projections of five live catalog records retrieved
+on 2026-10-30 for Curitiba/Bigorrilho (CEP 80730201, channel 1, regional seller
+`superangeloni24`). It retains source names, identifiers, sale units, multipliers,
+package properties and seller offers for the 60g BOLD bar, 45g Crisp Bar, ambiguous
+Pringles listing, whole watermelon and ham with multiplier 200. Decimal source values
+are stored as exact strings; no private credentials or account/session data is included.
+
+`festval-size-policy.json` projects source responses inspected on 2026-10-30 in the
+Curitiba delivery context (CEP 80730201, channel 2, regional seller `meufestvaldark`).
+It covers six kilogram listings, Mentos 3L 8.5g and contradictory 250g/500g Vapza
+beans. Source decimal quantities are exact strings; seller-offer projections retain
+prices, stock and installment options without price tokens or session metadata.

@@ -18,7 +18,7 @@ def create_client(settings: Settings) -> httpx.Client:
         timeout=settings.timeout_seconds,
         follow_redirects=False,
         limits=httpx.Limits(max_connections=1, max_keepalive_connections=1),
-        headers={"User-Agent": "InflacaoReal/0.1 price-observation collector"},
+        headers={"User-Agent": "NossaInflacao/0.1 price-observation collector"},
     )
 
 

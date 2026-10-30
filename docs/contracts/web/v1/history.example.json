@@ -1,0 +1,41 @@
+{
+  "title": "Arroz branco · 5 kg",
+  "unit": "BRL",
+  "points": [
+    {
+      "date": "2026-10-27",
+      "value": 2490
+    },
+    {
+      "date": "2026-10-28",
+      "value": null
+    },
+    {
+      "date": "2026-10-29",
+      "value": 2690
+    }
+  ],
+  "latestPriceMinor": 2690,
+  "changeBasisPoints": 803,
+  "comparisonStart": "2026-10-27",
+  "comparisonEnd": "2026-10-29",
+  "collectedAt": "2026-10-29T12:00:00Z",
+  "stale": false,
+  "coverage": "1 produto(s), 1 loja(s), 1 contexto(s); 2 de 3 dias com cobertura completa.",
+  "counts": {
+    "products": 1,
+    "shops": 1,
+    "streams": 1,
+    "days": 3,
+    "pricedDays": 2
+  },
+  "methodology": "Painel fixo de anúncios e contextos. Dias sem cobertura completa ficam vazios. O recorte monitorado não representa a inflação nacional.",
+  "methodologyVersion": "fixed-panel-v1",
+  "period": {
+    "start": "2026-10-27",
+    "end": "2026-10-29"
+  },
+  "timeZone": "America/Sao_Paulo",
+  "priceBasis": "package",
+  "unknownConditions": false
+}

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "inflacao-real-scrapers"
 version = "0.1.0"
-description = "Retail price collection and durable delivery for Inflação Real"
+description = "Retail price collection and durable delivery for Nossa inflação"
 requires-python = ">=3.12"
 dependencies = [
   "httpx>=0.28.1,<0.29",

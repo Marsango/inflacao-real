@@ -3,6 +3,7 @@
 import re
 from decimal import Decimal
 
+from ..models.product import validate_gtin
 from ..packaging import package_from_name as package_from_name
 
 
@@ -45,7 +46,7 @@ def sale_basis(sku: dict, settings) -> str:
     if sku.get("isKit") is not False:
         raise ValueError("sale-format: kits or missing kit status are unsupported")
     multiplier = decimal_value(sku.get("unitMultiplier"))
-    if multiplier <= 0 or multiplier > 1:
+    if multiplier <= 0 or multiplier > maximum_multiplier(settings):
         raise ValueError("sale-format: unsupported unit multiplier")
     unit = sku.get("measurementUnit")
     if unit == "un" and multiplier == 1:
@@ -55,10 +56,28 @@ def sale_basis(sku: dict, settings) -> str:
     raise ValueError(f"sale-format: unverified unit/multiplier {unit!r}/{multiplier}")
 
 
-def source_gtin(sku: dict, basis: str) -> str | None:
-    value = sku.get("ean") or None
+def maximum_multiplier(settings) -> Decimal:
+    if settings.shop_id == "festval" and settings.supports_kilogram_prices():
+        return Decimal(10)
+    if settings.shop_id == "angeloni" and settings.supports_kilogram_prices():
+        return Decimal(5)
+    return Decimal(1)
+
+
+def source_gtin(sku: dict, basis: str, issues: list[str]) -> str | None:
+    value = sku.get("ean")
+    if value is None or value == "":
+        return None
     if basis == "kg" and isinstance(value, str) and re.fullmatch(r"[0-9]{1,7}", value):
         return None  # Verified retailer internal codes, not GTINs; retain source SKU.
+    if not isinstance(value, str):
+        issues.append(f"barcode: omitted non-string source EAN {str(value)[:80]!r}")
+        return None
+    try:
+        validate_gtin(value)
+    except ValueError as error:
+        issues.append(f"barcode: omitted invalid GTIN {value[:80]!r} ({error})")
+        return None
     return value
 
 

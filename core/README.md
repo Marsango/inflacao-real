@@ -331,3 +331,32 @@ automatic creation, unknown attributes, ambiguous candidates, variant separation
 historical product assignments, and concurrent product creation.
 Polling-loop and backoff unit tests use controlled work/wait functions without
 minute-long sleeps.
+
+## Web dashboard API
+
+The core exposes public read-only `GET /api/v1/products` (cursor-paginated canonical
+variants) and `GET /api/v1/history?product=global&start=YYYY-MM-DD&end=YYYY-MM-DD`
+(use a canonical product ID for individual history). See the [versioned web API
+contract](../docs/contracts/web/v1/README.md) for response fields, units, date
+boundaries, errors and `fixed-panel-v1` methodology. The browser never needs a
+scraper token; ingestion and monitoring routes retain their authentication.
+
+Daily prices use a fixed set of listing/seller/location/channel contexts and
+preserve gaps. Known package sizes must be equivalent; explicit per-kg/L/unit
+prices are supported when the canonical package is unknown and the observed basis
+is unambiguous. Known restricted offers are excluded. Advertised base prices with
+unreported conditions are explicitly flagged and never substituted for known
+unrestricted prices in a context that has them. The overview equally weights
+product price relatives on complete days, without changing the panel when data is
+missing. It is an exploratory sample index, not a national inflation measure.
+
+Money averages and relative changes use exact rational arithmetic; HTTP responses
+round only at the centavo/basis-point boundary. Coverage, actual comparison dates,
+source observation freshness and methodology accompany every response. A strict
+fixed panel can have no complete days; individual histories remain available.
+
+For local development, run the core on its default port 8080 and `npm run dev`
+from `web/`. Vite forwards `/api` to the core. No frontend deployment is configured.
+Tests cover the complete ingest/worker/database/read path using the shared
+`internal/testdatabase.New` helper with fresh migrated PostgreSQL Testcontainers.
+The existing database tests keep their `testDatabase(t)` wrapper around that helper.

@@ -3,12 +3,12 @@
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import InvalidOperation
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin
 from uuid import uuid4
 
 from ..adapters import ParsedPage
 from ..models import Context, Observation, Product
-from ..packaging import resolve_package
+from ..packaging import AmbiguousPackage, resolve_package
 from ..scope import MonitoringScope, MonitoringTarget
 from .config import VtexSettings
 from .json import decode_response
@@ -109,7 +109,7 @@ def source_product(sku: dict, product: dict, basis: str, settings, issues: list[
         source_product_id=sku["itemId"],
         name=name,
         brand=product.get("brand") or None,
-        gtin=source_gtin(sku, basis),
+        gtin=source_gtin(sku, basis, issues),
         package=source_package(sku, basis, settings, issues),
     )
 
@@ -117,6 +117,8 @@ def source_product(sku: dict, product: dict, basis: str, settings, issues: list[
 def source_package(sku: dict, basis: str, settings, issues: list[str]):
     try:
         return resolve_package(sku, basis, settings)
+    except AmbiguousPackage:
+        raise
     except (ValueError, InvalidOperation) as error:
         issues.append(f"package-size: {error}")
         return None
@@ -153,6 +155,13 @@ def availability_from_quantity(quantity) -> str:
     return "out_of_stock"
 
 
+def source_product_url(settings: VtexSettings, link: str) -> str:
+    if any(ord(character) < 32 or ord(character) == 127 for character in link):
+        raise ValueError("Product URL contains control characters")
+    absolute = urljoin(settings.shop_url, link)
+    return quote(absolute, safe=":/?#[]@!$&'()*+,;=%")
+
+
 def build_observation(sku, product, context: ParsingContext, basis: str, issues) -> Observation:
     source = seller_offer(sku, context.settings)
     return Observation(
@@ -160,7 +169,7 @@ def build_observation(sku, product, context: ParsingContext, basis: str, issues)
         observed_at=context.observed_at,
         collection_method="api",
         source_url=context.source_url,
-        product_url=urljoin(context.settings.shop_url, product["link"]),
+        product_url=source_product_url(context.settings, product["link"]),
         product=source_product(sku, product, basis, context.settings, issues),
         context=source_context(context.settings),
         availability=availability(source),

@@ -1,4 +1,4 @@
-# Inflação Real
+# Nossa inflação
 
 **O preço mudou. A ideia é ter o histórico para entender quanto.**
 
@@ -6,7 +6,7 @@ Quem faz mercado conhece a sensação: o café ficou mais caro, o pacote parece
 menor e a mesma lista de compras já não cabe no mesmo orçamento. Mas memória
 de preço tem limite. Para acompanhar essas mudanças, precisamos de registros.
 
-O **Inflação Real** é um projeto independente de monitoramento de preços do
+A **Nossa inflação** é um projeto independente de monitoramento de preços do
 varejo brasileiro. Coletamos ofertas de lojas online e guardamos seu histórico,
 com a origem e as condições de cada preço. O objetivo é transformar esses dados
 em informações que ajudem a entender o custo das compras e o poder de compra
@@ -41,9 +41,9 @@ Estamos construindo a base de coleta e histórico.
 | Parte | O que já existe |
 | --- | --- |
 | Scrapers em Python | Adapters para Super Muffato, Angeloni e Festval, com configurações de catálogo online na região de Curitiba. |
-| Core em Go | API autenticada de ingestão, validação, fila de processamento, identificação de produtos e persistência do histórico. |
+| Core em Go | API autenticada de ingestão, fila de processamento, identificação de produtos, histórico e API pública para a interface. |
 | PostgreSQL | Migrations automáticas e armazenamento de produtos, ofertas e origem das observações. |
-| Interface em React | Planejada; ainda sem implementação. |
+| Interface em React | Dashboard integrado ao core, com catálogo de produtos, histórico por período, cobertura e metodologia. |
 
 O escopo de monitoramento usa os grupos de alimentos da cesta básica do DIEESE
 como referência, com diferenças documentadas. Além de produtos embalados, o
@@ -62,7 +62,7 @@ O escopo configurado contém 96 grupos de produtos, incluindo alimentos, higiene
 limpeza e cuidados familiares. As [adições de doces, lanches e alimentos práticos](docs/contracts/monitoring/v1/snacks-and-convenience.md)
 documentam os novos grupos e os passos de ativação.
 
-Ainda não há um índice de inflação calculado pelo projeto nem um painel público.
+A API calcula uma variação exploratória dos preços anunciados no painel monitorado, com [metodologia e limitações explícitas](docs/contracts/web/v1/README.md). Não há um índice nacional de inflação nem um painel público.
 Os detalhes do recorte estão na [documentação de cobertura](docs/contracts/monitoring/v1/basic-food-basket.md).
 
 ## Como funciona
@@ -71,13 +71,12 @@ Os detalhes do recorte estão na [documentação de cobertura](docs/contracts/mo
 Lojas online → Scrapers Python → Core Go ↔ PostgreSQL
                                    ↕
                              Interface React
-                               (planejada)
 ```
 
 Os scrapers consultam as lojas e enviam observações no mesmo
 [formato versionado](docs/contracts/ingestion/v1/README.md). O core valida os
 envios, processa os batches e grava o histórico. As regras de negócio e os cálculos
-ficam no core; a interface vai apresentar os dados pela API.
+ficam no core; a interface apresenta os dados pela API.
 
 Alguns cuidados fazem parte dessa base:
 
@@ -129,6 +128,8 @@ Ele inclui a instalação do ambiente Python, os arquivos de configuração e o
 cadastro das lojas no core. O token e a identidade do scraper precisam coincidir
 com a configuração do core, e as lojas precisam estar cadastradas antes do
 processamento das observações.
+
+Para executar a interface integrada, siga o [guia do web](web/README.md).
 
 Para consultar o banco sem instalar um cliente PostgreSQL na máquina, execute
 na raiz do repositório:

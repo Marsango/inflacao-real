@@ -1,8 +1,8 @@
-# Inflação Real
+# Nossa inflação
 
 ## Project purpose
 
-Inflação Real is an independent price-monitoring platform for the Brazilian retail market. It collects prices from online shops, tracks how they change over time, and turns those observations into accessible insights about inflation and purchasing power.
+Nossa inflação is an independent price-monitoring platform for the Brazilian retail market. It collects prices from online shops, tracks how they change over time, and turns those observations into accessible insights about inflation and purchasing power.
 
 The goal is to help people understand the price changes they encounter in everyday shopping and compare them with official inflation indicators when appropriate. Conclusions must follow the collected evidence.
 
@@ -26,6 +26,7 @@ The core owns business rules and persistence. Scrapers and the web UI communicat
 
 - Follow KISS (Keep it stupid simple): choose the simplest clear solution that meets the current requirements.
 - Don't overengineer anything. Don't build features that weren't asked for or add complexity for speculative edge cases.
+- For JavaScript and TypeScript, add only well-trusted, actively maintained dependencies. Prefer dependencies maintained by established companies such as Meta, Microsoft, or Google. Check trust and maintenance before adding a package; if it does not meet this standard, build a small component ourselves instead.
 - Use the shared, versioned [ingestion contract](docs/contracts/ingestion/v1/README.md) for all shops. Schemas and examples live in `docs/contracts/`; update affected consumers together with contract changes.
 - Preserve observation provenance and price conditions. Represent unknown values explicitly; a missing price is never zero.
 - Use exact decimal representations or integer minor units for money and timestamps with an explicit timezone.

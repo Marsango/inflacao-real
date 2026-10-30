@@ -21,7 +21,13 @@ AMBIGUOUS = re.compile(
 COMPONENTS = re.compile(
     r"\b\d+\s*(?:un(?:idades?)?|latas?|garrafas?|sach[eê]s?|c[aá]psulas?)\b", re.I
 )
+PROTEIN_CLAIM = re.compile(r"\b\d+(?:[.,]\d+)?\s*g\s*(?:de\s+)?(?:prote[ií]nas?|proteins?)\b", re.I)
+MENTOS_LINE = re.compile(r"(\bmentos\s+)3l\b", re.I)
 NON_CONTENT_MEASUREMENTS = re.compile(r"\bfraldas?\b|\bsacos?\b.*\blixo\b", re.I)
+
+
+class AmbiguousPackage(ValueError):
+    """A single SKU name describes multiple distinct product sizes."""
 
 
 def canonical_quantity(number: Decimal) -> str:
@@ -56,7 +62,12 @@ def reconcile(packages: list[Package]) -> Package | None:
 def name_declarations(name: str) -> list[Package]:
     if NON_CONTENT_MEASUREMENTS.search(name) or AMBIGUOUS.search(name) or COMPONENTS.search(name):
         return []
-    return [package_value(match[1], match[2]) for match in MEASUREMENT.finditer(name)]
+    contents = PROTEIN_CLAIM.sub("", name)
+    contents = MENTOS_LINE.sub(r"\1", contents)
+    packages = [package_value(match[1], match[2]) for match in MEASUREMENT.finditer(contents)]
+    if len({equivalent_contents(package) for package in packages}) > 1:
+        raise AmbiguousPackage("ambiguous package: multiple distinct weights in SKU name")
+    return packages
 
 
 def package_from_name(name: str) -> Package | None:

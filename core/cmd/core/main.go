@@ -16,6 +16,7 @@ import (
 	"inflacao-real/core/internal/database"
 	"inflacao-real/core/internal/ingestion"
 	"inflacao-real/core/internal/monitoring"
+	"inflacao-real/core/internal/webapi"
 )
 
 func main() {
@@ -85,6 +86,7 @@ func newApplication(pool *sql.DB) (application, error) {
 		return application{}, err
 	}
 	monitoring.RegisterRoutes(router, monitoring.PostgresStore{DB: pool}, auth.Authenticate)
+	webapi.RegisterRoutes(router, webapi.PostgresStore{DB: pool})
 	worker, err := createWorker(pool)
 	if err != nil {
 		return application{}, err

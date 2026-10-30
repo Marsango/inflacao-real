@@ -111,7 +111,8 @@ def test_promotions_preserve_unknown_thresholds(weighted_products, settings):
 def test_malformed_gtin_is_not_repaired(weighted_products, settings):
     weighted_products[0]["items"][0]["ean"] = "7894904296300"
     page = parse(weighted_products[:1], settings)
-    assert not page.observations
+    assert len(page.observations) == 1
+    assert page.observations[0].product.gtin is None
     assert "GTIN" in page.issues[0]
 
 
