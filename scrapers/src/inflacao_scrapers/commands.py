@@ -56,6 +56,8 @@ def report_discovery(page) -> int:
         print(json.dumps(observation.summary(), ensure_ascii=False))
     for issue in page.issues:
         print(issue, file=sys.stderr)
+    for warning in page.warnings:
+        print(f"warning: {warning}", file=sys.stderr)
     return int(bool(page.issues))
 
 

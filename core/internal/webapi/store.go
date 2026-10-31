@@ -20,23 +20,12 @@ var productsQuery string
 type PostgresStore struct{ DB *sql.DB }
 
 func (store PostgresStore) Products(requestContext context.Context, request ProductRequest) (Products, error) {
-	query, arguments := productQuery(request)
-	rows, err := store.DB.QueryContext(requestContext, query, arguments...)
+	rows, err := store.DB.QueryContext(requestContext, productsQuery, request.After, request.Limit+1, request.Query)
 	if err != nil {
 		return Products{}, err
 	}
 	defer rows.Close()
 	return readProducts(rows, request.Limit)
-}
-
-func productQuery(request ProductRequest) (string, []any) {
-	arguments := []any{request.After, request.Limit + 1}
-	if request.Query != "" {
-		return productsQuery, append(arguments, request.Query)
-	}
-	return `SELECT id::text, name || coalesce(' · ' || brand, '') FROM products
-		WHERE id > $1 AND EXISTS (SELECT 1 FROM price_observations WHERE product_id=products.id)
-		ORDER BY id LIMIT $2`, arguments
 }
 
 func readProducts(rows *sql.Rows, limit int) (Products, error) {
@@ -64,11 +53,23 @@ func appendProduct(rows *sql.Rows, products []Product) ([]Product, error) {
 }
 
 func (store PostgresStore) History(requestContext context.Context, request HistoryRequest) (insights.History, error) {
-	name, productID, err := store.product(requestContext, request.Product)
+	transaction, err := store.DB.BeginTx(requestContext, &sql.TxOptions{Isolation: sql.LevelRepeatableRead, ReadOnly: true})
 	if err != nil {
 		return insights.History{}, err
 	}
-	rows, err := store.DB.QueryContext(requestContext, historyQuery, productID, request.Start, request.End)
+	defer transaction.Rollback()
+	result, err := storedHistory(requestContext, transaction, request)
+	if err != nil {
+		return result, err
+	}
+	return result, transaction.Commit()
+}
+func storedHistory(requestContext context.Context, transaction *sql.Tx, request HistoryRequest) (insights.History, error) {
+	name, productID, err := resolveProduct(requestContext, transaction, request.Product)
+	if err != nil {
+		return insights.History{}, err
+	}
+	rows, err := transaction.QueryContext(requestContext, historyQuery, productID, request.Start, request.End)
 	if err != nil {
 		return insights.History{}, err
 	}
@@ -90,7 +91,7 @@ func buildHistory(rows *sql.Rows, request HistoryRequest, name string) (insights
 	return result, nil
 }
 
-func (store PostgresStore) product(requestContext context.Context, value string) (string, any, error) {
+func resolveProduct(requestContext context.Context, transaction *sql.Tx, value string) (string, any, error) {
 	if value == "global" {
 		return "", nil, nil
 	}
@@ -99,8 +100,8 @@ func (store PostgresStore) product(requestContext context.Context, value string)
 		return "", nil, ErrNotFound
 	}
 	var name string
-	row := store.DB.QueryRowContext(requestContext, `SELECT name FROM products WHERE id=$1`, productID)
-	err = row.Scan(&name)
+	row := transaction.QueryRowContext(requestContext, `SELECT name,id FROM products WHERE id=equivalent_product_id($1)`, productID)
+	err = row.Scan(&name, &productID)
 	if errors.Is(err, sql.ErrNoRows) {
 		return "", nil, ErrNotFound
 	}

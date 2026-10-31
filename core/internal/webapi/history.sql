@@ -1,14 +1,21 @@
-WITH scoped AS (
-    SELECT observation.*, product.name, product.package_quantity AS canonical_quantity,
+WITH original AS (
+    SELECT observation.*, coalesce(membership.representative_id, observation.product_id) AS resolved_id, product.name, product.package_quantity AS canonical_quantity,
         product.package_unit AS canonical_unit, product.package_count AS canonical_count, listing.shop_id, listing.product_url,
         jsonb_build_array(observation.shop_product_id, seller_id, store_id,
             postal_code, city, state, channel) AS stream
     FROM price_observations observation
-    JOIN products product ON product.id = observation.product_id
+    LEFT JOIN product_equivalence membership ON membership.product_id = observation.product_id
+    JOIN products product ON product.id = coalesce(membership.representative_id, observation.product_id)
     JOIN shop_products listing ON listing.id = observation.shop_product_id
-    WHERE ($1::bigint IS NULL OR observation.product_id = $1)
+    WHERE ($1::bigint IS NULL OR coalesce(membership.representative_id, observation.product_id) = $1)
         AND observed_at >= ($2::date::timestamp AT TIME ZONE 'America/Sao_Paulo')
         AND observed_at < (($3::date + 1)::timestamp AT TIME ZONE 'America/Sao_Paulo')
+), scoped AS (
+ SELECT resolved_id AS product_id, name, canonical_quantity, canonical_unit, canonical_count,
+ shop_id, product_url, stream, seller_id, store_id, postal_code, city, state, channel,
+ observed_at, scraper_id, observation_id, payment_method, installments, membership_required,
+ coupon_required, membership_program, minimum_quantity, price_amount, price_currency, price_basis,
+ availability, package_quantity, package_unit, package_count FROM original
 ), bases AS (
     SELECT product_id, CASE WHEN max(canonical_quantity) IS NOT NULL THEN 'package'
         WHEN count(DISTINCT price_basis) = 1 AND min(price_basis) IN ('kg','l','unit')

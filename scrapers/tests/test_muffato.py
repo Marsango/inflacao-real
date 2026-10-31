@@ -162,7 +162,7 @@ def test_bad_barcode_preserves_observation_with_unknown_gtin(source_bytes, setti
     data = json.loads(source_bytes)
     data[0]["items"][0]["ean"] = "7894904296300"
     page = parse(json.dumps(data).encode(), settings)
-    assert any("barcode:" in issue for issue in page.issues)
+    assert any("barcode:" in issue for issue in page.warnings)
     assert len(page.observations) == 1
     assert page.observations[0].product.gtin is None
     assert parse(b"[]", settings).issues

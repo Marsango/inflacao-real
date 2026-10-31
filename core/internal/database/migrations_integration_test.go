@@ -12,7 +12,7 @@ import (
 
 const applicationTablesSQL = `SELECT count(*) FROM information_schema.tables
 		WHERE table_schema = current_schema() AND table_name IN
-		('ingestion_payloads', 'shops', 'products', 'shop_products', 'price_observations', 'observation_identities', 'monitoring_targets', 'product_monitoring_targets')`
+		('ingestion_payloads', 'shops', 'products', 'shop_products', 'price_observations', 'observation_identities', 'monitoring_targets', 'product_monitoring_targets', 'catalog_decisions', 'product_equivalence', 'product_exclusions', 'equivalence_audit', 'admin_sessions', 'admin_login_throttle')`
 
 const requiredIdentitySQL = `SELECT count(*)=2 AND bool_and(is_nullable='NO' AND column_default IS NULL)
 		FROM information_schema.columns WHERE table_schema=current_schema() AND table_name='price_observations'
@@ -63,12 +63,12 @@ func TestMigrationsUpRepeatDownAndUp(test *testing.T) {
 	requireNoError(test, Migrate(requestContext, pool))
 	provider, err := migrationProvider(pool)
 	requireNoError(test, err)
-	assertMigrationVersion(test, requestContext, provider, 11)
+	assertMigrationVersion(test, requestContext, provider, 12)
 	_, err = provider.DownTo(requestContext, 0)
 	requireNoError(test, err)
 	assertApplicationTables(test, requestContext, pool, 0)
 	requireNoError(test, Migrate(requestContext, pool))
-	assertApplicationTables(test, requestContext, pool, 8)
+	assertApplicationTables(test, requestContext, pool, 14)
 	assertWorkerSQL(test, requestContext, pool, requiredIdentitySQL)
 }
 

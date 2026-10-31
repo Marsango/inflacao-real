@@ -43,7 +43,7 @@ def test_stated_festval_weights_preserve_unscaled_prices(
     assert measurement.offers[0].basis == "kg"
     assert measurement.offers[0].amount == amount
     assert len(measurement.offers) == 1
-    assert all("payment-basis:" in issue for issue in page.issues)
+    assert all("payment-basis:" in issue for issue in page.warnings)
 
 
 @pytest.mark.parametrize("multiplier", ["0", "-1", "10.01", "200"])
@@ -83,7 +83,11 @@ def test_unrelated_liter_quantities_remain_measurements():
     assert package.unit == "l"
 
 
-def test_contradictory_bean_weights_remain_skipped(festval_products, festval_settings):
+def test_contradictory_bean_weights_retain_price_without_package(
+    festval_products, festval_settings
+):
     page = parse(festval_products, festval_settings, selected_sku="3468")
-    assert not page.observations
-    assert any("ambiguous package" in issue for issue in page.issues)
+    assert len(page.observations) == 1
+    assert page.observations[0].product.package is None
+    assert not page.issues
+    assert any("ambiguous package" in issue for issue in page.warnings)

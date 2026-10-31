@@ -13,6 +13,7 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"inflacao-real/core/internal/admin"
 	"inflacao-real/core/internal/database"
 	"inflacao-real/core/internal/ingestion"
 	"inflacao-real/core/internal/monitoring"
@@ -87,6 +88,9 @@ func newApplication(pool *sql.DB) (application, error) {
 	}
 	monitoring.RegisterRoutes(router, monitoring.PostgresStore{DB: pool}, auth.Authenticate)
 	webapi.RegisterRoutes(router, webapi.PostgresStore{DB: pool})
+	if err := admin.RegisterRoutes(router, pool, os.Getenv); err != nil {
+		return application{}, err
+	}
 	worker, err := createWorker(pool)
 	if err != nil {
 		return application{}, err

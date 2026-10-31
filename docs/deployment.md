@@ -176,9 +176,10 @@ by this deployment.
 
 A pinned multi-stage image builds static assets with npm ci and serves them using
 Caddy. Only TCP 80/443 are published by the website. HTTP redirects to HTTPS and www
-redirects to the root domain. SSH remains on 49999. Caddy proxies only GET requests to
-`/api/v1/products` and `/api/v1/history`; ingestion, monitoring, unknown API paths and
-other API methods return 404 at the public edge. The core still binds only to host
+redirects to the root domain. SSH remains on 49999. Caddy proxies GET requests to
+`/api/v1/products` and `/api/v1/history`, plus the specific authenticated admin
+paths and methods documented below. Ingestion, monitoring and other API routes
+return 404 at the public edge. The core still binds only to host
 loopback and PostgreSQL remains unpublished. The browser uses same-origin /api and
 never receives the ingestion token. Hashed assets use immutable caching, HTML is
 revalidated, and API no-store headers pass through unchanged.
@@ -214,3 +215,41 @@ configuration, redirects, public API proxying and private-route denial. Integrat
 checks never use the existing VPS database. Final public acceptance includes valid TLS,
 root/www redirects, both public API routes, and confirmation that private API paths and
 the database remain unreachable externally. Do not start a collection for these checks.
+
+## Product equivalence administration
+
+The optional Portuguese interface is at `/admin`; its API is documented in
+[admin v1](contracts/web/v1/admin.md). Only the explicitly listed admin methods
+and paths pass through Caddy. Scraper ingestion and monitoring remain private.
+Admin requires HTTPS, including during development (the cookie is always Secure).
+
+Generate a password hash locally, without putting the password in shell history:
+
+```bash
+cd core
+read -rs -p 'Owner password: ' owner_password
+printf '%s' "$owner_password" | go run ./cmd/admin-password
+unset owner_password
+```
+
+Put `ADMIN_USERNAME` and `ADMIN_PASSWORD_HASH` in the existing production secrets
+file outside the checkout. Single-quote the hash in `production.env` to preserve
+its literal `$` characters. Compose passes these optional values only to core.
+No credentials means disabled routes. Invalid or partial credentials stop startup.
+Changing the hash does not revoke existing sessions: use logout, or deliberately
+clear `admin_sessions` when rotating a compromised owner credential.
+
+Before deploying migration 00012, create and verify a production backup using
+the existing backup procedure. Deploy the code/migration first: automatic generic
+grouping starts **disabled**. Log in, inspect the generic preview and source links,
+and verify representative banana groups, distinct patinho preparations, real
+brands and ambiguous records. Activate only after reviewing the report. Activation
+backfills existing eligible products in one catalog transaction; later ingestion
+applies the same versioned rules. Product identities and observations remain intact.
+
+Check member-ID histories, global coverage, manual representative selection,
+removal and dissolution after activation. Reversal records exclusions so ingestion
+cannot recreate the rejected unions. Deactivation alone stops future automatic
+decisions; it does not dissolve existing groups. Keep the backup until these
+checks succeed. No production migration, activation or source verification is
+performed by the automated test suite.

@@ -81,5 +81,17 @@ adiciona dependências.
 
 Na raiz do repositório, `./deploy up --domain nossainflacao.com.br` habilita a
 interface pública; atualizações usam `./deploy up`. Caddy serve o build estático,
-gerencia HTTPS e encaminha somente a API pública de leitura. O token de ingestão
+gerencia HTTPS e encaminha a API pública de leitura e as rotas administrativas
+explicitamente permitidas. O token de ingestão
 permanece no backend. Configure os registros DNS conforme o guia de implantação.
+
+
+## Administração de equivalências
+
+A rota `/admin` permite login, revisão exata/aproximada, busca manual, inspeção e
+reversão de grupos. O core exige `ADMIN_USERNAME` e `ADMIN_PASSWORD_HASH`; sem
+credenciais, a API administrativa fica desativada. Use HTTPS também no ambiente
+de desenvolvimento: os cookies de sessão são sempre seguros. Regras genéricas
+iniciam desativadas; revise a prévia antes da ativação. Veja o
+[contrato administrativo](../docs/contracts/web/v1/admin.md) e o
+[guia de implantação](../docs/deployment.md#product-equivalence-administration).

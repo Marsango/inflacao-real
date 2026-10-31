@@ -54,7 +54,7 @@ def test_invalid_barcodes_preserve_prices_and_sku(source_bytes, settings, ean):
     assert measurement.product.gtin is None
     assert measurement.product.source_product_id == original.product.source_product_id
     assert measurement.offers == original.offers
-    assert any("barcode:" in issue for issue in page.issues)
+    assert any("barcode:" in issue for issue in page.warnings)
 
 
 @pytest.mark.parametrize("ean", [None, "", "077330530057"])
@@ -63,3 +63,19 @@ def test_absent_or_valid_barcodes_do_not_report_errors(source_bytes, settings, e
     assert len(page.observations) == 1
     assert page.observations[0].product.gtin == (ean or None)
     assert not page.issues
+
+
+@pytest.mark.parametrize("unit", ["UN", "un", " Un "])
+def test_unit_spelling_preserves_package_prices(source_bytes, settings, unit):
+    page = parse_changed_product(source_bytes, settings, measurementUnit=unit)
+    assert not page.issues
+    assert page.observations[0].product.package.quantity == "300"
+    assert page.observations[0].offers[0].basis == "package"
+    assert page.observations[0].offers[0].amount == "16.66"
+
+
+@pytest.mark.parametrize("unit", [None, 1, False, [], "unknown"])
+def test_malformed_or_unknown_units_remain_errors(source_bytes, settings, unit):
+    page = parse_changed_product(source_bytes, settings, measurementUnit=unit)
+    assert not page.observations
+    assert page.issues

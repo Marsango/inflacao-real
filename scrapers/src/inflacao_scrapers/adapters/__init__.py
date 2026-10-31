@@ -13,6 +13,7 @@ from ..transport import Requester
 class ParsedPage:
     observations: list[Observation] = field(default_factory=list)
     issues: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
 
 def unchanged_settings(requester, settings):

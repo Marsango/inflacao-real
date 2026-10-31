@@ -14,6 +14,7 @@ const methodology = "Painel de contextos com preços comparáveis nas duas datas
 	"Preços disponíveis por loja são exibidos separadamente, inclusive contextos excluídos da comparação. " +
 	"Contextos sem preço nas pontas são excluídos; lacunas intermediárias do painel fixo ficam vazias, sem interpolação. " +
 	"Condições não informadas não garantem acesso ao preço ou equivalência das condições ao longo do tempo. " +
+	"Grupos de equivalência usam a composição atual, são reversíveis e preservam os anúncios e observações de origem. " +
 	"O painel depende do intervalo selecionado e o recorte monitorado não representa a inflação nacional."
 
 func Build(series []ProductSeries, global bool, shopCount int, now time.Time) History {
@@ -95,7 +96,7 @@ func summarize(history *History, series []ProductSeries, global bool) {
 
 func emptyHistory() History {
 	return History{Title: "Variação dos produtos monitorados", Unit: "percent", Points: []Point{}, ShopPrices: []ShopHistory{},
-		Methodology: methodology, MethodologyVersion: "matched-shops-v2", TimeZone: "America/Sao_Paulo", Coverage: "Nenhuma observação no período."}
+		Methodology: methodology, MethodologyVersion: "matched-equivalence-v3", TimeZone: "America/Sao_Paulo", Coverage: "Nenhuma observação no período."}
 }
 
 func includeShop(shops map[string]bool, context ContextSeries) {

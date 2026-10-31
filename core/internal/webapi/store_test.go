@@ -3,6 +3,7 @@ package webapi
 import (
 	"testing"
 
+	"inflacao-real/core/internal/equivalence"
 	"inflacao-real/core/internal/insights"
 )
 
@@ -89,17 +90,23 @@ func TestFixedContextsAndEquivalentPackages(test *testing.T) {
 func TestPaginationAndHistoricalProductAssignment(test *testing.T) {
 	fixture := newFixture(test)
 	fixture.submit(1, nil)
+	fixture.submit(2, secondPricedDay)
 	fixture.execute(`INSERT INTO products (name) VALUES ('Another product'), ('Unobserved product')`)
 	fixture.execute(`UPDATE shop_products SET product_id=2`)
-	fixture.submit(2, func(observation map[string]any) {
-		setPrice(observation, "2026-10-28T12:00:00Z", "10.00")
-		product := observation["product"].(map[string]any)
-		product["name"], product["brand"], product["gtin"], product["package"] = "Another product", nil, nil, nil
+	fixture.submit(3, anotherProduct)
+	fixture.submit(4, func(observation map[string]any) {
+		anotherProduct(observation)
+		observation["observed_at"] = "2026-10-29T12:00:00Z"
 	})
 	history := fixture.history("1", "2026-10-27", "2026-10-27")
 	assertPrice(test, history.LatestPriceMinor, 2490)
 	checkCatalogPages(test, fixture)
+}
 
+func anotherProduct(observation map[string]any) {
+	setPrice(observation, "2026-10-28T12:00:00Z", "10.00")
+	product := observation["product"].(map[string]any)
+	product["name"], product["brand"], product["gtin"], product["package"] = "Another product", nil, nil, nil
 }
 
 func TestEmptyStoreAndUnknownProducts(test *testing.T) {
@@ -199,4 +206,85 @@ func TestUnavailableShopDoesNotBlockMatchedProductOrOverview(test *testing.T) {
 func unavailableListing(observation map[string]any) {
 	observation["product"].(map[string]any)["source_product_id"] = "unavailable-listing"
 	observation["availability"], observation["offers"] = "out_of_stock", []any{}
+}
+
+func TestEquivalenceCombinesHistorySearchAndGlobal(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	fixture.submit(2, func(observation map[string]any) { setPrice(observation, "2026-10-28T12:00:00Z", "26.90") })
+	fixture.submit(3, secondEquivalentListing)
+	fixture.submit(4, func(observation map[string]any) {
+		secondEquivalentListing(observation)
+		setPrice(observation, "2026-10-28T12:00:00Z", "33.00")
+	})
+	snapshot, err := equivalence.Read(fixture.ctx, fixture.pool)
+	requireSuccess(test, err)
+	decision := equivalence.Decision{Revision: snapshot.Revision, Action: "approve", First: 1, Second: 2, Reason: "Verified product and package", SourceVerified: true}
+	requireSuccess(test, equivalence.Apply(fixture.ctx, fixture.pool, "owner", decision))
+	assertSearch(test, fixture, "selecionado", "1")
+	verifyCombinedHistory(test, fixture)
+}
+
+func verifyCombinedHistory(test *testing.T, fixture fixture) {
+	test.Helper()
+	history := fixture.history("2", "2026-10-27", "2026-10-28")
+	if history.Counts.Products != 1 || history.Counts.Streams != 2 {
+		test.Fatalf("group streams lost: %+v", history.Counts)
+	}
+	assertPrice(test, history.LatestPriceMinor, 2690)
+	assertPrice(test, history.Points[1].Value, 2995)
+	global := fixture.history("global", "2026-10-27", "2026-10-28")
+	if global.Counts.Products != 1 {
+		test.Fatal("global counted members independently")
+	}
+	fixture.execute(`UPDATE shop_products SET product_id=NULL`)
+	assertPrice(test, fixture.history("2", "2026-10-27", "2026-10-28").LatestPriceMinor, 2690)
+}
+
+func secondEquivalentListing(observation map[string]any) {
+	product := observation["product"].(map[string]any)
+	product["source_product_id"] = "other-product"
+	product["gtin"] = "7891234567888"
+	product["name"] = "Arroz Branco Selecionado Tipo 1 5kg"
+	setPrice(observation, "2026-10-27T12:00:00Z", "30.00")
+}
+
+func TestGenericFutureObservationsAndReversal(test *testing.T) {
+	fixture := newFixture(test)
+	snapshot, err := equivalence.Read(fixture.ctx, fixture.pool)
+	requireSuccess(test, err)
+	requireSuccess(test, equivalence.Apply(fixture.ctx, fixture.pool, "owner", equivalence.Decision{Revision: snapshot.Revision, Action: "activate", Reason: "Reviewed preview"}))
+	fixture.submit(1, bananaListing)
+	fixture.submit(2, func(observation map[string]any) {
+		bananaListing(observation)
+		product := observation["product"].(map[string]any)
+		product["source_product_id"] = "other-banana"
+		product["gtin"] = "7891234567888"
+	})
+	snapshot, err = equivalence.Read(fixture.ctx, fixture.pool)
+	requireSuccess(test, err)
+	if len(snapshot.Products) != 2 || snapshot.Products[1].Representative != 1 {
+		test.Fatal("future kg observations not grouped", snapshot.Products)
+	}
+	verifyGenericReversal(test, fixture, snapshot.Revision)
+}
+
+func verifyGenericReversal(test *testing.T, fixture fixture, revision int64) {
+	test.Helper()
+	requireSuccess(test, equivalence.Apply(fixture.ctx, fixture.pool, "owner", equivalence.Decision{Revision: revision, Action: "dissolve", First: 1, Reason: "Source correction"}))
+	fixture.submit(3, func(observation map[string]any) {
+		bananaListing(observation)
+		setPrice(observation, "2026-10-28T12:00:00Z", "6.00")
+	})
+	snapshot, err := equivalence.Read(fixture.ctx, fixture.pool)
+	requireSuccess(test, err)
+	if snapshot.Products[1].Representative != 2 {
+		test.Fatal("dissolved pair regrouped on ingestion")
+	}
+}
+
+func bananaListing(observation map[string]any) {
+	setUnitPrice(observation, "kg")
+	product := observation["product"].(map[string]any)
+	product["name"], product["brand"] = "Banana Maçã Kg", "Hortifruti"
 }

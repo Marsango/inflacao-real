@@ -29,8 +29,7 @@ def discover(
     pages = catalog_pages(requester, settings, scope)
     page = next(pages, None)
     while page is not None:
-        result.observations.extend(page.observations)
-        result.issues.extend(page.issues)
+        append_page(result, page)
         page = next_discovery_page(pages, result, limit)
     result.observations = result.observations[:limit]
     return result
@@ -50,3 +49,9 @@ ADAPTER = Adapter(
     prepare=prepare_region,
     catalog_pages=catalog_pages,
 )
+
+
+def append_page(result: ParsedPage, page: ParsedPage) -> None:
+    result.observations.extend(page.observations)
+    result.issues.extend(page.issues)
+    result.warnings.extend(page.warnings)

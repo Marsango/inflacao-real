@@ -19,12 +19,17 @@ class CollectionRun:
     identity: UUID = field(default_factory=uuid4)
     observations: int = 0
     failures: int = 0
+    warnings: int = 0
     unknown_packages: int = 0
     seen: set[str] = field(default_factory=set)
 
     def issue(self, message: str) -> None:
         print(f"run_id={self.identity} {message}", file=sys.stderr)
         self.failures += 1
+
+    def warning(self, message: str) -> None:
+        print(f"run_id={self.identity} warning: {message}", file=sys.stderr)
+        self.warnings += 1
 
     def checkpoint(self, page, delivery, settings, target_id) -> set[str]:
         observations = [observation for observation in page.observations if self.keep(observation)]
@@ -39,8 +44,7 @@ class CollectionRun:
         for submission in submissions:
             self.observations += len(submission.observations)
             delivery.submit(submission)
-        for issue in page.issues:
-            self.issue(f"target={target_id} {issue}")
+        report_page(self, page, target_id)
         return {source_identity(observation) for observation in page.observations}
 
     def keep(self, observation) -> bool:
@@ -53,7 +57,8 @@ class CollectionRun:
     def finish(self) -> int:
         print(
             f"run_id={self.identity} observations={self.observations} failures={self.failures} "
-            f"unknown_packages={self.unknown_packages} complete={self.failures == 0}"
+            f"warnings={self.warnings} unknown_packages={self.unknown_packages} "
+            f"complete={self.failures == 0}"
         )
         return int(self.failures != 0)
 
@@ -145,3 +150,10 @@ def report_target(run, identity: str, count: int) -> None:
     print(f"run_id={run.identity} target={identity} matched_listings={count}", flush=True)
     if count == 0:
         run.issue(f"target={identity}: no matching listings; coverage missing")
+
+
+def report_page(run: CollectionRun, page, target_id: str) -> None:
+    for issue in page.issues:
+        run.issue(f"target={target_id} {issue}")
+    for warning in page.warnings:
+        run.warning(f"target={target_id} {warning}")

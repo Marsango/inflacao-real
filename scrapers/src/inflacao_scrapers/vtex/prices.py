@@ -48,7 +48,7 @@ def sale_basis(sku: dict, settings) -> str:
     multiplier = decimal_value(sku.get("unitMultiplier"))
     if multiplier <= 0 or multiplier > maximum_multiplier(settings):
         raise ValueError("sale-format: unsupported unit multiplier")
-    unit = sku.get("measurementUnit")
+    unit = measurement_unit(sku)
     if unit == "un" and multiplier == 1:
         return "package"
     if unit == "kg" and settings.supports_kilogram_prices():
@@ -86,3 +86,10 @@ def weight_description(sku: dict, basis: str) -> str | None:
         return None
     detail = sku.get("complementName")
     return "; ".join(filter(None, ["Preço anunciado por kg; total depende do peso final", detail]))
+
+
+def measurement_unit(sku: dict) -> str:
+    unit = sku.get("measurementUnit")
+    if not isinstance(unit, str):
+        raise ValueError("sale-format: missing or malformed measurement unit")
+    return unit.strip().lower()

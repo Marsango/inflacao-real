@@ -9,6 +9,7 @@ import (
 	"sort"
 
 	"inflacao-real/core/internal/catalog"
+	"inflacao-real/core/internal/equivalence"
 	"inflacao-real/core/internal/ingestion/document"
 	"inflacao-real/core/internal/monitoring"
 )
@@ -50,7 +51,17 @@ func (writer payloadWriter) persist() error {
 	for position := 0; position < len(observations) && err == nil; position++ {
 		err = writer.persistObservation(observations[position])
 	}
-	return err
+	if err != nil {
+		return err
+	}
+	return writer.reconcile()
+}
+
+func (writer payloadWriter) reconcile() error {
+	if _, err := writer.transaction.ExecContext(writer.context, `UPDATE catalog_decisions SET revision=revision+1`); err != nil {
+		return err
+	}
+	return equivalence.Reconcile(writer.context, writer.transaction)
 }
 
 func (writer payloadWriter) requireShop() error {

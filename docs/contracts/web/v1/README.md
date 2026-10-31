@@ -10,9 +10,19 @@ has a ten-second deadline and follows request cancellation.
 
 `GET /api/v1/products?limit=100&after=123`
 
-Returns canonical variants with historical observations, including historical
-assignments that differ from a listing's current product. Unobserved catalog
-entries are excluded. Variants remain distinct; monitoring groups are not products.
+Returns canonical variants with in-stock, non-null price observations on at least
+two distinct `America/Sao_Paulo` dates within the same listing, seller, store,
+location and channel. Multiple payment offers and repeated collections on one
+day count as one date; observations from different contexts do not combine to
+meet this minimum. The rule applies both with and without `q` and
+uses the observation's historical product assignment, not the listing's current
+product. Never-available products, unknown-only availability, and in-stock
+observations without prices do not qualify. This minimum applies across history;
+a selected interval can still lack comparable endpoint prices, and the history
+API continues to apply its price-condition and package-equivalence rules. A
+product remains searchable after later becoming unavailable; the search promises historical prices, not current
+stock. Direct history links still work for existing excluded products.
+Variants remain distinct; monitoring groups are not products.
 
 ```json
 {
@@ -76,7 +86,7 @@ See the [example response](history.example.json), also used by frontend tests.
 | `unknownConditions` | Some contexts use advertised prices with incompletely reported buying conditions. This does not mean the price is available unconditionally. The UI displays a notice. |
 | `counts` | Observed `products`, distinct `shops`, `streams`, inclusive `days`, and `pricedDays` with usable plotted values. `includedProducts`, `includedShops` (distinct across products), and `includedStreams` count the matched panel; subtraction gives exclusions. Empty histories have zero counts. |
 | `coverage` | Portuguese explanation of those counts. |
-| `methodology`, `methodologyVersion` | Portuguese explanation and stable calculation identifier (`matched-shops-v2`). |
+| `methodology`, `methodologyVersion` | Portuguese explanation and stable calculation identifier (`matched-equivalence-v3`). |
 
 Money and percentages cross the JSON boundary as safe integers. Intermediate
 averages and relative changes use exact rational arithmetic. Rounding occurs only
@@ -90,7 +100,7 @@ come from an excluded context. Percentage variation averages context relatives,
 not ratios of those average price levels; they need not agree when initial prices
 differ. Every eligible shop is counted once per product regardless of context count.
 
-## Methodology: matched-shops-v2
+## Methodology: matched-equivalence-v3
 
 1. Select historical product assignments and source observation times inside the
    requested inclusive São Paulo dates. Do not use current listing assignments.
@@ -152,3 +162,13 @@ Errors use `{"error":"code"}` without internal database details.
 
 The browser preserves filters on failure, supports retry, aborts obsolete
 requests, and does not fall back to demo values.
+
+## Equivalence and owner administration
+
+Search matches all member names and returns only the current representative of
+each group. Member IDs remain accepted by history; global calculations count an
+equivalence group once. Current membership is applied to the requested historical
+period without rewriting source assignments. Reversing membership restores the
+separate histories. Offer streams, conditions and coverage policies stay intact.
+See the [admin contract](admin.md) for authentication, candidate evidence, generic
+rules, review concurrency, audit and reversal endpoints.

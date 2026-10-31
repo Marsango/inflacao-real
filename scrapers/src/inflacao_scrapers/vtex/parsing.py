@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from ..adapters import ParsedPage
 from ..models import Context, Observation, Product
-from ..packaging import AmbiguousPackage, resolve_package
+from ..packaging import resolve_package
 from ..scope import MonitoringScope, MonitoringTarget
 from .config import VtexSettings
 from .json import decode_response
@@ -74,7 +74,7 @@ def parse_matching_candidate(sku, product, context, result, seen, identity) -> N
     basis = sale_basis(sku, context.settings)
     issues = []
     result.observations.append(build_observation(sku, product, context, basis, issues))
-    result.issues.extend(
+    result.warnings.extend(
         f"shop={context.settings.shop_id} sku={identity}: {issue}" for issue in issues
     )
 
@@ -117,8 +117,6 @@ def source_product(sku: dict, product: dict, basis: str, settings, issues: list[
 def source_package(sku: dict, basis: str, settings, issues: list[str]):
     try:
         return resolve_package(sku, basis, settings)
-    except AmbiguousPackage:
-        raise
     except (ValueError, InvalidOperation) as error:
         issues.append(f"package-size: {error}")
         return None

@@ -16,6 +16,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Cache-Control', 'no-store')
         self.end_headers()
         self.wfile.write(json.dumps({'path': self.path}).encode())
+    do_POST = do_GET
+    do_DELETE = do_GET
 HTTPServer(('0.0.0.0', 8080), Handler).serve_forever()
 """
 

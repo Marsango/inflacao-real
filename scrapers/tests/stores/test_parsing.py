@@ -99,7 +99,7 @@ def test_actual_regional_weight_candidates_preserve_advertised_bases(store_sampl
     raw = (FIXTURES / f"{store_sample.name}-weight-candidates.json").read_bytes()
     page = parse(store_sample, raw)
     assert len(page.observations) == {"angeloni": 4, "festval": 5}[store_sample.name]
-    assert all("payment-basis:" in issue for issue in page.issues), page.issues
+    assert all("payment-basis:" in issue for issue in page.warnings), page.issues
     weighted = [item for item in page.observations if item.offers[0].basis == "kg"]
     assert len(weighted) == {"angeloni": 3, "festval": 4}[store_sample.name]
     assert all(item.product.package is None and item.product.gtin is None for item in weighted)

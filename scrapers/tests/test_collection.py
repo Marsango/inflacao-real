@@ -219,3 +219,27 @@ def test_short_page_with_more_source_results_is_not_complete():
 def test_final_page_header_can_describe_the_requested_range():
     response = httpx.Response(200, headers={"resources": "50-99/60"})
     assert page_finished(response, [{}] * 10, 50)
+
+
+def test_metadata_warnings_do_not_fail_successful_collection(
+    tmp_path, settings, source_bytes, target, capsys
+):
+    products = source_products(source_bytes, 1)
+    sku = products[0]["items"][0]
+    sku.update(
+        ean="invalid",
+        measurementUnit="UN",
+        name="Café Moído 400g 500g",
+        nameComplete="Café Moído 400g 500g",
+    )
+    result, pending = run_collection(
+        tmp_path, settings, collection_handler(target, {0: products}, [])
+    )
+    assert result == 0
+    assert len(observations(pending)) == 1
+    assert observations(pending)[0]["product"]["package"] is None
+    output = capsys.readouterr()
+    assert "warning:" in output.err
+    assert "barcode:" in output.err and "ambiguous package" in output.err
+    assert "failures=0 warnings=4" in output.out
+    assert "complete=True" in output.out

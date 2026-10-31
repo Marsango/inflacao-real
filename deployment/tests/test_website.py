@@ -87,3 +87,17 @@ def test_domain_preserves_secrets_and_is_reused(tmp_path, monkeypatch):
     assert runtime.production_domain() == "nossainflacao.com.br"
     assert original in (tmp_path / "production.env").read_text()
     assert (tmp_path / "production.env").stat().st_mode & 0o777 == 0o600
+
+
+def test_admin_proxy_allowlist(web):
+    for path, method in [("session", "GET"), ("session", "POST"),
+                         ("session", "DELETE"), ("candidates", "GET"),
+                         ("products", "GET"), ("products/1", "GET"),
+                         ("groups", "GET"), ("groups/1", "GET"),
+                         ("groups", "POST"), ("reviews", "POST")]:
+        response = request(web, "/api/v1/admin/" + path, method)
+        assert response.status_code == 200
+    for path, method in [("unknown", "GET"), ("products", "POST"),
+                         ("session", "PUT"), ("reviews", "GET"),
+                         ("products/1/extra", "GET"), ("products/nope", "GET")]:
+        assert request(web, "/api/v1/admin/" + path, method).status_code == 404

@@ -338,7 +338,7 @@ The core exposes public read-only `GET /api/v1/products` (cursor-paginated canon
 variants) and `GET /api/v1/history?product=global&start=YYYY-MM-DD&end=YYYY-MM-DD`
 (use a canonical product ID for individual history). See the [versioned web API
 contract](../docs/contracts/web/v1/README.md) for response fields, units, date
-boundaries, errors and `matched-shops-v2` methodology. The browser never needs a
+boundaries, errors and `matched-equivalence-v3` methodology. The browser never needs a
 scraper token; ingestion and monitoring routes retain their authentication.
 
 Daily prices use a fixed set of listing/seller/location/channel contexts and
@@ -360,3 +360,19 @@ from `web/`. Vite forwards `/api` to the core. No frontend deployment is configu
 Tests cover the complete ingest/worker/database/read path using the shared
 `internal/testdatabase.New` helper with fresh migrated PostgreSQL Testcontainers.
 The existing database tests keep their `testDatabase(t)` wrapper around that helper.
+
+### Reversible product equivalence
+
+Strict ingestion identity is unchanged. Migration 00012 adds separate equivalence
+membership, exclusions, catalog revisions, audit and owner sessions. Public search
+and histories (including global calculations and legacy member IDs) resolve current
+representatives before aggregation. Offer contexts and historical assignments
+remain immutable. The default representative is the lowest member ID; the owner
+can select another. Group changes serialize with ingestion and stale reviews fail.
+
+The [admin API and rule documentation](../docs/contracts/web/v1/admin.md) describes
+Portuguese review, exact/fuzzy branded suggestions, conservative `commodities_v1`
+automation, reversals and authentication. Generic grouping starts disabled: preview
+and explicitly activate it from `/admin` after backup and source review. The
+worker applies enabled rules within each ingestion transaction. No scraper contract
+or package-to-kg conversion changes are introduced.

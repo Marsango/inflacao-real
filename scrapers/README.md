@@ -117,7 +117,8 @@ To add a shop without changing the runner:
 2. Define an [`Adapter`](src/inflacao_scrapers/adapters/__init__.py) with its name,
    settings model, `search_pages(requester, settings, target, query)`, and
    `discover(requester, settings, query, limit)` functions. Searches yield shared
-   `ParsedPage` instances containing validated observations and parsing issues.
+   `ParsedPage` instances containing validated observations, fatal parsing issues,
+   and nonfatal metadata warnings.
    An optional `prepare` callback resolves per-run context. An adapter that browses
    a whole catalog supplies `catalog_pages(requester, settings, scope)` instead
    of `search_pages`; the runner counts matches for every core target.
@@ -312,7 +313,7 @@ uses `AvailableQuantity` when `IsAvailable` is absent. Both retain unavailable
 displayed offers, promotions and payment alternatives. Equivalent repeated package
 sizes agree; disagreements between SKU fields stay null with a collection issue.
 Explicit protein amounts are excluded from net contents; a single name listing
-different package sizes is skipped as ambiguous.
+different package sizes retains its price with unknown package contents and a warning.
 Angeloni and Festval also support advertised kilogram prices in their verified
 Curitiba API contexts. Independent storefront checks establish the price unit;
 the comparison may use another Curitiba pickup location. API availability and
@@ -538,7 +539,8 @@ Known short retailer codes for verified kilogram listings remain unknown GTINs.
 Explicit protein claims such as `20g de proteína` and `12g Protein` are excluded
 from net-content measurements. Remaining measurements must agree; the final weight
 is not selected blindly. A SKU name listing multiple different sizes (such as the
-104g/109g Pringles collector listing) is skipped with an explicit diagnostic.
+104g/109g Pringles collector listing) retains its observation with unknown package
+contents and an explicit warning; no size is guessed.
 Disagreement between otherwise unambiguous SKU name fields still preserves the price
 with unknown package contents.
 
@@ -557,4 +559,24 @@ remains 1.
 
 The verified `Mentos 3L` product-line label is excluded from package measurements.
 Its separately stated 8.5g remains the package size; unrelated `3L` quantities
-remain liters. Genuine conflicting SKU sizes are still skipped.
+remain liters. Genuine conflicting SKU sizes remain unknown while independently
+valid prices are retained.
+
+
+### Collection errors and metadata warnings
+
+`ParsedPage.issues` identifies skipped observations or incomplete collection.
+`ParsedPage.warnings` reports omitted optional metadata or payment alternatives
+when the observation's independently valid base offer can still be retained.
+Barcode, reference-price, package-size and optional payment diagnostics remain
+visible on stderr; run summaries report `warnings` separately from `failures`.
+Warnings alone do not make collection or discovery exit with a failure status.
+Missing targets, invalid base prices, unsupported sale formats, source/network
+errors, pagination failures and failed delivery still fail completeness.
+
+The shared parser normalizes measurement-unit spelling and whitespace (`UN`,
+`un`, ` Un `). On 2026-10-31 the VPS returned `measurementUnit=UN` and multiplier
+1 for Muffato SKUs 306771 (Fini 35g) and 301876 (Adidas 150ml). These retain
+package prices; multiplier bounds and regional kilogram policies still apply.
+Ambiguous package quantities remain unknown and are excluded by core package
+comparability rules rather than being guessed or discarding the observation.

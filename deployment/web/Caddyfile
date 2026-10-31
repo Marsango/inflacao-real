@@ -15,6 +15,34 @@
     handle @read_api {
         reverse_proxy core:8080
     }
+    @admin_reads {
+        method GET
+        path /api/v1/admin/session /api/v1/admin/candidates /api/v1/admin/products /api/v1/admin/groups
+    }
+    handle @admin_reads {
+        reverse_proxy core:8080
+    }
+    @admin_details {
+        method GET
+        path_regexp admin_detail ^/api/v1/admin/(products|groups)/[1-9][0-9]*$
+    }
+    handle @admin_details {
+        reverse_proxy core:8080
+    }
+    @admin_writes {
+        method POST
+        path /api/v1/admin/session /api/v1/admin/reviews /api/v1/admin/groups
+    }
+    handle @admin_writes {
+        reverse_proxy core:8080
+    }
+    @admin_logout {
+        method DELETE
+        path /api/v1/admin/session
+    }
+    handle @admin_logout {
+        reverse_proxy core:8080
+    }
     @other_api path /api /api/*
     handle @other_api {
         respond 404

@@ -67,5 +67,5 @@ def weighted_observation(settings):
         observed_at=datetime(2026, 10, 29, 19, 4, tzinfo=UTC),
     )
     assert len(page.observations) == 1
-    assert all("payment-basis" in issue for issue in page.issues)
+    assert all("payment-basis" in issue for issue in page.warnings)
     return page.observations[0]

@@ -11,8 +11,8 @@ from .conftest import parse, rename, source_offer
 def test_observed_produce_beef_bakery_and_fixed_control(weighted_products, settings):
     page = parse(weighted_products, settings)
     assert len(page.observations) == 4
-    assert len(page.issues) == 3
-    assert all("payment-basis" in issue for issue in page.issues)
+    assert len(page.warnings) == 3
+    assert all("payment-basis" in issue for issue in page.warnings)
     for observation in page.observations[:3]:
         assert_weight_price(observation)
     control = page.observations[3]
@@ -97,7 +97,7 @@ def test_unresolved_reference_is_omitted_without_losing_price(weighted_products,
     page = parse(weighted_products[:1], settings)
     assert page.observations[0].offers[0].reference_amount is None
     assert page.observations[0].offers[0].amount == "13.40"
-    assert any("reference-price" in issue for issue in page.issues)
+    assert any("reference-price" in issue for issue in page.warnings)
 
 
 def test_promotions_preserve_unknown_thresholds(weighted_products, settings):
@@ -113,7 +113,7 @@ def test_malformed_gtin_is_not_repaired(weighted_products, settings):
     page = parse(weighted_products[:1], settings)
     assert len(page.observations) == 1
     assert page.observations[0].product.gtin is None
-    assert "GTIN" in page.issues[0]
+    assert "GTIN" in page.warnings[0]
 
 
 def test_each_collection_uses_fresh_identity_and_time(weighted_products, settings):
@@ -134,13 +134,13 @@ def test_invalid_payment_options_keep_fixed_package_base_price(
     page = parse(weighted_products[3:], settings)
     assert len(page.observations[0].offers) == 1
     assert page.observations[0].offers[0].amount == "26.80"
-    assert any("payment-offer" in issue for issue in page.issues)
+    assert any("payment-offer" in issue for issue in page.warnings)
 
 
 def test_one_bad_payment_does_not_discard_independent_alternatives(weighted_products, settings):
     source = source_offer(weighted_products[3])
     source["PaymentOptions"]["installmentOptions"][0]["installments"][0]["total"] = "invalid"
     page = parse(weighted_products[3:], settings)
-    assert any("payment-offer" in issue for issue in page.issues)
+    assert any("payment-offer" in issue for issue in page.warnings)
     assert page.observations[0].offers[0].amount == "26.80"
     assert page.observations[0].offers[1].conditions.payment_method == "pix"

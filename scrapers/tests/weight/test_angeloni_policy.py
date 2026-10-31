@@ -39,10 +39,12 @@ def test_protein_claim_is_ignored_regardless_of_position(name):
     assert package_from_name(name).quantity == "60"
 
 
-def test_ambiguous_pringles_listing_is_skipped(angeloni_products, angeloni_settings):
+def test_ambiguous_pringles_listing_retains_unknown_package(angeloni_products, angeloni_settings):
     page = parse(angeloni_products, angeloni_settings, selected_sku="5523711")
-    assert not page.observations
-    assert any("ambiguous package" in issue for issue in page.issues)
+    assert len(page.observations) == 1
+    assert page.observations[0].product.package is None
+    assert not page.issues
+    assert any("ambiguous package" in issue for issue in page.warnings)
 
 
 def test_watermelon_preserves_per_kilogram_price(angeloni_products, angeloni_settings):

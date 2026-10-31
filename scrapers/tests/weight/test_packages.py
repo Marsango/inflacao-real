@@ -41,15 +41,15 @@ def test_conflict_retains_price_with_null_package_and_issue(packaged_products, s
     page = parse(packaged_products[:1], settings)
     assert page.observations[0].product.package is None
     assert page.observations[0].offers[0].basis == "package"
-    assert "sku=215063: package-size:" in page.issues[0]
-    assert "conflicting" in page.issues[0]
+    assert "sku=215063: package-size:" in page.warnings[0]
+    assert "conflicting" in page.warnings[0]
 
 
 @pytest.mark.parametrize("quantity", ["0", "-1", "0,0000001", "1000000000"])
 def test_invalid_contents_do_not_discard_valid_price(packaged_products, settings, quantity):
     rename(packaged_products[0], f"Café {quantity}g")
     page = parse(packaged_products[:1], settings)
-    assert page.issues
+    assert page.warnings
     assert page.observations[0].product.package is None
     assert page.observations[0].offers
 

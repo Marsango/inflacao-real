@@ -32,6 +32,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Required}
       HTTP_ADDR: 0.0.0.0:8080
       GIN_MODE: release
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
       INGESTION_TOKEN: ${INGESTION_TOKEN:?Required}
       INGESTION_SCRAPER_ID: muffato-curitiba-01
       INGESTION_SHOP_IDS: super-muffato,angeloni,festval

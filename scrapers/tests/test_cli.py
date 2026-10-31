@@ -116,3 +116,11 @@ def test_example_configuration_pins_curitiba_branch():
     assert settings.city == "Curitiba"
     assert settings.state == "PR"
     assert settings.max_search_pages == 50
+
+
+def test_discovery_reports_metadata_warnings_without_failure(capsys):
+    from inflacao_scrapers.adapters import ParsedPage
+
+    page = ParsedPage(warnings=["barcode: unknown GTIN"])
+    assert commands.report_discovery(page) == 0
+    assert "warning: barcode: unknown GTIN" in capsys.readouterr().err
