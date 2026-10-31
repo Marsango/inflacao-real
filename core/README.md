@@ -338,7 +338,7 @@ The core exposes public read-only `GET /api/v1/products` (cursor-paginated canon
 variants) and `GET /api/v1/history?product=global&start=YYYY-MM-DD&end=YYYY-MM-DD`
 (use a canonical product ID for individual history). See the [versioned web API
 contract](../docs/contracts/web/v1/README.md) for response fields, units, date
-boundaries, errors and `fixed-panel-v1` methodology. The browser never needs a
+boundaries, errors and `matched-shops-v2` methodology. The browser never needs a
 scraper token; ingestion and monitoring routes retain their authentication.
 
 Daily prices use a fixed set of listing/seller/location/channel contexts and

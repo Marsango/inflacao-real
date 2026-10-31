@@ -1,6 +1,6 @@
 WITH scoped AS (
     SELECT observation.*, product.name, product.package_quantity AS canonical_quantity,
-        product.package_unit AS canonical_unit, product.package_count AS canonical_count, listing.shop_id,
+        product.package_unit AS canonical_unit, product.package_count AS canonical_count, listing.shop_id, listing.product_url,
         jsonb_build_array(observation.shop_product_id, seller_id, store_id,
             postal_code, city, state, channel) AS stream
     FROM price_observations observation
@@ -50,17 +50,25 @@ WITH scoped AS (
     FROM measurements GROUP BY product_id, name, basis
 ), days AS (
     SELECT $2::date + generate_series(0, $3::date - $2::date) AS day
-), daily AS (
-    SELECT panel.product_id, days.day,
-        CASE WHEN count(latest.price) = panel.streams
-            THEN trim_scale(sum(latest.price))::text || '/' || panel.streams::text END AS amount
-    FROM panel CROSS JOIN days
-    LEFT JOIN latest ON latest.product_id = panel.product_id AND latest.day = days.day
-    GROUP BY panel.product_id, panel.streams, days.day
+), contexts AS (
+    SELECT product_id, stream, shop_id, max(product_url) AS product_url,
+        concat_ws(' · ', max(seller_id), max(store_id), max(postal_code), max(city), max(state), max(channel)) AS label
+    FROM scoped GROUP BY product_id, stream, shop_id
+), context_series AS (
+    SELECT contexts.product_id, contexts.stream, contexts.shop_id, shops.name AS shop_name,
+        contexts.label, contexts.product_url,
+        jsonb_agg(jsonb_build_object('date', days.day::text, 'amount', latest.price::text)
+            ORDER BY days.day) AS points
+    FROM contexts CROSS JOIN days JOIN shops ON shops.id = contexts.shop_id
+    LEFT JOIN latest ON latest.product_id = contexts.product_id
+        AND latest.stream = contexts.stream AND latest.day = days.day
+    GROUP BY contexts.product_id, contexts.stream, contexts.shop_id, shops.name, contexts.label, contexts.product_url
 )
 SELECT panel.product_id::text, panel.name, panel.basis, panel.unknown_conditions, panel.collected_at, panel.streams, panel.shops,
     (SELECT count(DISTINCT shop_id) FROM measurements),
-    jsonb_agg(jsonb_build_object('date', daily.day::text, 'amount', daily.amount) ORDER BY daily.day)
-FROM panel JOIN daily USING (product_id)
+    jsonb_agg(jsonb_build_object('id', context_series.stream::text, 'shopId', shop_id,
+        'shopName', shop_name, 'label', label, 'productUrl', product_url, 'points', points)
+        ORDER BY shop_id, context_series.stream)
+FROM panel JOIN context_series USING (product_id)
 GROUP BY panel.product_id, panel.name, panel.basis, panel.unknown_conditions, panel.collected_at, panel.streams, panel.shops
 ORDER BY panel.product_id;

@@ -66,72 +66,71 @@ See the [example response](history.example.json), also used by frontend tests.
 | `period`, `timeZone` | Requested inclusive dates and the daily observation timezone. |
 | `title`, `unit` | Display title; `BRL` for product prices or `percent` for the overview. |
 | `priceBasis` | `package`, `kg`, `l`, or `unit` for the product's selected basis; `null` for the overview or an undetermined basis. |
+| `shopPrices` | Product-only context histories with `shopId`, `shopName`, `context`, `productUrl`, daily centavo `points`, and `included` in the matched panel. Unavailable/ineligible observations stay null. Overview returns `[]`. |
 | `points` | Chronological `{date, value}` entries. Product values are integer centavos for the stated basis; overview values are integer basis points (803 = 8.03%). `null` means no selected price or incomplete coverage, never zero. |
-| `latestPriceMinor` | Last non-null daily product price in the requested period, or `null`; always `null` for the overview. |
+| `latestPriceMinor` | Lowest eligible available context price on the most recent day with any price in the period, or `null`; always `null` for the overview. Independent of the matched panel. |
 | `changeBasisPoints` | Core-calculated change, rounded to integer basis points. `null` for fewer than two usable days, a nonpositive product baseline, or an unrepresentable result. |
-| `comparisonStart`, `comparisonEnd` | Actual first and last usable days underlying the summary. Both `null` without usable days; identical for one usable day, which still has no variation. These may differ from requested endpoints. |
+| `comparisonStart`, `comparisonEnd` | Requested start and end dates when a matched comparison exists and the dates differ; otherwise both `null`. No automatic baseline shifts. |
 | `collectedAt` | Latest source `observed_at` among the selected product(s)' raw measurements **inside the requested period**, with explicit timezone; `null` if none. This is not ingestion receipt time or necessarily the date of the last selected price. |
 | `stale` | Latest source observation is more than 48 hours old at request time. Old historical intervals can be stale by this definition. |
 | `unknownConditions` | Some contexts use advertised prices with incompletely reported buying conditions. This does not mean the price is available unconditionally. The UI displays a notice. |
-| `counts` | Products, distinct shops, fixed contexts, inclusive days and days with usable plotted values. Empty histories have zero counts. |
+| `counts` | Observed `products`, distinct `shops`, `streams`, inclusive `days`, and `pricedDays` with usable plotted values. `includedProducts`, `includedShops` (distinct across products), and `includedStreams` count the matched panel; subtraction gives exclusions. Empty histories have zero counts. |
 | `coverage` | Portuguese explanation of those counts. |
-| `methodology`, `methodologyVersion` | Portuguese explanation and stable calculation identifier (`fixed-panel-v1`). |
+| `methodology`, `methodologyVersion` | Portuguese explanation and stable calculation identifier (`matched-shops-v2`). |
 
 Money and percentages cross the JSON boundary as safe integers. Intermediate
 averages and relative changes use exact rational arithmetic. Rounding occurs only
 for displayed centavos/basis points, half away from zero. Extreme percentage
 results outside JavaScript's safe integer range are `null`.
 
-The UI explains missing variation using `counts.pricedDays`: zero comparable days
-means no complete coverage; one comparable day needs another day for a change.
-The overview can remain unavailable even after several collections if no day
-covers its entire fixed panel. The UI offers product search in that case and never
-replaces unavailable variation with zero or changes the core's calculation.
+The UI displays available prices separately from matched variation. Product chart
+prices use the matched panel's context averages within each shop, then equal shop
+weights. The summary's lowest available price can differ from that chart and can
+come from an excluded context. Percentage variation averages context relatives,
+not ratios of those average price levels; they need not agree when initial prices
+differ. Every eligible shop is counted once per product regardless of context count.
 
-## Methodology: fixed-panel-v1
+## Methodology: matched-shops-v2
 
-1. Select observations by historical `price_observations.product_id` and source
-   observation time. Do not follow today's `shop_products.product_id`. Rows with
-   unknown historical canonical identity do not enter these series.
-2. Fix the set of contexts observed anywhere in the requested interval: listing,
-   seller, branch/store ID, postal code, city, state, and channel. Missing context
-   fields remain unknown; they are not claims about a physical location. Every
-   observed context remains in the panel, including unavailable contexts.
-3. Fix a price basis per product. If the canonical package is known, use package
-   prices only, requiring an equivalent observed quantity, dimension and component
-   count. Grams/kilograms and milliliters/liters compare exactly. With no canonical
-   package, allow a single explicitly observed basis (`kg`, `l`, or `unit`). Mixed
-   bases or package prices of unknown quantity cannot establish equivalence and
-   produce gaps. There is no implicit conversion of portion totals to per-kg prices.
-4. Fix a buying-conditions policy per context for the entire interval. Prefer
-   explicitly unrestricted offers if any exist: `payment_method=any`, no
-   installments, `membership_required=false`, no membership program,
-   `coupon_required=false`, and `minimum_quantity=1`. Other days must meet that
-   same policy; unknown terms never replace known unrestricted terms.
-5. When a context has no explicitly unrestricted offers, allow the announced
-   base price with no **known** restrictions: payment `any` or `unknown`, no
-   installments/program, membership/coupon false or unknown, minimum quantity one
-   or unknown. Flag `unknownConditions`. Known restricted payment methods, member,
-   coupon and multiple-purchase offers are excluded. Free-text descriptions and
-   unknown fields are not proof of unrestricted access. The current VTEX scrapers
-   deliberately report these fields as unknown, so their base prices remain
-   inspectable with this limitation instead of being silently called unconditional.
-6. For each context/day, use the latest observation, then the minimum eligible
-   BRL offer in that observation, requiring `in_stock`. Equal-time observations
-   use scraper identity then observation UUID as a deterministic tie-breaker. A
-   later unavailable/no-offer/invalid observation never falls back to an earlier
-   price. Reference prices and conditional offers do not define the series.
-7. A daily product price is the equal-weight arithmetic mean across its fixed
-   contexts, only when every context has a selected price that day. Missing days
-   and incomplete coverage remain `null`; no carry-forward or interpolation.
-   Product variation compares the first and last usable unrounded means.
-8. The overview fixes all canonical products observed in the interval. Its
-   baseline is the first day with a positive usable price for **every** product.
-   Each subsequent complete day is the equal-weight mean of product price
-   relatives to that baseline, minus one, expressed in basis points. Missing
-   products never change weights or count as unchanged prices. There may be no
-   overview at all if no day covers the entire panel. Selecting a product can
-   still reveal its history.
+1. Select historical product assignments and source observation times inside the
+   requested inclusive São Paulo dates. Do not use current listing assignments.
+2. Define each context by listing, seller, branch/store, postal code, city, state,
+   and channel. Unknown context fields remain unknown.
+3. Keep the existing price eligibility rules: equivalent canonical packages
+   (including exact g/kg and ml/L conversion), or a single explicit kg/L/unit
+   basis without a known package. Prefer explicitly unrestricted offers per
+   context for the interval; otherwise accept advertised prices with unknown
+   conditions, flagged as such. Explicit payment, club, coupon, installment and
+   multiple-purchase restrictions remain excluded.
+4. Use the latest observation per context/day, then its minimum eligible BRL
+   offer, requiring in-stock availability. Ties use scraper identity and observation
+   UUID. A later invalid or unavailable observation never falls back to an earlier
+   price. Display these daily context prices even when excluded from variation.
+5. Fix the comparison panel to contexts with valid prices on **both requested
+   endpoints**, requiring a strictly positive starting price. Do not substitute
+   another shop or move the baseline when an endpoint is missing. For a single
+   date, prices are visible but no variation or comparison dates are returned.
+6. Calculate each context's relative change from its own starting price. Average
+   context changes within each shop, then average shops equally per product.
+   The overview averages eligible products equally. A product with no matched
+   contexts is excluded rather than invalidating other products.
+7. Keep that panel fixed throughout the chart. Missing intermediate prices make
+   the product point null; a missing included product makes the overview point
+   null. Do not drop participants mid-series, interpolate, or carry prices forward.
+   Endpoint coverage determines inclusion; gaps do not invalidate endpoint change.
+8. Report total and included products, distinct shops and contexts, and days with
+   usable plotted values. There is no minimum sample-size threshold; coverage
+   must accompany the result. The overview is a monitored-sample index, not
+   national inflation.
+
+Explicitly unrestricted means `payment_method=any`, no installments,
+`membership_required=false`, no membership program, `coupon_required=false`, and
+`minimum_quantity=1`. If any such offer exists for a context in the interval,
+that policy applies on every day. Otherwise the fallback accepts payment `any`
+or `unknown`, no installments/program, membership/coupon false or unknown, and
+minimum quantity one or unknown. Unknown terms never replace known unrestricted
+terms. Free-text descriptions do not prove unrestricted access. Package prices
+without known equivalent quantities and mixed explicit unit bases remain gaps.
 
 Changing the interval can change the panel, basis and conditions policy. This
 exploratory index tracks advertised prices in the collected sample; unknown
@@ -139,7 +138,7 @@ buying conditions can affect comparisons. It is not an expenditure-weighted
 household basket, a purchasing-power estimate, or national inflation. No official
 index comparison is supplied. The normalized observations retain source URLs,
 measurement identities, observed packages and all conditions for investigation;
-this API returns consolidated histories rather than raw offers.
+this API returns matched histories and eligible context price histories rather than raw offers.
 
 ## Errors
 

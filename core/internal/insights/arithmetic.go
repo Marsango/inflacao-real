@@ -47,25 +47,3 @@ func relative(current, baseline *big.Rat) *big.Rat {
 	ratio.Sub(ratio, big.NewRat(1, 1))
 	return ratio.Mul(ratio, big.NewRat(10000, 1))
 }
-
-func averageRelative(series []ProductSeries, position, baseline int) *big.Rat {
-	total := new(big.Rat)
-	for _, product := range series {
-		total = addRelative(total, product, position, baseline)
-	}
-	if total == nil {
-		return nil
-	}
-	return total.Quo(total, big.NewRat(int64(len(series)), 1))
-}
-
-func addRelative(total *big.Rat, product ProductSeries, position, baseline int) *big.Rat {
-	if total == nil {
-		return nil
-	}
-	change := relative(amount(product.Points[position].Amount), amount(product.Points[baseline].Amount))
-	if change == nil {
-		return nil
-	}
-	return total.Add(total, change)
-}

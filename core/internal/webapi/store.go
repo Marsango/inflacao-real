@@ -133,6 +133,6 @@ func readProductSeries(rows *sql.Rows) (insights.ProductSeries, int, error) {
 	if err != nil {
 		return product, 0, err
 	}
-	err = json.Unmarshal(points, &product.Points)
+	err = json.Unmarshal(points, &product.Contexts)
 	return product, shops, err
 }

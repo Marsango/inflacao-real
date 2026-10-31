@@ -28,6 +28,6 @@ export function Chart({ history }: { history: History }) {
       {history.points.map((point) => point.value === null ? null : <circle key={point.date} cx={x(point.date)} cy={y(point.value)} r="3.5">
         <title>{formatDate(point.date)}: {chartValue(point.value, history.unit)}</title></circle>)}
     </svg></div>
-    <figcaption>{history.unit === 'BRL' ? priceLabel(history.priceBasis) : 'Variação acumulada no período (%)'} · Datas no eixo horizontal.{missing && ' Há uma lacuna no gráfico: sem preço comparável no período.'}</figcaption>
+    <figcaption>{history.unit === 'BRL' ? `Média do painel comparável · ${priceLabel(history.priceBasis)}` : 'Variação acumulada no período (%)'} · Datas no eixo horizontal.{missing && ' Há uma lacuna no gráfico: sem preço comparável no período.'}</figcaption>
   </figure>;
 }

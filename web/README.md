@@ -56,11 +56,13 @@ ausentes são `null`. O navegador apenas apresenta os indicadores calculados
 pelo core e mantém lacunas quando falta um preço selecionado.
 
 A tabela fica em um controle expansível abaixo do gráfico. O resumo mostra as
-datas efetivamente comparadas, que podem diferir do intervalo solicitado.
+datas solicitadas quando existe uma comparação válida entre elas.
 Condições de compra não informadas aparecem em um aviso: preço anunciado não
 significa preço disponível sem restrições. A metodologia e a cobertura ficam
-no rodapé. O painel fixo pode não ter cobertura completa para a visão geral;
-ainda é possível consultar um produto individualmente.
+no rodapé. A comparação usa contextos com preços nas duas datas, com pesos
+iguais por loja e por produto na visão geral. A tabela por loja mostra também
+preços de contextos excluídos, com lacunas explícitas. O resumo mostra o menor
+preço disponível na última data com preço, separado da média do painel no gráfico.
 
 `src/data/api.ts` centraliza transporte, paginação e erros. Os hooks abortam
 requisições obsoletas e oferecem tentativas independentes para catálogo e

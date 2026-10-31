@@ -7,7 +7,29 @@ type PricePoint struct {
 	Amount *string `json:"amount"`
 }
 
+type ContextSeries struct {
+	ID         string       `json:"id"`
+	ShopID     string       `json:"shopId"`
+	ShopName   string       `json:"shopName"`
+	Label      string       `json:"label"`
+	ProductURL string       `json:"productUrl"`
+	Points     []PricePoint `json:"points"`
+}
+
+type ShopHistory struct {
+	ShopID     string  `json:"shopId"`
+	ShopName   string  `json:"shopName"`
+	Context    string  `json:"context"`
+	ProductURL string  `json:"productUrl"`
+	Points     []Point `json:"points"`
+	Included   bool    `json:"included"`
+}
+
 type ProductSeries struct {
+	Contexts        []ContextSeries
+	Changes         []PricePoint
+	IncludedStreams int
+
 	UnknownConditions bool
 	PriceBasis        *string
 	ID                string
@@ -24,6 +46,10 @@ type Point struct {
 }
 
 type Coverage struct {
+	IncludedProducts int `json:"includedProducts"`
+	IncludedShops    int `json:"includedShops"`
+	IncludedStreams  int `json:"includedStreams"`
+
 	Products   int `json:"products"`
 	Shops      int `json:"shops"`
 	Streams    int `json:"streams"`
@@ -37,6 +63,8 @@ type Period struct {
 }
 
 type History struct {
+	ShopPrices []ShopHistory `json:"shopPrices"`
+
 	UnknownConditions  bool       `json:"unknownConditions"`
 	Period             Period     `json:"period"`
 	TimeZone           string     `json:"timeZone"`

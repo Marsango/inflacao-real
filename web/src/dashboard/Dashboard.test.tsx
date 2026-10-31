@@ -124,3 +124,18 @@ it('labels per-kg prices and explains unverified buying conditions', async () =>
   expect(await screen.findByRole('img', { name: /Preço por kg/ })).toBeVisible();
   expect(screen.getByText(/Condições de compra não informadas/)).toBeVisible();
 });
+
+it('shows available shop prices when no matched variation exists', async () => {
+  const excluded = { ...productHistory.shopPrices[0], included: false };
+  const history = { ...productHistory, points: productHistory.points.map((point) => ({ ...point, value: null })),
+    shopPrices: [excluded], changeBasisPoints: null, comparisonStart: null, comparisonEnd: null,
+    counts: { ...productHistory.counts, pricedDays: 0, includedProducts: 0, includedShops: 0, includedStreams: 0 } };
+  vi.stubGlobal('fetch', mockCore(history));
+  render(<Dashboard />);
+  expect(await screen.findByRole('heading', { name: 'Comparar preços entre lojas' })).toBeVisible();
+  expect(screen.getByRole('link', { name: 'Mercado Exemplo' })).toHaveAttribute('href', excluded.productUrl);
+  expect(screen.getByText('Sem preços comparáveis nas duas datas')).toBeVisible();
+  expect(screen.getByText('Sem preço disponível')).toBeVisible();
+  expect(screen.getByText(/R\$\s*26,90/, { selector: 'strong' })).toBeVisible();
+  expect(screen.queryByRole('img')).not.toBeInTheDocument();
+});

@@ -3,12 +3,13 @@ import type { Period } from '../shared/dates';
 import { formatDate, timeZone } from '../shared/dates';
 import { chartValue, money, percentage, priceLabel } from '../shared/format';
 import { Chart } from './Chart';
+import { ShopPrices } from './ShopPrices';
 import { variationExplanation, variationStatus } from '../data/availability';
 
 function Summary({ history }: { history: History }) {
   return <div className="summary">
-    {history.unit === 'BRL' && <div><span>{priceLabel(history.priceBasis)} · último no período</span><strong>{history.latestPriceMinor === null ? 'Indisponível' : money(history.latestPriceMinor)}</strong></div>}
-    <div><span>Variação no período</span><strong aria-describedby={history.changeBasisPoints === null ? 'variation-explanation' : undefined}>{history.changeBasisPoints === null ? variationStatus(history) : percentage(history.changeBasisPoints)}</strong></div>
+    {history.unit === 'BRL' && <div><span>{priceLabel(history.priceBasis)} · menor disponível na última data com preço</span><strong>{history.latestPriceMinor === null ? 'Indisponível' : money(history.latestPriceMinor)}</strong></div>}
+    <div><span>{history.unit === 'BRL' ? 'Variação média entre lojas' : 'Variação média dos produtos'}</span><strong aria-describedby={history.changeBasisPoints === null ? 'variation-explanation' : undefined}>{history.changeBasisPoints === null ? variationStatus(history) : percentage(history.changeBasisPoints)}</strong></div>
     {history.comparisonStart && history.comparisonEnd && <p>Comparação: {formatDate(history.comparisonStart)} a {formatDate(history.comparisonEnd)}</p>}
   </div>;
 }
@@ -36,6 +37,7 @@ function HistoryContent({ history }: { history: History }) {
     {history.stale && <p className="notice" role="status">Dados desatualizados. A última coleta disponível pode não refletir os preços atuais.</p>}
     {history.changeBasisPoints === null && <p className="notice" role="status" id="variation-explanation">{variationExplanation(history)}</p>}
     {history.counts.pricedDays > 1 && <Chart history={history} />}
+    <ShopPrices history={history} />
     <Context history={history} />
   </>;
 }

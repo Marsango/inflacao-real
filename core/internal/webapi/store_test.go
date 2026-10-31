@@ -15,12 +15,12 @@ func TestIngestionToPublicHistory(test *testing.T) {
 	if len(products.Items) != 1 || products.NextCursor != nil {
 		test.Fatalf("unexpected products: %v", products)
 	}
-	history := fixture.history(products.Items[0].ID, "2026-10-26", "2026-10-30")
+	history := fixture.history(products.Items[0].ID, "2026-10-27", "2026-10-29")
 	assertPrice(test, history.LatestPriceMinor, 2690)
 	assertPrice(test, history.ChangeBasisPoints, 803)
-	assertPrice(test, history.Points[1].Value, 2490)
+	assertPrice(test, history.Points[0].Value, 2490)
 	checkMissingCoverage(test, history)
-	global := fixture.history("global", "2026-10-26", "2026-10-30")
+	global := fixture.history("global", "2026-10-27", "2026-10-29")
 	assertPrice(test, global.ChangeBasisPoints, 803)
 }
 
@@ -77,12 +77,12 @@ func TestFixedContextsAndEquivalentPackages(test *testing.T) {
 	fixture.submit(3, func(observation map[string]any) { setPrice(observation, "2026-10-28T12:00:00Z", "24.90") })
 	fixture.execute(`UPDATE price_observations SET package_quantity=5000,package_unit='g'`)
 	history := fixture.history("1", "2026-10-27", "2026-10-28")
-	if history.Points[0].Value != nil || history.Counts.Streams != 2 {
+	if history.Counts.IncludedStreams != 1 || history.Counts.Streams != 2 {
 		test.Fatal("panel changed between days")
 	}
-	assertPrice(test, history.Points[1].Value, 2690)
-	if history.ChangeBasisPoints != nil {
-		test.Fatal("only one complete day cannot define change")
+	assertPrice(test, history.Points[1].Value, 2490)
+	if history.ChangeBasisPoints == nil || *history.ChangeBasisPoints != 0 {
+		test.Fatal("unmatched branch affected variation")
 	}
 }
 
@@ -171,10 +171,32 @@ func TestUnknownConditionsAreFlaggedAndNeverReplaceKnownTerms(test *testing.T) {
 
 func checkMissingCoverage(test *testing.T, history insights.History) {
 	test.Helper()
-	if history.Points[2].Value != nil || history.Points[4].Value != nil {
+	if history.Points[1].Value != nil {
 		test.Fatal("missing prices were filled")
 	}
 	if history.Counts.Streams != 1 || history.Counts.PricedDays != 2 {
 		test.Fatalf("incorrect coverage: %v", history.Counts)
 	}
+}
+
+func TestUnavailableShopDoesNotBlockMatchedProductOrOverview(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	fixture.submit(2, func(observation map[string]any) { setPrice(observation, "2026-10-28T12:00:00Z", "24.90") })
+	fixture.submit(3, unavailableListing)
+	fixture.execute(`INSERT INTO shops VALUES ('other-shop','Other shop','https://other.example.com')`)
+	fixture.execute(`UPDATE shop_products SET shop_id='other-shop' WHERE source_product_id='unavailable-listing'`)
+	history := fixture.history("1", "2026-10-27", "2026-10-28")
+	assertPrice(test, history.ChangeBasisPoints, 0)
+	assertPrice(test, history.LatestPriceMinor, 2490)
+	if history.Counts.Shops != 2 || history.Counts.IncludedShops != 1 || len(history.ShopPrices) != 2 {
+		test.Fatalf("unexpected shop coverage: %+v", history.Counts)
+	}
+	global := fixture.history("global", "2026-10-27", "2026-10-28")
+	assertPrice(test, global.ChangeBasisPoints, 0)
+}
+
+func unavailableListing(observation map[string]any) {
+	observation["product"].(map[string]any)["source_product_id"] = "unavailable-listing"
+	observation["availability"], observation["offers"] = "out_of_stock", []any{}
 }

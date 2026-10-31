@@ -3,7 +3,12 @@ import type { Period } from '../shared/dates';
 export type Product = { id: string; label: string };
 export type Observation = { date: string; value: number | null };
 export type PriceBasis = 'package' | 'kg' | 'l' | 'unit';
+export type ShopHistory = {
+  shopId: string; shopName: string; context: string; productUrl: string;
+  points: Observation[]; included: boolean;
+};
 export type History = {
+  shopPrices: ShopHistory[];
   unknownConditions: boolean;
   period: Period;
   timeZone: 'America/Sao_Paulo';
@@ -18,7 +23,7 @@ export type History = {
   collectedAt: string | null;
   stale: boolean;
   coverage: string;
-  counts: { products: number; shops: number; streams: number; days: number; pricedDays: number };
+  counts: { includedProducts: number; includedShops: number; includedStreams: number; products: number; shops: number; streams: number; days: number; pricedDays: number };
   methodology: string;
   methodologyVersion: string;
 };
