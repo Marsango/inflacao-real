@@ -1,5 +1,6 @@
 import { monthsBefore, presets, today } from '../shared/dates';
 import { ProductSearch } from '../catalog/ProductSearch';
+import { GroupFilter } from '../catalog/GroupFilter';
 import type { Filters } from './useFilters';
 
 type Props = { filters: Filters; update: (change: Partial<Filters>) => void; invalid: boolean };
@@ -25,7 +26,8 @@ function DateInputs({ filters, update, invalid }: Props) {
 
 export function Controls(props: Props & { productLabel?: string }) {
   return <section className="controls" aria-label="Filtros do histórico">
-    <ProductSearch product={props.filters.product} label={props.productLabel}
+    <GroupFilter group={props.filters.group} select={(group) => props.update({ group, product: 'global' })} />
+    <ProductSearch key={props.filters.group} product={props.filters.product} label={props.productLabel} group={props.filters.group}
       select={(product) => props.update({ product })} />
     <fieldset><legend>Período</legend><PeriodButtons {...props} /><DateInputs {...props} /></fieldset>
     {props.invalid && <p className="notice" id="date-error" role="alert">Informe datas válidas. A data inicial deve ser anterior ou igual à data final, com intervalo de até 366 dias.</p>}

@@ -8,6 +8,8 @@ import (
 	"time"
 	"unicode"
 	"unicode/utf8"
+
+	"inflacao-real/core/internal/selections"
 )
 
 func identity(value string) (int64, error) {
@@ -19,13 +21,13 @@ func identity(value string) (int64, error) {
 }
 
 func historyRequest(query url.Values) (HistoryRequest, error) {
-	request := HistoryRequest{query.Get("product"), query.Get("start"), query.Get("end")}
+	request := HistoryRequest{Product: query.Get("product"), Start: query.Get("start"), End: query.Get("end"), Group: query.Get("group")}
 	if err := validProduct(request.Product); err != nil {
 		return request, err
 	}
 	start, startError := time.Parse("2006-01-02", request.Start)
 	end, endError := time.Parse("2006-01-02", request.End)
-	if startError != nil || endError != nil || start.Year() < 1 || end.Before(start) || end.Sub(start) > 366*24*time.Hour {
+	if startError != nil || endError != nil || start.Year() < 1 || end.Before(start) || end.Sub(start) > 366*24*time.Hour || !selections.Valid(request.Group) {
 		return request, errors.New("invalid period")
 	}
 	return request, nil
@@ -69,7 +71,10 @@ func productRequest(query url.Values) (ProductRequest, error) {
 	if search != "" && !query.Has("limit") {
 		limit = 20
 	}
-	return ProductRequest{Query: search, After: after, Limit: limit}, nil
+	if !selections.Valid(query.Get("group")) {
+		return ProductRequest{}, errors.New("invalid_product_group")
+	}
+	return ProductRequest{Query: search, After: after, Limit: limit, Group: query.Get("group")}, nil
 }
 
 func validSearch(search string) bool {

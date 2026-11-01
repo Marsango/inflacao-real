@@ -23,12 +23,14 @@ type HistoryRequest struct {
 	Product string
 	Start   string
 	End     string
+	Group   string
 }
 
 type ProductRequest struct {
 	Query string
 	After int64
 	Limit int
+	Group string
 }
 
 type Store interface {

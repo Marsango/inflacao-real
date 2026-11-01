@@ -6,12 +6,12 @@ import { validPeriod } from '../shared/dates';
 export function useHistory(request: HistoryRequest) {
   const [result, setResult] = useState<{ key: string; state: LoadState }>();
   const [revision, setRevision] = useState(0);
-  const { product, start, end } = request;
-  const key = JSON.stringify({ product, start, end, revision });
+  const { product, start, end, group = '' } = request;
+  const key = JSON.stringify({ product, start, end, group, revision });
   useEffect(() => {
     if (!validPeriod({ start, end })) return;
     const controller = new AbortController();
-    loadHistory({ product, start, end }, controller.signal).then(
+    loadHistory({ product, start, end, group }, controller.signal).then(
       (history) => { if (!controller.signal.aborted) setResult({ key, state: { status: 'ready', history } }); },
       () => { if (!controller.signal.aborted) setResult({ key, state: { status: 'error' } }); },
     );

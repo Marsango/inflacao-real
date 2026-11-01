@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+
+	"inflacao-real/core/internal/selections"
 )
 
 type handler struct{ store Store }
@@ -16,6 +18,7 @@ func RegisterRoutes(router *gin.Engine, store Store) {
 	handler := handler{store}
 	router.GET("/api/v1/products", handler.products)
 	router.GET("/api/v1/history", handler.history)
+	router.GET("/api/v1/groups", func(request *gin.Context) { respond(request, selections.All(), nil) })
 }
 
 func (handler handler) products(request *gin.Context) {

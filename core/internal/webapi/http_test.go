@@ -2,6 +2,7 @@ package webapi
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"inflacao-real/core/internal/insights"
+	"inflacao-real/core/internal/selections"
 )
 
 type fakeStore struct {
@@ -82,4 +84,21 @@ func TestErrorsHideInternalDetails(test *testing.T) {
 	if response.Code != 500 || strings.Contains(response.Body.String(), "private") {
 		test.Fatal("internal details leaked")
 	}
+}
+
+func TestCuratedGroupMetadataAndValidation(test *testing.T) {
+	store := &fakeStore{}
+	response := getResponse(store, "/api/v1/groups")
+	var groups []selections.Group
+	requireSuccess(test, json.Unmarshal(response.Body.Bytes(), &groups))
+	if response.Code != 200 || len(groups) != 4 || groups[0].Label != "Cesta básica" {
+		test.Fatalf("unexpected groups: %d %+v", response.Code, groups)
+	}
+	assertStatus(test, store, "/api/v1/products?group=doces&q=bala", 200)
+	assertStatus(test, store, "/api/v1/history?product=global&group=carnes&start=2026-10-27&end=2026-10-28", 200)
+	if store.products.Group != "doces" || store.request.Group != "carnes" {
+		test.Fatal("group was not forwarded")
+	}
+	assertStatus(test, store, "/api/v1/products?group=unknown", 400)
+	assertStatus(test, store, "/api/v1/history?product=global&group=unknown&start=2026-10-27&end=2026-10-28", 400)
 }

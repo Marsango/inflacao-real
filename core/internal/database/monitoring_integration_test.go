@@ -180,3 +180,30 @@ func TestMonitoringGroupsBrandsWithoutMergingProducts(t *testing.T) {
 		FROM product_monitoring_targets WHERE target_id='cafe-moido'`)
 	assertWorkerSQL(t, ctx, db, `SELECT count(DISTINCT product_id)=2 FROM price_observations`)
 }
+
+func TestProductLabelBackfillOnExistingCatalog(t *testing.T) {
+	requestContext, pool := testDatabase(t)
+	provider, err := migrationProvider(pool)
+	requireNoError(t, err)
+	_, err = provider.DownTo(requestContext, 12)
+	requireNoError(t, err)
+	seedUnlabeledCatalog(t, requestContext, pool)
+	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets WHERE product_id=1 AND target_id='cafe-moido'`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets WHERE product_id=2 AND target_id='bala'`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets WHERE product_id=3 AND target_id='banana'`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM product_monitoring_targets WHERE product_id IN (4,5)`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM product_monitoring_targets WHERE product_id=2 AND target_id='banana'`)
+	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=3 FROM product_monitoring_targets`)
+}
+
+func seedUnlabeledCatalog(t *testing.T, requestContext context.Context, pool *sql.DB) {
+	registerCatalogShops(t, requestContext, pool)
+	executeSQL(t, requestContext, pool, `INSERT INTO products (name) VALUES
+        ('CAFÉ MOÍDO 500g'), ('Bala de banana'), ('Produto do catálogo'), ('Maçã gala'), ('Produto desconhecido')`)
+	executeSQL(t, requestContext, pool, `INSERT INTO shop_products (shop_id,source_product_id,product_id,name,product_url)
+        VALUES ('shop-a','banana',3,'Banana nanica','https://example.com/banana')`)
+	executeSQL(t, requestContext, pool, `UPDATE monitoring_targets SET enabled=false WHERE id='maca'`)
+	executeSQL(t, requestContext, pool, `INSERT INTO product_monitoring_targets VALUES (1,'cafe-moido')`)
+}

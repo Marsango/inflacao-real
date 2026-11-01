@@ -1,6 +1,7 @@
 package webapi
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 	"testing"
@@ -15,6 +16,108 @@ func TestSearchValidationAndDefaults(test *testing.T) {
 	invalid := []string{"", "a", "  ", "***", "a!", strings.Repeat("a", 101)}
 	for _, search := range invalid {
 		assertStatus(test, store, "/api/v1/products?q="+url.QueryEscape(search), 400)
+	}
+}
+
+func TestCuratedFiltersUseIngestionLabels(test *testing.T) {
+	fixture := newFixture(test)
+	names := []string{"Arroz branco tipo 1", "Banana nanica", "Bala de banana", "Peito de frango", "Sabão em pó", "Produto sem classificação"}
+	for position, name := range names {
+		seedLabeledProduct(fixture, position+1, name)
+	}
+	assertGroupProducts(fixture, "cesta-basica", "1", "2")
+	assertGroupProducts(fixture, "hortifruti", "2")
+	assertGroupProducts(fixture, "doces", "3")
+	assertGroupProducts(fixture, "carnes", "4")
+	assertGroupHistory(fixture, "cesta-basica", 2, 1500)
+	assertGroupHistory(fixture, "hortifruti", 1, 2000)
+	assertGroupHistory(fixture, "doces", 1, 3000)
+	assertGroupHistory(fixture, "carnes", 1, 4000)
+	if history := fixture.history("global", "2026-10-27", "2026-10-28"); history.Counts.Products != 6 {
+		test.Fatal("unfiltered overview must include unclassified products")
+	}
+}
+
+func seedLabeledProduct(fixture fixture, identity int, name string) {
+	fixture.submit(identity*2, func(observation map[string]any) {
+		labelProductObservation(observation, identity, name)
+		setPrice(observation, "2026-10-27T12:00:00Z", "10.00")
+	})
+	fixture.submit(identity*2+1, func(observation map[string]any) {
+		labelProductObservation(observation, identity, name)
+		setPrice(observation, "2026-10-28T12:00:00Z", fmt.Sprintf("%d.00", 10+identity))
+	})
+}
+
+func labelProductObservation(observation map[string]any, identity int, name string) {
+	product := observation["product"].(map[string]any)
+	product["source_product_id"], product["name"] = fmt.Sprint(identity), name
+}
+
+func assertGroupProducts(fixture fixture, group string, identities ...string) {
+	fixture.test.Helper()
+	var result Products
+	fixture.get("/api/v1/products?group="+group, &result)
+	if len(result.Items) != len(identities) || result.Items == nil {
+		fixture.test.Fatalf("group %s: %+v, expected %v", group, result, identities)
+	}
+	for position, identity := range identities {
+		assertSearchIdentity(fixture.test, result.Items[position], identity)
+	}
+}
+
+func assertGroupHistory(fixture fixture, group string, count int, change int64) {
+	fixture.test.Helper()
+	history := fixture.history("global&group="+group, "2026-10-27", "2026-10-28")
+	if history.Counts.Products != count || history.Counts.IncludedProducts != count || history.Unit != "percent" {
+		fixture.test.Fatalf("incorrect selection: %+v", history)
+	}
+	assertPrice(fixture.test, history.ChangeBasisPoints, change)
+	if !strings.Contains(history.Methodology, "Seleção:") || !strings.Contains(history.Title, "Variação de preços ·") {
+		fixture.test.Fatal("missing selection context")
+	}
+}
+
+func TestCuratedSearchPaginationAndEmptyHistory(test *testing.T) {
+	fixture := newFixture(test)
+	seedLabeledProduct(fixture, 1, "Banana nanica")
+	seedLabeledProduct(fixture, 2, "Banana prata")
+	var first, second Products
+	fixture.get("/api/v1/products?group=hortifruti&q=banana&limit=1", &first)
+	if len(first.Items) != 1 || first.NextCursor == nil || *first.NextCursor != "1" {
+		test.Fatalf("unexpected first page: %+v", first)
+	}
+	fixture.get("/api/v1/products?group=hortifruti&q=banana&limit=1&after=1", &second)
+	if len(second.Items) != 1 || second.Items[0].ID != "2" || second.NextCursor != nil {
+		test.Fatalf("unexpected second page: %+v", second)
+	}
+	assertGroupProducts(fixture, "doces")
+	assertEmptyGroupHistory(fixture)
+}
+
+func assertEmptyGroupHistory(fixture fixture) {
+	history := fixture.history("global&group=doces", "2026-10-27", "2026-10-28")
+	if len(history.Points) != 0 || history.ChangeBasisPoints != nil || history.Counts.Products != 0 || history.Title != "Variação de preços · Doces" {
+		fixture.test.Fatalf("empty selection fabricated data: %+v", history)
+	}
+	history = fixture.history("1&group=doces", "2026-10-27", "2026-10-28")
+	if len(history.Points) != 0 || history.Unit != "BRL" {
+		fixture.test.Fatal("product outside selection must have empty history")
+	}
+}
+
+func TestCuratedFiltersIncludeEquivalentMembersOnce(test *testing.T) {
+	fixture := newFixture(test)
+	seedLabeledProduct(fixture, 1, "Banana nanica")
+	seedLabeledProduct(fixture, 2, "Banana prata")
+	fixture.execute(`INSERT INTO product_equivalence VALUES (1,1),(2,1)`)
+	fixture.execute(`DELETE FROM product_monitoring_targets WHERE product_id=1`)
+	fixture.execute(`UPDATE shop_products SET product_id=NULL`)
+	assertGroupProducts(fixture, "hortifruti", "1")
+	assertGroupHistory(fixture, "hortifruti", 1, 1500)
+	history := fixture.history("2&group=hortifruti", "2026-10-27", "2026-10-28")
+	if history.Counts.Streams != 2 || history.Counts.Products != 1 {
+		test.Fatal("equivalent member lost historical observations")
 	}
 }
 

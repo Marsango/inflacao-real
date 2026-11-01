@@ -95,3 +95,5 @@ footer { border-top: 1px solid #e3e7e4; padding-block: 12px; font-size: 12px; co
 .search-results button { display: block; width: 100%; border: 0; border-radius: 0; text-align: left; font-size: 13px; overflow-wrap: anywhere; }
 .summary { flex-wrap: wrap; }
 .summary strong { max-width: 260px; }
+.group-filter { flex-basis: 100%; display: block; }
+.group-filter p { max-width: 100ch; margin: 6px 0 0; font-size: 12px; color: #59645e; }

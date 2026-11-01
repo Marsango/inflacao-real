@@ -8,22 +8,22 @@ function searchable(query: string) {
   return (query.match(/[\p{L}\p{N}]/gu)?.length ?? 0) >= 2;
 }
 
-function requestSearch(query: string, signal: AbortSignal, complete: (state: SearchState) => void) {
-  searchProducts(query, signal).then(
+function requestSearch(query: string, group: string, signal: AbortSignal, complete: (state: SearchState) => void) {
+  searchProducts(query, signal, group).then(
     (page) => { if (!signal.aborted) complete({ status: 'ready', page }); },
     () => { if (!signal.aborted) complete({ status: 'error' }); },
   );
 }
 
-export function useProductSearch(input: string) {
+export function useProductSearch(input: string, group = '') {
   const query = input.trim();
   const [result, setResult] = useState<Result>();
   const [revision, setRevision] = useState(0);
-  const key = JSON.stringify({ query, revision });
+  const key = JSON.stringify({ query, group, revision });
   useEffect(() => {
     if (!searchable(query)) return;
     const controller = new AbortController();
-    const timer = window.setTimeout(() => requestSearch(query, controller.signal,
+    const timer = window.setTimeout(() => requestSearch(query, group, controller.signal,
       (state) => setResult({ key, state })), 300);
     return () => { window.clearTimeout(timer); controller.abort(); };
   }, [key]);

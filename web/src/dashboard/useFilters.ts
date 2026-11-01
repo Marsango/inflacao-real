@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { monthsBefore, today, validDate, type Period } from '../shared/dates';
 
-export type Filters = Period & { product: string; preset: string };
+export type Filters = Period & { product: string; preset: string; group: string };
 
 function readFilters(): Filters {
   const query = new URLSearchParams(window.location.search);
   const end = query.get('end') ?? today();
   const start = query.get('start') ?? monthsBefore(today(), 1);
   const product = query.get('product') ?? 'global';
-  return { product,
+  return { product, group: query.get('group') ?? '',
     start: validDate(start) ? start : monthsBefore(today(), 1),
     end: validDate(end) ? end : today(),
     preset: query.get('preset') ?? (query.has('start') || query.has('end') ? 'custom' : '1') };

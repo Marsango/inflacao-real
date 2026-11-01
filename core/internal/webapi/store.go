@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"inflacao-real/core/internal/insights"
+	"inflacao-real/core/internal/selections"
 )
 
 //go:embed history.sql
@@ -28,7 +29,7 @@ func (store PostgresStore) Revision(requestContext context.Context) (int64, erro
 }
 
 func (store PostgresStore) Products(requestContext context.Context, request ProductRequest) (Products, error) {
-	rows, err := store.DB.QueryContext(requestContext, productsQuery, request.After, request.Limit+1, request.Query)
+	rows, err := store.DB.QueryContext(requestContext, productsQuery, request.After, request.Limit+1, request.Query, selections.Targets(request.Group))
 	if err != nil {
 		return Products{}, err
 	}
@@ -77,7 +78,7 @@ func storedHistory(requestContext context.Context, transaction *sql.Tx, request 
 	if err != nil {
 		return insights.History{}, err
 	}
-	rows, err := transaction.QueryContext(requestContext, historyQuery, productID, request.Start, request.End)
+	rows, err := transaction.QueryContext(requestContext, historyQuery, productID, request.Start, request.End, selections.Targets(request.Group))
 	if err != nil {
 		return insights.History{}, err
 	}
@@ -96,7 +97,20 @@ func buildHistory(rows *sql.Rows, request HistoryRequest, name string) (insights
 	if !global {
 		result.Title, result.Unit = name, "BRL"
 	}
+	result = describeSelection(result, request)
 	return result, nil
+}
+
+func describeSelection(history insights.History, request HistoryRequest) insights.History {
+	group, found := selections.Find(request.Group)
+	if !found {
+		return history
+	}
+	history.Methodology += " Seleção: " + group.Label + ". " + group.Description + " A composição atual dos rótulos é aplicada ao período consultado; produtos sem classificação ficam fora deste filtro."
+	if request.Product == "global" {
+		history.Title = "Variação de preços · " + group.Label
+	}
+	return history
 }
 
 func resolveProduct(requestContext context.Context, transaction *sql.Tx, value string) (string, any, error) {

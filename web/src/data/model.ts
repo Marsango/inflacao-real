@@ -1,6 +1,7 @@
 import type { Period } from '../shared/dates';
 
 export type Product = { id: string; label: string };
+export type ProductGroup = { id: string; label: string; description: string };
 export type Observation = { date: string; value: number | null };
 export type PriceBasis = 'package' | 'kg' | 'l' | 'unit';
 export type ShopHistory = {
@@ -28,7 +29,7 @@ export type History = {
   methodology: string;
   methodologyVersion: string;
 };
-export type HistoryRequest = Period & { product: string };
+export type HistoryRequest = Period & { product: string; group?: string };
 export type LoadState = { status: 'loading' | 'error' | 'ready'; history?: History };
 export type ProductPage = { items: Product[]; nextCursor: string | null };
 export type SearchState = { status: 'idle' | 'loading' | 'error' | 'ready'; page?: ProductPage };

@@ -8,6 +8,9 @@ WITH original AS (
     JOIN products product ON product.id = coalesce(membership.representative_id, observation.product_id)
     JOIN shop_products listing ON listing.id = observation.shop_product_id
     WHERE ($1::bigint IS NULL OR coalesce(membership.representative_id, observation.product_id) = $1)
+        AND (cardinality($4::text[]) = 0 OR coalesce(membership.representative_id, observation.product_id) IN (
+            SELECT equivalent_product_id(product_id) FROM product_monitoring_targets
+            WHERE target_id = ANY($4::text[])))
         AND observed_at >= ($2::date::timestamp AT TIME ZONE 'America/Sao_Paulo')
         AND observed_at < (($3::date + 1)::timestamp AT TIME ZONE 'America/Sao_Paulo')
 ), scoped AS (

@@ -346,6 +346,14 @@ contract](../docs/contracts/web/v1/README.md) for response fields, units, date
 boundaries, errors and `available-period-v4` methodology. The browser never needs a
 scraper token; ingestion and monitoring routes retain their authentication.
 
+`GET /api/v1/groups` lists the curated Cesta básica, Hortifruti, Doces and Carnes
+filters. Pass their stable `group` ID to products or history to restrict the
+selection. Core ingestion already labels products with discovery targets;
+migration 13 backfills missing labels on existing products and listings. Curated
+groups reuse those labels, preserve equivalence and historical assignments, and
+apply the existing equal-product-weight methodology. Cesta básica is not an
+official basket cost or index. The web contract documents membership and scope.
+
 Daily prices use a fixed set of listing/seller/location/channel contexts and
 preserve gaps. Known package sizes must be equivalent; explicit per-kg/L/unit
 prices are supported when the canonical package is unknown and the observed basis

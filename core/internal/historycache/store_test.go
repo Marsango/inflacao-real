@@ -125,3 +125,17 @@ func TestProductsPassThrough(test *testing.T) {
 		test.Fatalf("catalog pass-through failed: %+v", products)
 	}
 }
+
+func TestCuratedGroupsHaveSeparateCachedHistories(test *testing.T) {
+	source := &stubSource{}
+	store := newTestStore(test, source, DefaultConfig())
+	request := defaultRequest()
+	readHistory(test, store, request)
+	request.Group = "cesta-basica"
+	readHistory(test, store, request)
+	request.Group = "hortifruti"
+	readHistory(test, store, request)
+	request.Group = "cesta-basica"
+	readHistory(test, store, request)
+	assertCalls(test, source, 3)
+}

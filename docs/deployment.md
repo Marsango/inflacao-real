@@ -185,7 +185,7 @@ by this deployment.
 A pinned multi-stage image builds static assets with npm ci and serves them using
 Caddy. Only TCP 80/443 are published by the website. HTTP redirects to HTTPS and www
 redirects to the root domain. SSH remains on 49999. Caddy proxies GET requests to
-`/api/v1/products` and `/api/v1/history`, plus the specific authenticated admin
+`/api/v1/products`, `/api/v1/history` and `/api/v1/groups`, plus the specific authenticated admin
 paths and methods documented below. Ingestion, monitoring and other API routes
 return 404 at the public edge. The core still binds only to host
 loopback and PostgreSQL remains unpublished. The browser uses same-origin /api and

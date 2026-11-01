@@ -1,6 +1,6 @@
 # Web API v1
 
-The React dashboard reads the Go core over same-origin HTTP. These two GET
+The React dashboard reads the Go core over same-origin HTTP. These three GET
 endpoints are public and read-only; scraper ingestion and monitoring configuration
 retain their existing bearer authentication. Never put the ingestion token in the
 browser. Responses are JSON with `Cache-Control: no-store`. Each request has a
@@ -8,7 +8,7 @@ ten-second deadline and follows request cancellation. Concurrent history request
 may share a calculation with its own ten-second deadline; canceling one request
 stops that reader without canceling work needed by other readers.
 
-The core internally caches successful calculated histories by product, requested
+The core internally caches successful calculated histories by product, curated group, requested
 dates, methodology version and committed catalog revision, with bounded memory
 and a five-minute default TTL. Each request checks the revision; newly committed
 ingestion processing and equivalence edits invalidate earlier entries. Queued
@@ -76,6 +76,68 @@ product filter. Shared product URLs obtain the selected label from history.
 
 Pagination is not a transaction snapshot; newly ingested products may appear on
 later pages or after reloading the catalog.
+
+## Curated groups
+
+`GET /api/v1/groups`
+
+Returns a small array of curated filters, each with `id`, Portuguese `label`, and
+`description` explaining the composition. Stable IDs are `cesta-basica`,
+`hortifruti`, `doces`, and `carnes`; they are separate from product equivalence
+groups and discovery targets. Definitions live in `core/internal/selections/`.
+
+```json
+[{"id":"doces","label":"Doces","description":"Chocolates em barra, bombons, balas, chicletes, biscoitos doces, recheados e wafers, sorvetes e leite condensado monitorados."}]
+```
+
+Pass optional `group=<id>` to **both** products and history, for example:
+
+- `GET /api/v1/products?group=hortifruti&q=banana&limit=20`
+- `GET /api/v1/history?product=global&group=cesta-basica&start=2026-10-01&end=2026-10-30`
+
+Omitting `group` or supplying an empty value selects all products. Unknown group
+IDs return 400 (`invalid_product_group` for catalog, `invalid_history_request`
+for history). Group filtering intersects search and pagination without changing
+catalog eligibility. Individual history intersects product and category; a known
+product outside the category returns an empty history. Empty group overviews
+retain their title and return zero coverage and null variation.
+
+Membership uses persisted `product_monitoring_targets` labels assigned by core
+ingestion's accent-insensitive whole-term rules and exclusions, without scraper
+or ingestion-contract changes. Migration 13 backfills missing labels from
+existing canonical and current listing names using enabled discovery rules,
+preserving existing labels and custom criteria. Rollback preserves these labels.
+Unmatched products remain unclassified and appear only in the unfiltered view.
+Labels can overlap: a banana can belong to both Cesta básica and Hortifruti;
+banana candy follows candy rules and is excluded from fresh banana labeling.
+
+If any equivalent member has a qualifying label, its entire equivalence group is
+included and counted once. Historical queries still use historical product
+assignments and current equivalence/label membership; changing a listing's current
+product does not reassign its observations. Disabling discovery does not remove
+previously stored labels or history.
+
+Cesta básica covers the monitored rice, beans, milk, ground coffee, refined and
+crystal sugar, soy oil, first-quality beef cuts, wheat and cassava flour, potato,
+tomato, French bread, banana and butter targets. It includes the existing broader
+milk scope and regional sugar/flour alternatives. Hortifruti covers monitored
+fresh fruit, vegetables and roots; Doces covers the sweets listed above; Carnes
+covers monitored fresh beef, pork, chicken and tilapia, excluding processed meats
+and prepared dishes. Descriptions enumerate the scope; these are curated subsets
+of the monitored catalog, not exhaustive categories for the retail market.
+
+Group overviews reuse `available-period-v4` with equal product weights, matched
+endpoints and unchanged missing-data rules. They return `unit: "percent"`, a
+category title, and selection details appended to `methodology`. Cesta básica
+is a curated selection, **not** an official basket cost or official basket index;
+there are no expenditure weights or fixed household quantities.
+
+The UI loads only group metadata on mount, displays category buttons and their
+description, and persists the selection in the URL. Switching category resets the
+selected product to its overview and preserves dates. Product search stays
+debounced, bounded and restricted to the selected category. Returning to “Visão
+geral” preserves the category; “Todos os produtos” clears it. Metadata failures
+can be retried independently of history and product search.
 
 ## History
 
@@ -191,7 +253,7 @@ Errors use `{"error":"code"}` without internal database details.
 
 | HTTP status | Code |
 | --- | --- |
-| 400 | `invalid_pagination`, `invalid_product_search`, or `invalid_history_request` |
+| 400 | `invalid_pagination`, `invalid_product_search`, `invalid_product_group`, or `invalid_history_request` |
 | 404 | `product_not_found` |
 | 500 | `data_unavailable` (details are logged internally) |
 

@@ -39,9 +39,17 @@ veja o [guia de implantação](../docs/deployment.md#public-frontend-and-https).
 
 ## Interações e dados
 
-Produto e intervalo ficam na URL. A seleção de produtos vem do catálogo canônico
+Categoria, produto e intervalo ficam na URL. A seleção de produtos vem do catálogo canônico
 e mantém marcas, embalagens e variantes separadas. A visão geral usa
 `product=global`; produtos usam IDs decimais como strings.
+
+As categorias Cesta básica, Hortifruti, Doces e Carnes vêm de `/api/v1/groups`.
+Seus botões filtram a visão geral e a busca de produtos, preservando o período.
+Trocar de categoria volta à visão geral; “Todos os produtos” remove esse filtro.
+A composição aparece abaixo dos botões. Cesta básica é uma seleção com pesos
+iguais por produto, não o custo ou índice de uma cesta oficial. Produtos sem
+classificação continuam disponíveis em “Todos os produtos”. As categorias têm
+carregamento e recuperação de erros independentes do histórico.
 
 Os botões de período usam meses de calendário, terminando no dia atual em São
 Paulo. Datas no fim do mês são ajustadas para o último dia válido do mês de

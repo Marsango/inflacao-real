@@ -60,3 +60,17 @@ it('keeps the selected product when no matches are found and can return to the o
   fireEvent.click(screen.getByRole('button', { name: 'Visão geral' }));
   expect(select).toHaveBeenCalledWith('global');
 });
+
+it('aborts search when its category changes and searches the new category', async () => {
+  const core = vi.fn(() => new Promise<Response>(() => {}));
+  vi.stubGlobal('fetch', core);
+  const select = vi.fn();
+  const view = render(<ProductSearch group="hortifruti" product="global" select={select} />);
+  fireEvent.change(screen.getByLabelText('Buscar produto'), { target: { value: 'banana' } });
+  await waitFor(() => expect(core).toHaveBeenCalledTimes(1));
+  const signal = vi.mocked(fetch).mock.calls[0][1]?.signal;
+  view.rerender(<ProductSearch group="doces" product="global" select={select} />);
+  expect(signal?.aborted).toBe(true);
+  await waitFor(() => expect(core).toHaveBeenCalledTimes(2));
+  expect(fetch).toHaveBeenLastCalledWith('/api/v1/products?q=banana&limit=20&group=doces', expect.any(Object));
+});

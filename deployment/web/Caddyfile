@@ -10,7 +10,7 @@
     header X-Content-Type-Options nosniff
     @read_api {
         method GET
-        path /api/v1/products /api/v1/history
+        path /api/v1/products /api/v1/history /api/v1/groups
     }
     handle @read_api {
         reverse_proxy core:8080

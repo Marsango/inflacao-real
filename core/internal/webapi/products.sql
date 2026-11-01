@@ -19,5 +19,8 @@ FROM products
 WHERE id > $1
     AND id IN (SELECT product_id FROM eligible)
     AND id IN (SELECT product_id FROM matching)
+    AND (cardinality($4::text[]) = 0 OR id IN (
+        SELECT equivalent_product_id(product_id) FROM product_monitoring_targets
+        WHERE target_id = ANY($4::text[])))
 ORDER BY id
 LIMIT $2

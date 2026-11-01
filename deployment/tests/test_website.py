@@ -48,10 +48,12 @@ def check_private_routes(web):
         assert request(web, path).status_code == 404
     assert request(web, "/api/v1/ingestion/submissions", "POST").status_code == 404
     assert request(web, "/api/v1/products", "POST").status_code == 404
+    assert request(web, "/api/v1/groups", "POST").status_code == 404
 
 
 def check_public_routes(web):
-    for path in ["/api/v1/products?limit=1", "/api/v1/history?product=global&start=2026-10-01&end=2026-10-30"]:
+    for path in ["/api/v1/groups", "/api/v1/products?group=cesta-basica&limit=1",
+                 "/api/v1/history?product=global&group=hortifruti&start=2026-10-01&end=2026-10-30"]:
         response = request(web, path)
         assert response.status_code == 200
         assert response.json()["path"] == path

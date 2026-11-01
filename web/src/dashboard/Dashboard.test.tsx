@@ -3,7 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { Dashboard } from './Dashboard';
 import { monthsBefore, today } from '../shared/dates';
 import { geometry, lineSegments } from './chartGeometry';
-import { catalog, jsonResponse, mockCore, productHistory } from '../testing/apiFixture';
+import { catalog, groups, jsonResponse, mockCore, productHistory } from '../testing/apiFixture';
 
 beforeEach(() => {
   window.history.replaceState(null, '', '/');
@@ -67,10 +67,11 @@ it('restores real product IDs and dates from a shared URL', async () => {
 
 it('retries failed requests without changing filters', async () => {
   const core = mockCore();
-  core.mockImplementationOnce(async () => jsonResponse({ error: 'data_unavailable' }, 500));
+  core.mockImplementation(async (path) => path === '/api/v1/groups' ? jsonResponse(groups) : jsonResponse({}, 500));
   vi.stubGlobal('fetch', core);
   render(<Dashboard />);
   expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar o histórico');
+  core.mockImplementation(mockCore());
   fireEvent.click(screen.getByRole('button', { name: 'Tentar novamente' }));
   expect(await screen.findByRole('img')).toBeVisible();
   expect(window.location.search).toBe('');
@@ -78,7 +79,8 @@ it('retries failed requests without changing filters', async () => {
 
 it('recovers a failed catalog independently', async () => {
   const core = mockCore();
-  core.mockImplementation(async (path) => path.includes('/products') ? jsonResponse({}, 500) : jsonResponse(productHistory));
+  const fallback = mockCore();
+  core.mockImplementation(async (path) => path.includes('/products') ? jsonResponse({}, 500) : fallback(path));
   vi.stubGlobal('fetch', core);
   render(<Dashboard />);
   fireEvent.change(screen.getByLabelText('Buscar produto'), { target: { value: 'cafe' } });
@@ -87,6 +89,58 @@ it('recovers a failed catalog independently', async () => {
   core.mockImplementation(async () => jsonResponse(catalog));
   fireEvent.click(screen.getByText('Tentar buscar novamente'));
   expect(await screen.findByRole('button', { name: 'Café · 500 g' })).toBeVisible();
+});
+
+it('selects a category, resets the product and preserves the selected dates', async () => {
+  window.history.replaceState(null, '', '/?product=2&start=2026-10-27&end=2026-10-29');
+  render(<Dashboard />);
+  fireEvent.click(await screen.findByRole('button', { name: 'Cesta básica' }));
+  expect(await screen.findByRole('heading', { name: 'Variação de preços · Cesta básica' })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Cesta básica' })).toHaveAttribute('aria-pressed', 'true');
+  expect(screen.getByText(/Não representa uma cesta básica oficial/)).toBeVisible();
+  expect(window.location.search).toContain('group=cesta-basica');
+  expect(window.location.search).toContain('product=global');
+  expect(fetch).toHaveBeenCalledWith('/api/v1/history?product=global&start=2026-10-27&end=2026-10-29&group=cesta-basica', expect.any(Object));
+  fireEvent.change(screen.getByLabelText('Buscar produto'), { target: { value: 'arroz' } });
+  fireEvent.click(await screen.findByRole('button', { name: 'Arroz branco · 5 kg' }));
+  expect(fetch).toHaveBeenCalledWith('/api/v1/products?q=arroz&limit=20&group=cesta-basica', expect.any(Object));
+  expect(await screen.findByRole('heading', { name: productHistory.title })).toBeVisible();
+  expect(fetch).toHaveBeenLastCalledWith('/api/v1/history?product=1&start=2026-10-27&end=2026-10-29&group=cesta-basica', expect.any(Object));
+});
+
+it('restores a shared category and can return to all products', async () => {
+  window.history.replaceState(null, '', '/?group=hortifruti&start=2026-10-27&end=2026-10-29');
+  render(<Dashboard />);
+  expect(await screen.findByRole('heading', { name: 'Variação de preços · Hortifruti' })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Hortifruti' })).toHaveAttribute('aria-pressed', 'true');
+  expect(vi.mocked(fetch).mock.calls.some(([path]) => String(path).includes('/products'))).toBe(false);
+  fireEvent.click(screen.getByRole('button', { name: 'Todos os produtos' }));
+  expect(await screen.findByRole('heading', { name: 'Variação dos produtos monitorados' })).toBeVisible();
+  expect(fetch).toHaveBeenLastCalledWith('/api/v1/history?product=global&start=2026-10-27&end=2026-10-29', expect.any(Object));
+});
+
+it('retries category loading independently of history', async () => {
+  const fallback = mockCore();
+  const core = mockCore();
+  core.mockImplementation(async (path) => path === '/api/v1/groups' ? jsonResponse({}, 500) : fallback(path));
+  vi.stubGlobal('fetch', core);
+  render(<Dashboard />);
+  expect(await screen.findByRole('alert')).toHaveTextContent('Não foi possível carregar as categorias');
+  expect(await screen.findByRole('heading', { name: 'Variação dos produtos monitorados' })).toBeVisible();
+  core.mockImplementation(fallback);
+  fireEvent.click(screen.getByRole('button', { name: 'Tentar carregar categorias novamente' }));
+  expect(await screen.findByRole('button', { name: 'Carnes' })).toBeVisible();
+  fireEvent.click(screen.getByRole('button', { name: 'Doces' }));
+  expect(await screen.findByRole('heading', { name: 'Variação de preços · Doces' })).toBeVisible();
+});
+
+it('restores category selection after browser navigation', async () => {
+  render(<Dashboard />);
+  await screen.findByRole('button', { name: 'Carnes' });
+  window.history.replaceState(null, '', '/?group=carnes&product=global&start=2026-10-27&end=2026-10-29');
+  fireEvent.popState(window);
+  expect(await screen.findByRole('heading', { name: 'Variação de preços · Carnes' })).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Carnes' })).toHaveAttribute('aria-pressed', 'true');
 });
 
 it('shows empty history without inventing a collection timestamp', async () => {
