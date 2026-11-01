@@ -55,14 +55,21 @@ dias de calendário em São Paulo; timestamps de coleta incluem fuso. Valores
 ausentes são `null`. O navegador apenas apresenta os indicadores calculados
 pelo core e mantém lacunas quando falta um preço selecionado.
 
-A tabela fica em um controle expansível abaixo do gráfico. O resumo mostra as
-datas solicitadas quando existe uma comparação válida entre elas.
+A tabela fica em um controle expansível abaixo do gráfico. O core limita a série
+à primeira e à última data com preço elegível dentro da seleção. Quando a seleção
+começa antes ou termina depois dos dados, um aviso abaixo do gráfico informa as
+datas disponíveis. As datas selecionadas e a URL são preservadas. O resumo mostra
+as datas efetivamente usadas quando existe uma comparação válida. Um único dia
+aparece como ponto, sem variação; na visão geral, esse ponto é apenas a base de
+referência. Intervalos inteiramente sem dados continuam vazios.
 Condições de compra não informadas aparecem em um aviso: preço anunciado não
 significa preço disponível sem restrições. A metodologia e a cobertura ficam
 no rodapé. A comparação usa contextos com preços nas duas datas, com pesos
 iguais por loja e por produto na visão geral. A tabela por loja mostra também
 preços de contextos excluídos, com lacunas explícitas. O resumo mostra o menor
 preço disponível na última data com preço, separado da média do painel no gráfico.
+Sem painel comparável, o gráfico de produto mostra o menor preço disponível por
+dia e explica que mudanças de loja ou contexto não permitem calcular uma variação.
 
 `src/data/api.ts` centraliza transporte, paginação e erros. Os hooks abortam
 requisições obsoletas e oferecem tentativas independentes para catálogo e

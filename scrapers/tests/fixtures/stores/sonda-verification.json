@@ -1,0 +1,42 @@
+{
+  "context": "Public online catalog; fulfillment and regional price uniformity unverified",
+  "sanitization": "Selected complete product cards and pagination panels; removed scripts, global forms and sessions. Partial-page excerpts, not whole-page counts.",
+  "sources": {
+    "catalog": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoria/Mercearia",
+      "cards": 5,
+      "captured_at": "2026-11-01T11:06:29.801891+00:00"
+    },
+    "rice": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoriafilha/Mercearia-B%C3%A1sica-Arroz",
+      "cards": 4,
+      "captured_at": "2026-11-01T11:14:04.909849+00:00"
+    },
+    "beans": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoriafilha/Mercearia-B%C3%A1sica-Feij%C3%A3o",
+      "cards": 4,
+      "captured_at": "2026-11-01T11:14:07.441876+00:00"
+    },
+    "milk": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoria/Frios_e_Latic%c3%adnios-Leite_Longa_Vida",
+      "cards": 3,
+      "captured_at": "2026-11-01T11:11:52.946424+00:00"
+    },
+    "coffee": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoriafilha/Mercearia-Caf%C3%A9s-Caf%C3%A9_Torrado_e_Mo%C3%ADdo",
+      "cards": 3,
+      "captured_at": "2026-11-01T11:14:09.328897+00:00"
+    },
+    "cleaning": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoria/Limpeza",
+      "cards": 5,
+      "captured_at": "2026-11-01T11:11:34.213222+00:00"
+    },
+    "weight": {
+      "url": "https://www.sondadelivery.com.br/delivery/categoria/Acougue",
+      "cards": 4,
+      "captured_at": "2026-11-01T11:11:35.484328+00:00"
+    }
+  },
+  "fixture_written_at": "2026-11-01T11:16:36.330663+00:00"
+}

@@ -11,7 +11,7 @@ export function geometry(points: Observation[], size: ChartSize) {
   const high = maximum + padding;
   const start = Date.parse(points[0].date);
   const duration = Math.max(Date.parse(points.at(-1)!.date) - start, 1);
-  const x = (date: string) => plot.left + (Date.parse(date) - start) / duration * (plot.right - plot.left);
+  const x = (date: string) => points.length === 1 ? (plot.left + plot.right) / 2 : plot.left + (Date.parse(date) - start) / duration * (plot.right - plot.left);
   const y = (value: number) => plot.bottom - (value - low) / (high - low) * (plot.bottom - plot.top);
   return { x, y, plot, ticks: Array.from({ length: 4 }, (_, index) => low + (high - low) * index / 3) };
 }

@@ -1,5 +1,99 @@
 # Regional-store response fixtures
 
+## Nagumo Vila Curuçá pickup — 2026-11-01
+
+The `nagumo-*` fixtures come from the public Salesforce Commerce Cloud storefront
+after explicitly selecting pickup at store `13`, Praça Francisco Pereira 80,
+Vila Curuçá, São Paulo/SP, branch CEP `08030040`. No customer login is used.
+
+- `nagumo-context.json` and `nagumo-selection.json` preserve the public branch list
+  with store 13 active and the successful pickup-selection response. No cookies,
+  session headers, customer information or tracking tokens are retained.
+- `nagumo-rice.json`, `nagumo-rice-next.json`, `nagumo-rice-last.json` and
+  `nagumo-empty.json` project first/second/final/empty `Search-UpdateGrid` responses,
+  preserving counts, page metadata, next links and the product fields consumed.
+  The rice result reported 577 products; its final listing, SKU `252724`, was
+  unavailable. These are captured source cases, not synthetic stock fixtures.
+- `nagumo-samples.json` projects nine products: rice, beans, milk, coffee,
+  detergent and four variable-weight bananas. JSON numeric lexemes remain exact;
+  fixture preparation never converts money through binary floating-point values.
+- `nagumo-verification.json` records each selected source URL/capture time and
+  independent rendered excerpts in the same pickup context, including visible
+  membership labels, ordinary prices and advertised kg/portion amounts.
+- `nagumo-submission.json` contains ingestion-v1 output built by the adapter from
+  those nine source records, with their original capture times. Go tests replay
+  it on two **synthetic** dates in disposable PostgreSQL Testcontainers, checking
+  worker persistence, search/history, pickup context, names, links and membership
+  conditions. This is not evidence of two live observation dates.
+
+The adapter keeps regular and `NGM_13_M` Meu Nagumo prices as separate offers.
+Activation, payment, coupon and minimum-quantity conditions stay unknown.
+Variable-weight prices use advertised kg amounts; rounded portion totals and
+average weights never determine the price basis or fixed package contents.
+No source GTIN is verified in these grids. Unsupported conditions/units,
+malformed/unknown prices and lost context are explicit synthetic mutations in
+tests. Runner tests substitute small pagination totals to exercise delivery.
+
+See [Nagumo source mapping, setup and limits](../../../../docs/plans/nagumo-retailer.md).
+
+## Mambo, São Paulo — 2026-11-01
+
+The `mambo-*` fixtures add a separate São Paulo city context. They do not change
+the Curitiba fixture provenance below.
+
+- `mambo-region.json`: public
+  `https://www.mambo.com.br/api/checkout/pub/regions?country=BRA&postalCode=01310200&sc=1`;
+  region `v2.B032579D3A36A563BE9985A52457C9DD`, regional seller `mambodelivery215`.
+  The CEP comes from the [public MASP address](https://www.masp.org.br/visite).
+  It establishes service to a capital-city CEP, not a physical branch identity.
+- `mambo-products.json`: seven products projected from the public
+  `/api/catalog_system/pub/products/search` route with channel `1`, resolved
+  `regionId` and public `vtex_segment`. Searches: `arroz branco`, `leite integral`,
+  `feijao`, `cafe`, `detergente`. This combined fixture is not one actual page.
+  Examples: rice SKU `288357` (5 kg, BRL 34.98), milk `283934` (1 L, 9.29), beans
+  `6112` (500 g, 11.98), coffee `2775` (500 g, 26.99, reference 49.98), detergent
+  `5415` (500 ml, 2.98, reference 3.59). Unavailable SKUs `755` and `5418` have zero
+  placeholders; those become empty offer arrays. All expose offer seller `1`.
+- `mambo-weight-candidates.json`: five verified kg candidates, refreshed from
+  the same API/context at 01:22 UTC: banana `1260` (`kg`, multiplier 0.18, Price
+  9.99), beef `7425` (`kg`, 0.6, 79.98), bread `11549` (`kg`, 0.08, 19.9), melon
+  `287726` (`kg`, 1.5, 12.98) and melon `9274` (`kg`, 3, 14.98). Payment totals
+  are respectively 179, 4798, 159, 1947 and 4494 minor units for approximate
+  portions. They are not per-kg payment prices.
+- `mambo-weight-verification.json`: source capture URLs/times and independent
+  rendered excerpts from 01:22–01:25 UTC, after selecting Entrega Agendada and
+  entering CEP `01310200` in a fresh Botasaurus browser session. The public session
+  API confirmed country, CEP, region and sales channel, matching the scraper.
+  Each product displayed an explicit `/Kg` amount matching the catalog `Price`,
+  alongside the estimated portion amount. Thus kg prices remain unscaled and
+  package contents remain null. No login, purchase or cart mutation was performed.
+  The 3 kg upper portion bound is based on the largest checked listing; unsupported
+  contexts, larger portions, kits and other units remain explicit failures.
+- `mambo-weight-submission.json`: five validated ingestion-v1 observations built
+  from those captures, preserving each source URL/time. Not delivered to production.
+  Go tests replay them with synthetic dates and IDs, verifying per-kg history and
+  that estimated payment totals/fixed package contents are not introduced.
+- `mambo-submission.json`: one validated Python ingestion-v1 submission captured
+  at **2026-11-01T01:02:00.017765Z**, through the actual collector HTTP client and
+  regional preparation. It contains rice SKU `288357`, its exact fetched source
+  URL, collector name, observation ID and actual region. It was not submitted to
+  a running core. Go tests replay it with synthetic dates/identities to verify
+  ingestion, retained provenance and two-date catalog eligibility.
+
+The source fixtures retain only relevant product/SKU/offer fields. Decimal numeric
+literals were decoded with `Decimal` and serialized without binary floats. Payment
+options retain only public names/groups and installment totals/counts; images,
+price tokens and unrelated fields are removed. Source URLs in this note omit
+per-request cache-busting UUIDs; the captured submission keeps its actual URL.
+No account cookies or ingestion tokens are saved.
+
+The public `robots.txt` excludes account, checkout and storefront search pages;
+the adapter uses the public API route, with bounded requests and no storefront
+`/busca/` traversal. [Terms](https://www.mambo.com.br/termos-de-uso) were reviewed.
+See [activation and remaining blockers](../../../../docs/plans/sao-paulo-retailers.md).
+
+## Curitiba — 2026-10-29
+
 Captured on 2026-10-29 from public, unauthenticated VTEX endpoints. Both stores
 were regionalized for the public Bigorrilho business-address CEP `80730201`.
 
@@ -110,3 +204,68 @@ Curitiba delivery context (CEP 80730201, channel 2, regional seller `meufestvald
 It covers six kilogram listings, Mentos 3L 8.5g and contradictory 250g/500g Vapza
 beans. Source decimal quantities are exact strings; seller-offer projections retain
 prices, stock and installment options without price tokens or session metadata.
+
+## Hirota Nazaré pickup
+
+`hirota-context.json`, `hirota-categories.json`, `hirota-products.json`,
+`hirota-cereals.json`, `hirota-cleaning.json` and `hirota-coffee.json` are public
+API captures from 2026-11-01. The context is organization 171, filial 1,
+distribution center 1, pickup at Avenida Nazaré 1299, CEP 04263100, São Paulo/SP.
+Source money remains exact JSON strings/numbers; no bearer tokens, session
+headers, customer accounts, addresses or cookies are stored. The address in the
+context fixture is the retailer's public branch address.
+
+`hirota-verification.json` records capture times, public source/product URLs and
+same-context rendered excerpts for rice, beans, milk, coffee, detergent, tomatoes
+and potatoes. File timestamps recorded immediately after capture supply the
+sample times; source capture and later rendered verification are distinguished.
+`hirota-submission.json` is ingestion v1 output from those seven source records.
+Go integration tests replay it on two **synthetic** local dates in disposable
+PostgreSQL Testcontainers, verify worker processing and test searchable price
+history, pickup provenance, retailer names, links and exact kg amounts.
+
+Regular discounts retain their full source conditions and listing quantity limits.
+Unknown payment/club/coupon terms are not unconditional offers. Kg offers use
+explicit advertised kg prices, not rounded portion division; approximate portions
+are not packages. The captured “1 Litro” spelling is recognized as fixed contents.
+Internal short barcodes stay null. Quantity bands/family promotions remain
+unsupported and produce issues. No unavailable listing was found in this sample;
+unavailable, missing-price, quantity-condition and malformed cases in the Hirota
+tests are explicitly synthetic mutations. Category fixtures retain source
+pagination metadata; bounded pipeline tests deliberately substitute small totals.
+
+See [onboarding evidence](../../../../docs/evidence/hirota-onboarding.md).
+
+### Sonda context investigation
+
+`sonda-context-check.json` is a sanitized live browser capture from 2026-11-01.
+It records a successful MASP CEP serviceability check, empty selected-branch fields,
+no anonymous pickup choices, and catalog price/identifier discrepancies. It is
+research evidence, not an ingestion fixture or verified São Paulo price context.
+See [the onboarding note](../../../../docs/plans/sonda-retailer.md).
+
+### Pão de Açúcar / GPA
+
+`pao-de-acucar-{delivery,branch}.json` are public HTTP responses resolving
+CEP 04115090 to São Paulo Ricardo Jafet store 461 / modality 842. The adapter
+requires both every run; an anonymous default store alone is insufficient.
+`pao-de-acucar-{rice,coffee,cleaning,products}.json` preserve source category
+listing bytes, including pagination, SKU strings, promotion flags and exact JSON
+money. The generic products page includes melão SKU 0339087: R$14.29 estimated
+portion versus an explicit R$12.99/kg. Only the latter becomes an offer.
+
+`pao-de-acucar-verification.json` contains fresh rendered store-461 excerpts for
+rice, beans, milk, coffee, detergent and melão, plus sanitized delivery state.
+No customer address was selected in the browser: CEP serviceability is verified
+independently through the public API, and prices are compared by explicit store
+identity. `pao-de-acucar-submission.json` is adapter/shared-batcher output for
+rice, coffee, detergent and kg melão, replayed on synthetic dates by disposable
+PostgreSQL integration tests. Its observation timestamps are test timestamps.
+No GTIN is provided by the listing API. Unavailable and quantity-promotion tests
+are synthetic mutations, not captured claims. See the
+[source evidence and limits](../../../../docs/evidence/pao-de-acucar-onboarding.md).
+
+Sonda HTML excerpts and `sonda-verification.json` capture public source cards
+and pagination. `sonda-submission.json` is ingestion v1 replay evidence for a
+packaged Camil rice listing, using unknown fulfillment fields and online channel.
+See [source provenance and limits](../../../../docs/plans/sonda-retailer.md).

@@ -21,7 +21,7 @@
   "comparisonEnd": "2026-10-29",
   "collectedAt": "2026-10-29T12:00:00Z",
   "stale": false,
-  "coverage": "1 de 1 produto(s), 1 de 1 loja(s), 1 de 1 contexto(s) incluídos na comparação; 2 de 3 dias com cobertura do painel.",
+  "coverage": "1 de 1 produto(s), 1 de 1 loja(s), 1 de 1 contexto(s) incluídos na comparação; 2 de 3 dias com valores no gráfico.",
   "counts": {
     "products": 1,
     "shops": 1,
@@ -32,9 +32,13 @@
     "includedShops": 1,
     "includedStreams": 1
   },
-  "methodology": "Painel com preços comparáveis nas duas datas selecionadas. Pesos iguais por loja e depois por produto. Lacunas intermediárias ficam vazias. O recorte monitorado não representa a inflação nacional.",
-  "methodologyVersion": "matched-shops-v2",
+  "methodology": "O intervalo efetivo vai da primeira à última data com preço elegível no período solicitado. O painel usa contextos comparáveis nas duas pontas, com pesos iguais por loja e depois por produto. Sem painel, o gráfico de produto mostra o menor preço disponível por dia, sem calcular variação. Lacunas ficam vazias. O recorte monitorado não representa a inflação nacional.",
+  "methodologyVersion": "available-period-v4",
   "period": {
+    "start": "2026-10-27",
+    "end": "2026-10-29"
+  },
+  "availablePeriod": {
     "start": "2026-10-27",
     "end": "2026-10-29"
   },

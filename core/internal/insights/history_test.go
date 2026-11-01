@@ -1,9 +1,25 @@
 package insights
 
 import (
+	"strings"
 	"testing"
 	"time"
 )
+
+func TestOverviewDisclosesCitiesWithoutComparingDifferentLocations(test *testing.T) {
+	curitiba := testContext("shop", "1000", "")
+	curitiba.Location = "Curitiba/PR"
+	saoPaulo := testContext("shop", "", "2000")
+	saoPaulo.Location = "São Paulo/SP"
+	product := ProductSeries{Contexts: []ContextSeries{curitiba, saoPaulo, curitiba}, Streams: 3, Shops: 1}
+	history := Build([]ProductSeries{product}, true, 1, time.Now())
+	if history.ChangeBasisPoints != nil || history.Counts.IncludedStreams != 0 {
+		test.Fatal("different locations must not create a temporal price change")
+	}
+	if !strings.Contains(history.Coverage, "Localidades observadas: Curitiba/PR; São Paulo/SP.") {
+		test.Fatalf("missing or duplicated geography: %s", history.Coverage)
+	}
+}
 
 func testSeries(name string, values ...string) ProductSeries {
 	context := testContext("shop", values...)
@@ -139,4 +155,77 @@ func TestZeroEndpointRemainsARealPrice(test *testing.T) {
 	history := Build([]ProductSeries{testSeries("Café", "1000", "0")}, false, 1, time.Now())
 	assertValue(test, history.LatestPriceMinor, 0)
 	assertValue(test, history.ChangeBasisPoints, -10000)
+}
+
+func TestAvailableIntervalIgnoresEmptySelectedEndpoints(test *testing.T) {
+	series := []ProductSeries{testSeries("Café", "", "1000", "", "1100", "")}
+	for _, global := range []bool{false, true} {
+		history := Build(series, global, 1, time.Now())
+		assertAvailableInterval(test, history)
+	}
+}
+
+func assertAvailableInterval(test *testing.T, history History) {
+	test.Helper()
+	expected := Period{Start: "2026-10-28", End: "2026-10-30"}
+	if history.AvailablePeriod == nil || *history.AvailablePeriod != expected {
+		test.Fatalf("incorrect available dates: %+v", history.AvailablePeriod)
+	}
+	if *history.ComparisonStart != expected.Start || *history.ComparisonEnd != expected.End {
+		test.Fatal("comparison must disclose the actual dates used")
+	}
+	assertValue(test, history.ChangeBasisPoints, 1000)
+	if len(history.Points) != 3 || history.Points[1].Value != nil || history.Counts.PricedDays != 2 {
+		test.Fatal("trimmed chart must preserve internal gaps")
+	}
+}
+
+func TestSingleAvailableDayHasPricesWithoutChange(test *testing.T) {
+	series := []ProductSeries{testSeries("Leite", "", "100", "")}
+	for _, global := range []bool{false, true} {
+		history := Build(series, global, 1, time.Now())
+		assertSingleAvailableDay(test, history, global)
+	}
+}
+
+func assertSingleAvailableDay(test *testing.T, history History, global bool) {
+	test.Helper()
+	if len(history.Points) != 1 || history.Counts.PricedDays != 1 {
+		test.Fatal("one available day must remain visible")
+	}
+	if history.ChangeBasisPoints != nil || history.ComparisonStart != nil || history.ComparisonEnd != nil {
+		test.Fatal("one day cannot provide a change")
+	}
+	if global {
+		assertValue(test, history.Points[0].Value, 0)
+		return
+	}
+	assertValue(test, history.Points[0].Value, 100)
+}
+
+func TestAvailablePricesDoNotInventComparableVariation(test *testing.T) {
+	product := testSeries("Café", "", "1000", "", "", "")
+	product.Contexts = append(product.Contexts, testContext("other", "", "", "", "2000", ""))
+	history := Build([]ProductSeries{product}, false, 2, time.Now())
+	assertValue(test, history.Points[0].Value, 1000)
+	assertValue(test, history.Points[2].Value, 2000)
+	if history.ChangeBasisPoints != nil || history.Counts.IncludedStreams != 0 || history.Points[1].Value != nil {
+		test.Fatal("switching shops cannot produce comparable variation or fill gaps")
+	}
+}
+
+func TestZeroBaselinePricesRemainVisibleWithoutVariation(test *testing.T) {
+	history := Build([]ProductSeries{testSeries("Café", "", "0", "100", "")}, false, 1, time.Now())
+	assertValue(test, history.Points[0].Value, 0)
+	assertValue(test, history.Points[1].Value, 100)
+	if history.ChangeBasisPoints != nil || history.ComparisonStart != nil {
+		test.Fatal("zero baseline cannot produce a relative change")
+	}
+}
+
+func TestNoEligiblePricesHasNoAvailableInterval(test *testing.T) {
+	history := Build([]ProductSeries{testSeries("Café", "", "", "")}, false, 1, time.Now())
+	if history.AvailablePeriod != nil || history.ChangeBasisPoints != nil || history.Counts.PricedDays != 0 {
+		test.Fatal("no eligible prices must not invent dates or values")
+	}
 }

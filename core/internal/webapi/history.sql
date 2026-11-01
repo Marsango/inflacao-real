@@ -59,22 +59,23 @@ WITH original AS (
     SELECT $2::date + generate_series(0, $3::date - $2::date) AS day
 ), contexts AS (
     SELECT product_id, stream, shop_id, max(product_url) AS product_url,
-        concat_ws(' · ', max(seller_id), max(store_id), max(postal_code), max(city), max(state), max(channel)) AS label
+        concat_ws(' · ', max(seller_id), max(store_id), max(postal_code), max(city), max(state), max(channel)) AS label,
+        concat_ws('/', max(city), max(state)) AS location
     FROM scoped GROUP BY product_id, stream, shop_id
 ), context_series AS (
     SELECT contexts.product_id, contexts.stream, contexts.shop_id, shops.name AS shop_name,
-        contexts.label, contexts.product_url,
+        contexts.label, contexts.product_url, contexts.location,
         jsonb_agg(jsonb_build_object('date', days.day::text, 'amount', latest.price::text)
             ORDER BY days.day) AS points
     FROM contexts CROSS JOIN days JOIN shops ON shops.id = contexts.shop_id
     LEFT JOIN latest ON latest.product_id = contexts.product_id
         AND latest.stream = contexts.stream AND latest.day = days.day
-    GROUP BY contexts.product_id, contexts.stream, contexts.shop_id, shops.name, contexts.label, contexts.product_url
+    GROUP BY contexts.product_id, contexts.stream, contexts.shop_id, shops.name, contexts.label, contexts.product_url, contexts.location
 )
 SELECT panel.product_id::text, panel.name, panel.basis, panel.unknown_conditions, panel.collected_at, panel.streams, panel.shops,
     (SELECT count(DISTINCT shop_id) FROM measurements),
     jsonb_agg(jsonb_build_object('id', context_series.stream::text, 'shopId', shop_id,
-        'shopName', shop_name, 'label', label, 'productUrl', product_url, 'points', points)
+        'shopName', shop_name, 'label', label, 'location', location, 'productUrl', product_url, 'points', points)
         ORDER BY shop_id, context_series.stream)
 FROM panel JOIN context_series USING (product_id)
 GROUP BY panel.product_id, panel.name, panel.basis, panel.unknown_conditions, panel.collected_at, panel.streams, panel.shops

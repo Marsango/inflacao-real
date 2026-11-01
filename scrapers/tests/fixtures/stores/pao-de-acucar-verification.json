@@ -1,0 +1,143 @@
+{
+  "capture_completed_at": "2026-11-01T11:10:35.547436+00:00",
+  "samples": [
+    {
+      "id": 172,
+      "state": {
+        "selectedDeliveryOption": null,
+        "selectedDeliveryOptionStoreId": 461,
+        "isDriveThru": false,
+        "deliveryOptions": [],
+        "availableDriveThruStores": [],
+        "driveThruStoresPagination": {
+          "hasNextPage": true,
+          "isFetchingStores": false
+        },
+        "updatedDriveThru": null,
+        "isLoadingDeliveryOptions": false,
+        "isLoadingDriveThruStores": false,
+        "storeId": 461,
+        "typeId": null,
+        "selectedDriveThruOnModal": null,
+        "isRedirectingToProductDetails": false
+      },
+      "text": "Formas de parcelamento\nArroz Integral Tipo 1 TIO JOÃO Pacote 500g\n\nCód.: 4485308\n\nR$ 5,29\n\nPreço por 100g - R$ 1,05\n\nComprar\n\nFaça sua\n\nprimeira compra online\n\ncom\n\ncupom PRIMEIRA10\n\nPara compras acima de R$299,00\n\nCopiar Cupom\n\nCalcular o frete e prazo:\nOK\n\n",
+      "requested_url": "https://www.paodeacucar.com/produto/172/produto"
+    },
+    {
+      "id": 9461,
+      "state": {
+        "selectedDeliveryOption": null,
+        "selectedDeliveryOptionStoreId": 461,
+        "isDriveThru": false,
+        "deliveryOptions": [],
+        "availableDriveThruStores": [],
+        "driveThruStoresPagination": {
+          "hasNextPage": true,
+          "isFetchingStores": false
+        },
+        "updatedDriveThru": null,
+        "isLoadingDeliveryOptions": false,
+        "isLoadingDriveThruStores": false,
+        "storeId": 461,
+        "typeId": null,
+        "selectedDriveThruOnModal": null,
+        "isRedirectingToProductDetails": false
+      },
+      "text": "Formas de parcelamento\nFeijão Carioca Tipo 1 CAMIL Pacote 1kg\n\nCód.: 0468084\n\nR$ 10,49\n\nPreço por 1kg - R$ 10,49\n\nComprar\n\nFaça sua\n\nprimeira compra online\n\ncom\n\ncupom PRIMEIRA10\n\nPara compras acima de R$299,00\n\nCopiar Cupom\n\nCalcular o frete e prazo:\nOK\n\n",
+      "requested_url": "https://www.paodeacucar.com/produto/9461/produto"
+    },
+    {
+      "id": 97827,
+      "state": {
+        "selectedDeliveryOption": null,
+        "selectedDeliveryOptionStoreId": 461,
+        "isDriveThru": false,
+        "deliveryOptions": [],
+        "availableDriveThruStores": [],
+        "driveThruStoresPagination": {
+          "hasNextPage": true,
+          "isFetchingStores": false
+        },
+        "updatedDriveThru": null,
+        "isLoadingDeliveryOptions": false,
+        "isLoadingDriveThruStores": false,
+        "storeId": 461,
+        "typeId": null,
+        "selectedDriveThruOnModal": null,
+        "isRedirectingToProductDetails": false
+      },
+      "text": "Formas de parcelamento\nLeite UHT Integral Parmalat Caixa com Tampa 1L\n\nCód.: 0255219\n\nR$ 6,99\n\nPreço por 1L - R$ 6,99\n\nComprar\n\nFaça sua\n\nprimeira compra online\n\ncom\n\ncupom PRIMEIRA10\n\nPara compras acima de R$299,00\n\nCopiar Cupom\n\nCalcular o frete e prazo:\nOK\n\n",
+      "requested_url": "https://www.paodeacucar.com/produto/97827/produto"
+    },
+    {
+      "id": 10930,
+      "state": {
+        "selectedDeliveryOption": null,
+        "selectedDeliveryOptionStoreId": 461,
+        "isDriveThru": false,
+        "deliveryOptions": [],
+        "availableDriveThruStores": [],
+        "driveThruStoresPagination": {
+          "hasNextPage": true,
+          "isFetchingStores": false
+        },
+        "updatedDriveThru": null,
+        "isLoadingDeliveryOptions": false,
+        "isLoadingDriveThruStores": false,
+        "storeId": 461,
+        "typeId": null,
+        "selectedDriveThruOnModal": null,
+        "isRedirectingToProductDetails": false
+      },
+      "text": "Formas de parcelamento\nCafé Torrado e Moído Intenso Pilão Pacote 500g\n\nCód.: 4222712\n\nR$ 23,99\n\nR$ 33,99\n\n-29%\n\nComprar\n\nFaça sua\n\nprimeira compra online\n\ncom\n\ncupom PRIMEIRA10\n\nPara compras acima de R$299,00\n\nCopiar Cupom\n\nCalcular o frete e prazo:\nOK\n\n",
+      "requested_url": "https://www.paodeacucar.com/produto/10930/produto"
+    },
+    {
+      "id": 37236,
+      "state": {
+        "selectedDeliveryOption": null,
+        "selectedDeliveryOptionStoreId": 461,
+        "isDriveThru": false,
+        "deliveryOptions": [],
+        "availableDriveThruStores": [],
+        "driveThruStoresPagination": {
+          "hasNextPage": true,
+          "isFetchingStores": false
+        },
+        "updatedDriveThru": null,
+        "isLoadingDeliveryOptions": false,
+        "isLoadingDriveThruStores": false,
+        "storeId": 461,
+        "typeId": null,
+        "selectedDriveThruOnModal": null,
+        "isRedirectingToProductDetails": false
+      },
+      "text": "Formas de parcelamento\nLava-louças Líquido Clear Care Ypê Squeeze 500ml\n\nCód.: 2026510\n\nR$ 2,59\n\nR$ 3,49\n\n-25%\n\nComprar\n\nFaça sua\n\nprimeira compra online\n\ncom\n\ncupom PRIMEIRA10\n\nPara compras acima de R$299,00\n\nCopiar Cupom\n\nCalcular o frete e prazo:\nOK\n\n",
+      "requested_url": "https://www.paodeacucar.com/produto/37236/produto"
+    },
+    {
+      "id": 19,
+      "state": {
+        "selectedDeliveryOption": null,
+        "selectedDeliveryOptionStoreId": 461,
+        "isDriveThru": false,
+        "deliveryOptions": [],
+        "availableDriveThruStores": [],
+        "driveThruStoresPagination": {
+          "hasNextPage": true,
+          "isFetchingStores": false
+        },
+        "updatedDriveThru": null,
+        "isLoadingDeliveryOptions": false,
+        "isLoadingDriveThruStores": false,
+        "storeId": 461,
+        "typeId": null,
+        "selectedDriveThruOnModal": null,
+        "isRedirectingToProductDetails": false
+      },
+      "text": "Formas de parcelamento\nMelão Verde Em Pedaço 1,1kg\n\nCód.: 0339087\n\nR$ 12,99 /Kg\n\nPreço por 1kg - R$ 12,99\n\nComprar\n\nProduto de peso variável\n\nPreço estimado que pode ser ajustado em até 50% após a pesagem final. Essa diferença será cobrada ou estornada, conforme necessário.\n\nFaça sua\n\nprimeira compra online\n\ncom\n\ncupom PRIMEIRA10\n\nPara compras acima de R$299,00\n\nCopiar Cupom\n\nCalcular o frete e prazo:\nOK\n\n",
+      "requested_url": "https://www.paodeacucar.com/produto/19/produto"
+    }
+  ]
+}

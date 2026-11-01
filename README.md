@@ -36,11 +36,14 @@ contrariarem a nossa expectativa, a conclusão precisa acompanhar os dados.
 
 ## Onde o projeto está hoje
 
-Estamos construindo a base de coleta e histórico.
+Estamos construindo a base de coleta e histórico. A
+[expansão para São Paulo](docs/plans/sao-paulo-retailers.md) tem suporte parcial:
+Mambo, Hirota e Pão de Açúcar têm adapters; Sonda ainda precisa de um contexto
+de preço verificado. A coleta agendada em São Paulo permanece pendente.
 
 | Parte | O que já existe |
 | --- | --- |
-| Scrapers em Python | Adapters para Super Muffato, Angeloni e Festval, com configurações de catálogo online na região de Curitiba. |
+| Scrapers em Python | Adapters para Super Muffato, Angeloni e Festval em Curitiba, além de produtos embalados e preços anunciados por kg do Mambo (entrega) e Hirota (retirada Nazaré), além do Pão de Açúcar (entrega Ricardo Jafet) em São Paulo/SP. |
 | Core em Go | API autenticada de ingestão, fila de processamento, identificação de produtos, histórico e API pública para a interface. |
 | PostgreSQL | Migrations automáticas e armazenamento de produtos, ofertas e origem das observações. |
 | Interface em React | Dashboard integrado ao core, com catálogo de produtos, histórico por período, cobertura e metodologia. |

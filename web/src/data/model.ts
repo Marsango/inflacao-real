@@ -11,6 +11,7 @@ export type History = {
   shopPrices: ShopHistory[];
   unknownConditions: boolean;
   period: Period;
+  availablePeriod: Period | null;
   timeZone: 'America/Sao_Paulo';
   priceBasis: PriceBasis | null;
   title: string;

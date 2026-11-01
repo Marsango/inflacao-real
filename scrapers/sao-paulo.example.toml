@@ -1,0 +1,54 @@
+# Add these entries to your existing configuration to retain Curitiba collection.
+# Use the scraper identity already authorized by your core.
+[[scrapers]]
+adapter = "mambo"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+postal_code = "01310200"
+regional_seller_id = "mambodelivery215"
+sales_channel = "1"
+seller_id = "1"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/mambo/spool.sqlite3"
+
+# Verified Nazaré pickup; requires the browser extra and Chrome.
+[[scrapers]]
+adapter = "hirota"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+postal_code = "04263100"
+store_id = "org:171/filial:1/centro:1"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/hirota/spool.sqlite3"
+
+# Public Ricardo Jafet delivery catalog.
+[[scrapers]]
+adapter = "pao-de-acucar"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+postal_code = "04115090"
+store_id = "461"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/pao-de-acucar/spool.sqlite3"
+
+# Public online catalog; fulfillment location and pickup pricing unverified.
+# No browser required; preserve unknown fulfillment provenance.
+[[scrapers]]
+adapter = "sonda"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+spool_path = "data/sonda/spool.sqlite3"
+
+# Verified Vila Curuçá pickup; HTTP only.
+[[scrapers]]
+adapter = "nagumo"
+enabled = true
+scraper_id = "muffato-curitiba-01"
+store_id = "13"
+postal_code = "08030040"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/nagumo/spool.sqlite3"

@@ -1,12 +1,17 @@
 """Build before stopping collection; migrate and probe before scheduling."""
 from runtime import compose, revision, CONFIG, require_clean_checkout
-from settings import bootstrap, initialize
+from settings import bootstrap, initialize, synchronize_scrapers
 from website import save_domain, start_website, validate_domain
 
 SHOPS = """INSERT INTO shops (id, name, website_url) VALUES
 ('super-muffato','Super Muffato','https://www.supermuffato.com.br'),
 ('angeloni','Angeloni','https://super.angeloni.com.br'),
-('festval','Festval','https://www.festval.com') ON CONFLICT (id) DO NOTHING;"""
+('festval','Festval','https://www.festval.com'),
+('mambo','Mambo','https://www.mambo.com.br'),
+('hirota','Hirota','https://www.lojahirota.com.br'),
+('pao-de-acucar','Pão de Açúcar','https://www.paodeacucar.com'),
+('sonda','Sonda','https://www.sondadelivery.com.br'),
+('nagumo','Nagumo','https://www.nagumo.com.br') ON CONFLICT (id) DO NOTHING;"""
 
 
 def database(*arguments, **options):
@@ -27,6 +32,7 @@ def start(domain=None):
     save_domain(domain)
     compose("build", "--pull")
     compose("stop", "scrapers")
+    synchronize_scrapers()
     start_application()
     (CONFIG / "revision").write_text(revision() + "\n")
 

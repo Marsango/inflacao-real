@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { Dashboard } from './Dashboard';
 import { monthsBefore, today } from '../shared/dates';
-import { lineSegments } from './chartGeometry';
+import { geometry, lineSegments } from './chartGeometry';
 import { catalog, jsonResponse, mockCore, productHistory } from '../testing/apiFixture';
 
 beforeEach(() => {
@@ -90,18 +90,18 @@ it('recovers a failed catalog independently', async () => {
 });
 
 it('shows empty history without inventing a collection timestamp', async () => {
-  vi.stubGlobal('fetch', mockCore({ ...productHistory, points: [], collectedAt: null, latestPriceMinor: null, changeBasisPoints: null, counts: { ...productHistory.counts, products: 0, pricedDays: 0 } }));
+  vi.stubGlobal('fetch', mockCore({ ...productHistory, availablePeriod: null, points: [], collectedAt: null, latestPriceMinor: null, changeBasisPoints: null, counts: { ...productHistory.counts, products: 0, pricedDays: 0 } }));
   render(<Dashboard />);
-  expect(await screen.findByText(/Nenhum preço comparável/)).toBeVisible();
+  expect(await screen.findByText(/Nenhum preço disponível/)).toBeVisible();
   expect(screen.getByText('Sem coleta no período.')).toBeVisible();
 });
 
 it('shows insufficient history and stale data from core', async () => {
-  vi.stubGlobal('fetch', mockCore({ ...productHistory, points: [productHistory.points[0]], changeBasisPoints: null, stale: true, counts: { ...productHistory.counts, pricedDays: 1 } }));
+  vi.stubGlobal('fetch', mockCore({ ...productHistory, availablePeriod: { start: '2026-10-27', end: '2026-10-27' }, points: [productHistory.points[0]], changeBasisPoints: null, comparisonStart: null, comparisonEnd: null, stale: true, counts: { ...productHistory.counts, pricedDays: 1 } }));
   render(<Dashboard />);
   expect(await screen.findByText(/Histórico insuficiente/)).toBeVisible();
   expect(screen.getByText(/Dados desatualizados/)).toBeVisible();
-  expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  expect(screen.getByRole('img')).toBeVisible();
 });
 
 it('keeps loading while a request is pending and aborts on unmount', async () => {
@@ -127,9 +127,9 @@ it('labels per-kg prices and explains unverified buying conditions', async () =>
 
 it('shows available shop prices when no matched variation exists', async () => {
   const excluded = { ...productHistory.shopPrices[0], included: false };
-  const history = { ...productHistory, points: productHistory.points.map((point) => ({ ...point, value: null })),
+  const history = { ...productHistory, points: productHistory.points,
     shopPrices: [excluded], changeBasisPoints: null, comparisonStart: null, comparisonEnd: null,
-    counts: { ...productHistory.counts, pricedDays: 0, includedProducts: 0, includedShops: 0, includedStreams: 0 } };
+    counts: { ...productHistory.counts, pricedDays: 2, includedProducts: 0, includedShops: 0, includedStreams: 0 } };
   vi.stubGlobal('fetch', mockCore(history));
   render(<Dashboard />);
   expect(await screen.findByRole('heading', { name: 'Comparar preços entre lojas' })).toBeVisible();
@@ -137,5 +137,71 @@ it('shows available shop prices when no matched variation exists', async () => {
   expect(screen.getByText('Sem preços comparáveis nas duas datas')).toBeVisible();
   expect(screen.getByText('Sem preço disponível')).toBeVisible();
   expect(screen.getByText(/R\$\s*26,90/, { selector: 'strong' })).toBeVisible();
-  expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  expect(screen.getByRole('img')).toBeVisible();
+  expect(screen.getByText(/Menor preço disponível por dia/)).toBeVisible();
+  expect(screen.getByText(/Esses valores não permitem calcular uma variação comparável/)).toBeVisible();
+});
+
+it('shows São Paulo pickup coverage, retailer and public product link from core', async () => {
+  const context = 'org:171/filial:1/centro:1 · 04263100 · São Paulo · SP · pickup';
+  const coverage = 'Localidades observadas: Curitiba/PR; São Paulo/SP.';
+  const productUrl = 'https://www.lojahirota.com.br/produto/498/arroz-camil-tipo-1-5kg';
+  const shop = { ...productHistory.shopPrices[0], shopId: 'hirota', shopName: 'Hirota', context, productUrl };
+  vi.stubGlobal('fetch', mockCore({ ...productHistory, coverage, shopPrices: [shop] }));
+  render(<Dashboard />);
+  expect(await screen.findByRole('link', { name: 'Hirota' })).toHaveAttribute('href', productUrl);
+  expect(screen.getByText(context)).toBeVisible();
+  expect(screen.getAllByText(coverage)[0]).toBeVisible();
+});
+
+it('shows available dates below the graph when selecting past and future endpoints', async () => {
+  window.history.replaceState(null, '', '/?start=2026-10-27&end=2026-10-29');
+  render(<Dashboard />);
+  await screen.findByRole('img');
+  fireEvent.change(screen.getByLabelText('De'), { target: { value: '2026-10-01' } });
+  await screen.findByRole('img');
+  fireEvent.change(screen.getByLabelText('Até'), { target: { value: '2027-01-01' } });
+  const chart = await screen.findByRole('img');
+  const explanation = screen.getByText(/preços disponíveis apenas entre 27\/10\/2026 e 29\/10\/2026/);
+  expect(chart).toBeVisible();
+  expect(explanation).toBeVisible();
+  expect(chart.compareDocumentPosition(explanation) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(screen.getByText('Comparação: 27/10/2026 a 29/10/2026')).toBeVisible();
+  expect(screen.getByLabelText('De')).toHaveValue('2026-10-01');
+  expect(screen.getByLabelText('Até')).toHaveValue('2027-01-01');
+  expect(fetch).toHaveBeenLastCalledWith('/api/v1/history?product=global&start=2026-10-01&end=2027-01-01', expect.any(Object));
+});
+
+it('shows a single overview day without claiming a calculated percentage', async () => {
+  const single = { ...productHistory, unit: 'percent' as const, availablePeriod: { start: '2026-10-27', end: '2026-10-27' },
+    points: [{ date: '2026-10-27', value: 0 }], changeBasisPoints: null, comparisonStart: null, comparisonEnd: null,
+    counts: { ...productHistory.counts, pricedDays: 1 }, shopPrices: [] };
+  vi.stubGlobal('fetch', mockCore(single));
+  render(<Dashboard />);
+  const chart = await screen.findByRole('img');
+  expect(chart).toBeVisible();
+  expect(screen.getByText(/Base de referência/)).toHaveTextContent('Variação não calculável');
+  expect(screen.getByText(/preços disponíveis apenas em 27\/10\/2026/)).toBeVisible();
+  expect(screen.queryByText(/Comparação:/)).not.toBeInTheDocument();
+  expect(chart.querySelectorAll('circle')).toHaveLength(1);
+  expect(chart.querySelectorAll('.chart-labels > text')).toHaveLength(1);
+});
+
+it('centers a single chart point with finite coordinates', () => {
+  const point = { date: '2026-10-27', value: 2490 };
+  const { x, y, plot } = geometry([point], { width: 500, height: 300 });
+  expect(x(point.date)).toBe((plot.left + plot.right) / 2);
+  expect(Number.isFinite(y(point.value))).toBe(true);
+});
+
+
+it('shows Pão de Açúcar delivery coverage and public product link from core', async () => {
+  const context = '461 · 04115090 · São Paulo · SP · delivery';
+  const productUrl = 'https://www.paodeacucar.com/produto/172/arroz-integral-tipo-1-tio-joao-pacote-500g';
+  const shop = { ...productHistory.shopPrices[0], shopId: 'pao-de-acucar',
+    shopName: 'Pão de Açúcar', context, productUrl };
+  vi.stubGlobal('fetch', mockCore({ ...productHistory, shopPrices: [shop] }));
+  render(<Dashboard />);
+  expect(await screen.findByRole('link', { name: 'Pão de Açúcar' })).toHaveAttribute('href', productUrl);
+  expect(screen.getByText(context)).toBeVisible();
 });

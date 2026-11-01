@@ -1,0 +1,14 @@
+# Verified Vila Curuçá pickup, São Paulo/SP. HTTP only; no browser extra required.
+# Use a scraper identity and Nagumo shop authorization configured in your core.
+adapter = "nagumo"
+scraper_id = "muffato-curitiba-01"
+shop_id = "nagumo"
+shop_url = "https://www.nagumo.com.br"
+store_id = "13"
+postal_code = "08030040"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/nagumo/spool.sqlite3"
+timeout_seconds = 30.0
+request_interval_seconds = 1.0
+max_search_pages = 100

@@ -1,0 +1,314 @@
+{
+  "schema_version": "1.0",
+  "submission_id": "93807444-9ea1-4f62-ad92-3dbbc2991611",
+  "scraper_id": "collector-sp-01",
+  "shop_id": "hirota",
+  "run_id": "2713e31b-e0ae-4b58-a795-e29bb2aabe41",
+  "created_at": "2026-11-01T02:23:43.816755Z",
+  "collector": {
+    "name": "hirota",
+    "version": "0.1.0"
+  },
+  "observations": [
+    {
+      "observation_id": "971ce221-10fa-406c-854e-353f9a3e2da6",
+      "observed_at": "2026-11-01T02:16:09.765994Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/produtos/mais_vendidos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/1349/leite-italac-1-litro-integral",
+      "product": {
+        "source_product_id": "1349",
+        "name": "Leite Italac 1 Litro Integral",
+        "brand": null,
+        "gtin": "7898080640611",
+        "package": {
+          "quantity": "1",
+          "unit": "l",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "4.88",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": "6.48",
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Oferta: {\"oferta_id\": 36889573, \"oferta_item_id\": \"7550bc93-cb26-4cf0-bd32-70e74cef0e3b\", \"categoria\": \"G\", \"tipo_oferta_id\": 1, \"nome\": \"Oferta Site e APP\", \"tag\": \"oferta-site-e-app\", \"classe_oferta\": \"oferta-vermelho\", \"preco_antigo\": \"6.48\", \"preco_oferta\": \"4.88\", \"quantidade_minima\": 1, \"quantidade_maxima\": 10000000, \"quantidade_pagar\": 1, \"quantidade_oferta\": 1, \"faixas_precos\": null, \"exibe_preco_original\": false, \"preco_original\": 0, \"familia\": false, \"menor_preco\": \"4.880\", \"preco_oferta_fracao\": null, \"preco_antigo_fracao\": null} Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"12\", \"tags\": []}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "a1cd942a-5cd1-4dd7-a5e6-a6ad16c3db49",
+      "observed_at": "2026-11-01T02:16:09.765994Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/produtos/mais_vendidos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/7227/tomate-italiano-200g",
+      "product": {
+        "source_product_id": "7227",
+        "name": "Tomate Italiano 200g",
+        "brand": null,
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "19.00",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Preço anunciado por kg; porção aproximada, total sujeito ao peso final. Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"25\", \"tags\": []}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "dee30e80-db83-4a51-94e9-b5d5827ffefa",
+      "observed_at": "2026-11-01T02:16:09.765994Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/produtos/mais_vendidos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/6884/batata-lavada-500g",
+      "product": {
+        "source_product_id": "6884",
+        "name": "Batata Lavada 500g",
+        "brand": null,
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "7.98",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": "10.98",
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Preço anunciado por kg; porção aproximada, total sujeito ao peso final. Oferta: {\"oferta_id\": 36890028, \"oferta_item_id\": \"1511fb82-61d0-4c97-968c-289faec72377\", \"categoria\": \"G\", \"tipo_oferta_id\": 1, \"nome\": \"Oferta \", \"tag\": \"oferta\", \"classe_oferta\": \"preco-vip\", \"preco_antigo\": \"5.49\", \"preco_oferta\": \"3.99\", \"quantidade_minima\": 1, \"quantidade_maxima\": 999, \"quantidade_pagar\": 1, \"quantidade_oferta\": 1, \"faixas_precos\": null, \"exibe_preco_original\": true, \"preco_original\": \"7.98\", \"familia\": false, \"menor_preco\": \"3.990\", \"preco_oferta_fracao\": null, \"preco_antigo_fracao\": null} Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"10\", \"tags\": []}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "2ea7872c-cd12-4f0e-82cd-3e314480dffc",
+      "observed_at": "2026-11-01T02:17:06.851156Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/6/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/498/arroz-camil-tipo-1-5kg",
+      "product": {
+        "source_product_id": "498",
+        "name": "Arroz Camil Tipo 1 5kg",
+        "brand": null,
+        "gtin": "7896006711155",
+        "package": {
+          "quantity": "5",
+          "unit": "kg",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "28.98",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"6\", \"tags\": []}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "c136c614-80f7-42fd-ab9c-059e5eb4d7d9",
+      "observed_at": "2026-11-01T02:17:06.851156Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/6/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/1859/feijao-preto-camil-1kg",
+      "product": {
+        "source_product_id": "1859",
+        "name": "Feijão Preto Camil 1kg",
+        "brand": null,
+        "gtin": "7896006751113",
+        "package": {
+          "quantity": "1",
+          "unit": "kg",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "8.98",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"44\", \"tags\": []}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "30fd16c5-77ad-4b2e-ab12-639c0d88caf8",
+      "observed_at": "2026-11-01T02:17:08.032659Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/10/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/606/detergente-liquido-ype-clear-500ml",
+      "product": {
+        "source_product_id": "606",
+        "name": "Detergente Líquido Ypê Clear 500ml",
+        "brand": null,
+        "gtin": "7896098900253",
+        "package": {
+          "quantity": "500",
+          "unit": "ml",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "3.18",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"114\", \"tags\": []}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "a1e0aed6-5a47-4632-8004-e3faf968a6be",
+      "observed_at": "2026-11-01T02:22:40.445146Z",
+      "collection_method": "api",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/11/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/88/cafe-lor-instant-classique-90g",
+      "product": {
+        "source_product_id": "88",
+        "name": "Cafe Lor Instant Classique 90g",
+        "brand": null,
+        "gtin": "7896089089929",
+        "package": {
+          "quantity": "90",
+          "unit": "g",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "org:171/filial:1/centro:1",
+        "postal_code": "04263100",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "24.98",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Condições de pagamento, clube e cupom não informadas. Limites do anúncio: {\"quantidade_minima\": \"1\", \"quantidade_maxima\": \"8\", \"tags\": []}"
+          }
+        }
+      ]
+    }
+  ]
+}

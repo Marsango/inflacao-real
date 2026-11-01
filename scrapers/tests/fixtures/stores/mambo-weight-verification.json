@@ -1,0 +1,106 @@
+{
+  "status": "enabled: matching API and rendered kilogram prices in the verified São Paulo delivery context",
+  "expected_api_context": {
+    "postal_code": "01310200",
+    "region_id": "v2.B032579D3A36A563BE9985A52457C9DD",
+    "regional_seller_id": "mambodelivery215",
+    "sales_channel": "1",
+    "seller_id": "1",
+    "city": "São Paulo",
+    "state": "SP",
+    "channel": "delivery"
+  },
+  "captures": [
+    {
+      "query": "banana nanica",
+      "source_url": "https://www.mambo.com.br/api/catalog_system/pub/products/search?sc=1&_from=0&_to=9&_ir=5fff4988-dd5c-41e9-8e59-977f0d23d5db&regionId=v2.B032579D3A36A563BE9985A52457C9DD&ft=banana%20nanica",
+      "captured_at": "2026-11-01T01:22:44.148307+00:00",
+      "status": 200,
+      "age": null
+    },
+    {
+      "query": "patinho",
+      "source_url": "https://www.mambo.com.br/api/catalog_system/pub/products/search?sc=1&_from=0&_to=9&_ir=ef481447-4cf9-4b78-acd6-885c2591aa08&regionId=v2.B032579D3A36A563BE9985A52457C9DD&ft=patinho",
+      "captured_at": "2026-11-01T01:22:45.351830+00:00",
+      "status": 206,
+      "age": null
+    },
+    {
+      "query": "pao frances",
+      "source_url": "https://www.mambo.com.br/api/catalog_system/pub/products/search?sc=1&_from=0&_to=9&_ir=a3d6f266-8056-47e1-9746-77fc31d91ad0&regionId=v2.B032579D3A36A563BE9985A52457C9DD&ft=pao%20frances",
+      "captured_at": "2026-11-01T01:22:46.256531+00:00",
+      "status": 206,
+      "age": null
+    },
+    {
+      "query": "melao",
+      "source_url": "https://www.mambo.com.br/api/catalog_system/pub/products/search?sc=1&_from=0&_to=9&_ir=2cdaa103-e2d7-4ad2-9cd7-84a70e83aa0f&regionId=v2.B032579D3A36A563BE9985A52457C9DD&ft=melao",
+      "captured_at": "2026-11-01T01:22:47.224756+00:00",
+      "status": 206,
+      "age": null
+    }
+  ],
+  "storefront_context_verified": true,
+  "storefront_session_check": {
+    "captured_at": "2026-11-01T01:25:30.941Z",
+    "endpoint": "https://www.mambo.com.br/api/sessions?items=public.postalCode,public.country,public.regionId,store.channel",
+    "public": {
+      "regionId": "v2.B032579D3A36A563BE9985A52457C9DD",
+      "country": "BRA",
+      "postalCode": "01310200"
+    },
+    "store": {
+      "channel": "1"
+    }
+  },
+  "browser": {
+    "framework": "Botasaurus",
+    "result_cache": false,
+    "automatic_exports": false,
+    "context_selection": "Selected Entrega Agendada, entered public CEP 01310200, clicked Consultar; no login, cart addition or purchase."
+  },
+  "supported_multiplier_maximum": "3",
+  "rendered_candidates": [
+    {
+      "sku": "1260",
+      "url": "https://www.mambo.com.br/banana-nanica-kg/p",
+      "captured_at": "2026-11-01T01:24:58.347Z",
+      "postal_code": "01310200",
+      "channel": "delivery",
+      "visible_excerpt": "Direto do Produtor\nBanana Nanica Kg\nUnidade: aprox. 180g\n131504\n24 avaliações\nR$ 1,79\nR$ 9,99/Kg\nAdicionar"
+    },
+    {
+      "sku": "7425",
+      "url": "https://www.mambo.com.br/iscas-de-patinho-resfriado/p",
+      "captured_at": "2026-11-01T01:22:49.014Z",
+      "postal_code": "01310200",
+      "channel": "delivery",
+      "visible_excerpt": "Bovino in Natura\nIscas de Patinho Resfriado Kg\nUnidade: aprox. 600g\n196684\nseja o primeiro a avaliar\nR$ 47,98\nR$ 79,98/Kg\nAdicionar"
+    },
+    {
+      "sku": "11549",
+      "url": "https://www.mambo.com.br/pao-frances-mambo-kg/p",
+      "captured_at": "2026-11-01T01:23:18.047Z",
+      "postal_code": "01310200",
+      "channel": "delivery",
+      "visible_excerpt": "Mambo\nPão Francês Mambo Kg\nUnidade: aprox. 80g\n196742\n13 avaliações\nR$ 1,59\nR$ 19,90/Kg\nAdicionar"
+    },
+    {
+      "sku": "287726",
+      "url": "https://www.mambo.com.br/melao-dino-rei-kg/p",
+      "captured_at": "2026-11-01T01:24:00.493Z",
+      "postal_code": "01310200",
+      "channel": "delivery",
+      "visible_excerpt": "Direto do Produtor\nMelão Dino Rei Kg\nUnidade: aprox. 1.5kg\n252594\nseja o primeiro a avaliar\nR$ 19,47\nR$ 12,98/Kg\nAdicionar"
+    },
+    {
+      "sku": "9274",
+      "url": "https://www.mambo.com.br/melao-dino-kg/p",
+      "captured_at": "2026-11-01T01:23:38.776Z",
+      "postal_code": "01310200",
+      "channel": "delivery",
+      "visible_excerpt": "Direto do Produtor\nMelão Dino Kg\nUnidade: aprox. 3kg\n134204\nseja o primeiro a avaliar\nR$ 44,94\nR$ 14,98/Kg\nAdicionar"
+    }
+  ],
+  "price_mapping": "Price and ListPrice are advertised BRL per kg; unitMultiplier is an approximate portion in kg, not fixed package contents. PaymentOptions totals are minor-unit estimated portion totals and are omitted as per-kg offers. Real weighed checkout totals were not verified."
+}

@@ -1,0 +1,9 @@
+# Requires pip install -e '.[browser]' and a working Chrome installation.
+adapter = "hirota"
+scraper_id = "muffato-curitiba-01"
+# Public Nazaré pickup context; this is the store's CEP, not a delivery address.
+postal_code = "04263100"
+store_id = "org:171/filial:1/centro:1"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/hirota/spool.sqlite3"

@@ -1,0 +1,439 @@
+{
+  "schema_version": "1.0",
+  "submission_id": "51de22b7-649a-4521-880f-474810091d02",
+  "scraper_id": "collector-sp-01",
+  "shop_id": "nagumo",
+  "run_id": "ef4bd730-6d39-432a-a534-a978266eb62a",
+  "created_at": "2026-11-01T11:26:35.137523Z",
+  "collector": {
+    "name": "nagumo",
+    "version": "0.1.0"
+  },
+  "observations": [
+    {
+      "observation_id": "62c46e33-dfcb-42e7-94bb-7bd5a5a8cf97",
+      "observed_at": "2026-11-01T11:13:52.370432Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=arroz&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/arroz/arroz-branco-tipo-1-camil-5kg-293303.html",
+      "product": {
+        "source_product_id": "293303",
+        "name": "Arroz Branco Tipo 1 Camil 5Kg",
+        "brand": "CAMIL",
+        "gtin": null,
+        "package": {
+          "quantity": "5",
+          "unit": "kg",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "23.70",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"5,022\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        },
+        {
+          "amount": "20.90",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": "23.70",
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": true,
+            "membership_program": "Meu Nagumo",
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Oferta Meu Nagumo; ativação e elegibilidade adicionais não verificadas. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"5,022\", \"acceleratorRule\": null, \"flag\": {\"flagType\": \"NGM_13_M\", \"valueFlagType\": \"R$ 20,90\", \"valueFlag\": \"20.9\", \"unitValueFlagType\": null}}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "9d545f3a-2432-4147-ad10-dda2236c9d83",
+      "observed_at": "2026-11-01T11:13:58.038834Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=feijao&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/feijao/feijao-carioca-tipo-1-camil-1kg-139151.html",
+      "product": {
+        "source_product_id": "139151",
+        "name": "Feijao Carioca Tipo 1 Camil 1Kg",
+        "brand": "CAMIL",
+        "gtin": null,
+        "package": {
+          "quantity": "1",
+          "unit": "kg",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "8.95",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"1,009\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "b0b01852-31a6-4a39-9d18-8dffd8bd0004",
+      "observed_at": "2026-11-01T11:14:01.167118Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=leite&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/leite-uht/leite-uht-integral-com-tampa-italac-1l-620093.html",
+      "product": {
+        "source_product_id": "620093",
+        "name": "Leite Uht Integral com Tampa Italac 1L",
+        "brand": "ITALAC",
+        "gtin": null,
+        "package": {
+          "quantity": "1",
+          "unit": "l",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "5.39",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"1,067\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        },
+        {
+          "amount": "4.79",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": "5.39",
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": true,
+            "membership_program": "Meu Nagumo",
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Oferta Meu Nagumo; ativação e elegibilidade adicionais não verificadas. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"1,067\", \"acceleratorRule\": null, \"flag\": {\"flagType\": \"NGM_13_M\", \"valueFlagType\": \"R$ 4,79\", \"valueFlag\": \"4.79\", \"unitValueFlagType\": null}}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "0feed3ed-aeb6-4949-8885-0098c6f33a3c",
+      "observed_at": "2026-11-01T11:14:03.821594Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=cafe&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/cafe/caf%C3%A9-torrado-e-mo%C3%ADdo-tradicional-v%C3%A1cuo-melitta-500g-153119.html",
+      "product": {
+        "source_product_id": "153119",
+        "name": "Café Torrado E Moído Tradicional Vácuo Melitta 500G",
+        "brand": "MELITTA",
+        "gtin": null,
+        "package": {
+          "quantity": "500",
+          "unit": "g",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "25.90",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,537\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "de66874d-78a8-4bcd-a9fb-e54e2ca38080",
+      "observed_at": "2026-11-01T11:14:05.597860Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=detergente&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/limpeza/especialista-cozinha/lava-louca/detergente-l%C3%ADquido-clear-yp%C3%AA-500ml-359504.html",
+      "product": {
+        "source_product_id": "359504",
+        "name": "Detergente Líquido Clear Ypê 500Ml",
+        "brand": "YPE",
+        "gtin": null,
+        "package": {
+          "quantity": "500",
+          "unit": "ml",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "2.95",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,544\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "8e629c79-cf09-411c-9db2-76e0f666f4db",
+      "observed_at": "2026-11-01T11:14:07.931900Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/hortifruti/frutas/fruta-tradicional/banana-prata-kg-2011.html",
+      "product": {
+        "source_product_id": "2011",
+        "name": "Banana Prata KG",
+        "brand": "HORTIFRUTI",
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "9.98",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Preço anunciado por kg; total sujeito ao peso final, sem pacote fixo. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,200\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "fdd08bc6-e81e-40fa-9bac-7a83559efd5c",
+      "observed_at": "2026-11-01T11:14:07.931900Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/hortifruti/frutas/fruta-tradicional/banana-nanica-kg-2004.html",
+      "product": {
+        "source_product_id": "2004",
+        "name": "Banana Nanica KG",
+        "brand": "HORTIFRUTI",
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "6.98",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Preço anunciado por kg; total sujeito ao peso final, sem pacote fixo. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,200\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        },
+        {
+          "amount": "2.98",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": "6.98",
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": true,
+            "membership_program": "Meu Nagumo",
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Preço anunciado por kg; total sujeito ao peso final, sem pacote fixo. Oferta Meu Nagumo; ativação e elegibilidade adicionais não verificadas. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,200\", \"acceleratorRule\": null, \"flag\": {\"flagType\": \"NGM_13_M\", \"valueFlagType\": \"R$ 2,98\", \"valueFlag\": \"2.98\", \"unitValueFlagType\": \"R$ 0,60\"}}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "9b47be16-f8cb-46da-a950-171a9fdaf469",
+      "observed_at": "2026-11-01T11:14:07.931900Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/hortifruti/frutas/fruta-tradicional/banana-ma%C3%A7a-1991.html",
+      "product": {
+        "source_product_id": "1991",
+        "name": "Banana Maça",
+        "brand": "HORTIFRUTI",
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "14.98",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Preço anunciado por kg; total sujeito ao peso final, sem pacote fixo. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,120\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        }
+      ]
+    },
+    {
+      "observation_id": "b135f922-b915-4c85-802f-524fe1d31934",
+      "observed_at": "2026-11-01T11:14:07.931900Z",
+      "collection_method": "api",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/hortifruti/frutas/fruta-tradicional/banana-terra-kg-15325.html",
+      "product": {
+        "source_product_id": "15325",
+        "name": "Banana Terra Kg",
+        "brand": "HORTIFRUTI",
+        "gtin": null,
+        "package": null
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": "13",
+        "postal_code": "08030040",
+        "city": "São Paulo",
+        "state": "SP",
+        "channel": "pickup"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "13.98",
+          "currency": "BRL",
+          "basis": "kg",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Pagamento, cupom e quantidade mínima não informados. Preço anunciado por kg; total sujeito ao peso final, sem pacote fixo. Anúncio: {\"tags\": [], \"productObs\": null, \"averageWeight\": \"0,200\", \"acceleratorRule\": null, \"flag\": null}"
+          }
+        }
+      ]
+    }
+  ]
+}

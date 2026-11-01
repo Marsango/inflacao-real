@@ -1,5 +1,7 @@
-"""Initialize secrets once; changes remain explicit and outside the checkout."""
+"""Preserve secrets/settings; append newly supported collectors during deployment."""
+import re
 import secrets
+import tomllib
 from runtime import CONFIG, ROOT, command
 
 
@@ -32,3 +34,37 @@ def migrate_internal_address():
                                'core_url = "http://127.0.0.1:8080"')
     if updated != original:
         path.write_text(updated)
+
+
+def synchronize_scrapers():
+    path = CONFIG / "scrapers.toml"
+    original = path.read_text()
+    template = (ROOT / "scrapers/scrapers.example.toml").read_text()
+    additions = missing_scraper_blocks(original, template)
+    if not additions:
+        return
+    updated = original.rstrip() + "\n\n" + "\n\n".join(additions) + "\n"
+    tomllib.loads(updated)
+    path.write_text(updated)
+
+
+def configured_adapters(document):
+    entries = document.get("scrapers")
+    if not isinstance(entries, list):
+        raise ValueError("Expected [[scrapers]] entries in the deployment configuration")
+    return {entry.get("adapter", "super-muffato") for entry in entries}
+
+
+def missing_scraper_blocks(original, template):
+    existing = configured_adapters(tomllib.loads(original))
+    blocks = re.split(r"(?m)^(?=\[\[scrapers\]\])", template)
+    return [block.strip() for block in blocks
+            if block.startswith("[[scrapers]]") and
+            missing_scraper_block(block, existing)]
+
+
+
+def missing_scraper_block(block, existing):
+    document = tomllib.loads(block)
+    adapters = configured_adapters(document)
+    return not adapters.issubset(existing)

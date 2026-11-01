@@ -1,0 +1,79 @@
+{
+  "captured_on": "2026-11-01",
+  "context": {
+    "seller_id": null,
+    "store_id": "org:171/filial:1/centro:1",
+    "postal_code": "04263100",
+    "city": "São Paulo",
+    "state": "SP",
+    "channel": "pickup"
+  },
+  "method": "Fresh anonymous Botasaurus browser; no customer login or cart mutation. Rendered excerpts verified against captured API amounts. Capture times use immediate snapshot file timestamps.",
+  "unavailable_sample": "Not found; unavailable tests are synthetic.",
+  "conditional_promotions": "Captured standard discounts preserve unknown terms. Quantity bands/family promotions remain unsupported with explicit issues.",
+  "samples": [
+    {
+      "product_id": "1349",
+      "fixture": "hirota-products.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/produtos/mais_vendidos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/1349/leite-italac-1-litro-integral",
+      "rendered_at": "2026-11-01T02:14:47.068688+00:00",
+      "visible_excerpt": "Leite Italac 1 Litro Integral\nR$ 4,88\n/un\n25% OFF\nR$ 6,48\nOferta\nCerveja Spaten Lata 350ml\nR$ 3,98\n/un\n20% OFF\nR$ 4,98\nCerveja Heineken Lt 269ml\nR$ 5,18\n/un\nTom",
+      "source_captured_at": "2026-11-01T02:16:09.765994+00:00"
+    },
+    {
+      "product_id": "7227",
+      "fixture": "hirota-products.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/produtos/mais_vendidos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/7227/tomate-italiano-200g",
+      "rendered_at": "2026-11-01T02:14:47.068688+00:00",
+      "visible_excerpt": "Tomate Italiano 200g\nR$ 19,00/kg\nR$ 3,80\n/200g\nCebola 250g (qt. Aprox. 1 Un)\nR$ 13,00/kg\nR$ 3,25\n/250g\nPaozinho Frances 200g - Peso Aproximado De 4 Unidades\nR$ ",
+      "source_captured_at": "2026-11-01T02:16:09.765994+00:00"
+    },
+    {
+      "product_id": "6884",
+      "fixture": "hirota-products.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/produtos/mais_vendidos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/6884/batata-lavada-500g",
+      "rendered_at": "2026-11-01T02:14:47.068688+00:00",
+      "visible_excerpt": "Batata Lavada 500g\nR$ 7,98/kg\nR$ 3,99\n/500g\n27% OFF\nR$ 5,49\nCerveja Stella Artois 350ml Lata Sleek\nR$ 5,48\n/un\nAgua Mineral S/gas Grf Pet 1,5l Minalba\nR$ 3,58\n/",
+      "source_captured_at": "2026-11-01T02:16:09.765994+00:00"
+    },
+    {
+      "product_id": "498",
+      "fixture": "hirota-cereals.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/6/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/498/arroz-camil-tipo-1-5kg",
+      "rendered_at": "2026-11-01T02:21:00.400725+00:00",
+      "visible_excerpt": "Arroz Camil Tipo 1 5kg\nR$ 28,98\n/un\nSemente Linhaça Dourada Campo Verde Moida 200g\nR$ 8,98\n/un\nArroz Camil Tipo 1 2kg\nR$ 12,96\n/un\nFeijao Vapza 500g Preto Coz V",
+      "source_captured_at": "2026-11-01T02:17:06.851156+00:00"
+    },
+    {
+      "product_id": "1859",
+      "fixture": "hirota-cereals.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/6/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/1859/feijao-preto-camil-1kg",
+      "rendered_at": "2026-11-01T02:21:00.400725+00:00",
+      "visible_excerpt": "Feijão Preto Camil 1kg\nR$ 8,98\n/un\n\nFooter placeholder\n\nNós utilizamos cookies para melhorar sua experiência de navegação, personalizar conteúdo e anúncios, e p",
+      "source_captured_at": "2026-11-01T02:17:06.851156+00:00"
+    },
+    {
+      "product_id": "606",
+      "fixture": "hirota-cleaning.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/10/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/606/detergente-liquido-ype-clear-500ml",
+      "rendered_at": "2026-11-01T02:21:14.883413+00:00",
+      "visible_excerpt": "Detergente Líquido Ypê Clear 500ml\nR$ 3,18\n/un\nInset Sbp Oleo 45 Noites Cit. 35ml\nR$ 26,98\n/un\nAmaciante Comfort Conc 500ml Puro Cuidado\nR$ 14,98\n/un\nÁlcool Cop",
+      "source_captured_at": "2026-11-01T02:17:08.032659+00:00"
+    },
+    {
+      "product_id": "88",
+      "fixture": "hirota-coffee.json",
+      "source_url": "https://services-beta.vipcommerce.com.br/api-admin/v1/org/171/filial/1/centro_distribuicao/1/loja/classificacoes_mercadologicas/departamentos/11/produtos?page=1",
+      "product_url": "https://www.lojahirota.com.br/produto/88/cafe-lor-instant-classique-90g",
+      "rendered_at": "2026-11-01T02:21:07.929247+00:00",
+      "visible_excerpt": "Cafe Lor Instant Classique 90g\nR$ 24,98\n/un\nOferta\nGeleia St.dalfour 284g Framboesa\nR$ 37,98\n/un\n12% OFF\nR$ 42,98\nCereal Kelloggs 270g Muslix Chocolate\nR$ 23,98",
+      "source_captured_at": "2026-11-01T02:22:40.445146+00:00"
+    }
+  ]
+}

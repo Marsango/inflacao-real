@@ -1,0 +1,9 @@
+adapter = "pao-de-acucar"
+scraper_id = "muffato-curitiba-01"
+postal_code = "04115090"
+store_id = "461"
+city = "São Paulo"
+state = "SP"
+spool_path = "data/pao-de-acucar/spool.sqlite3"
+# Ordinary HTTP; no browser, login or customer credentials needed.
+# Delivery mapping must still include Ricardo Jafet / ENTREGA EXPRESS each run.

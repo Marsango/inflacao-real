@@ -56,3 +56,13 @@ def web(request, core, network, tmp_path):
     request.addfinalizer(container.stop)
     container.start()
     return container
+
+
+@pytest.fixture
+def scraper_browser(request):
+    container = DockerContainer("nossa-inflacao-scrapers:verify")
+    container.with_command(["sleep", "infinity"])
+    container.with_kwargs(cap_drop=["ALL"], security_opt=["no-new-privileges:true"])
+    request.addfinalizer(container.stop)
+    container.start()
+    return container

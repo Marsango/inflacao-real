@@ -4,7 +4,7 @@ import { formatDate, timeZone } from '../shared/dates';
 import { chartValue, money, percentage, priceLabel } from '../shared/format';
 import { Chart } from './Chart';
 import { ShopPrices } from './ShopPrices';
-import { variationExplanation, variationStatus } from '../data/availability';
+import { availabilityExplanation, variationExplanation, variationStatus } from '../data/availability';
 
 function Summary({ history }: { history: History }) {
   return <div className="summary">
@@ -32,11 +32,13 @@ function Context({ history }: { history: History }) {
   </div>;
 }
 
-function HistoryContent({ history }: { history: History }) {
+function HistoryContent({ history, period }: { history: History; period: Period }) {
+  const availability = availabilityExplanation(history, period);
   return <>
     {history.stale && <p className="notice" role="status">Dados desatualizados. A última coleta disponível pode não refletir os preços atuais.</p>}
     {history.changeBasisPoints === null && <p className="notice" role="status" id="variation-explanation">{variationExplanation(history)}</p>}
-    {history.counts.pricedDays > 1 && <Chart history={history} />}
+    {history.counts.pricedDays > 0 && <Chart history={history} />}
+    {availability && <p className="notice" role="status">{availability}</p>}
     <ShopPrices history={history} />
     <Context history={history} />
   </>;
@@ -49,6 +51,6 @@ export function HistoryView({ state, period, retry }: { state: LoadState; period
   return <section className="history" aria-labelledby="history-title">
     <div className="history-top"><div className="history-heading"><h2 id="history-title">{state.history.title}</h2>
       <p>{formatDate(period.start)} a {formatDate(period.end)}</p></div><Summary history={state.history} /></div>
-    <HistoryContent history={state.history} />
+    <HistoryContent history={state.history} period={period} />
   </section>;
 }

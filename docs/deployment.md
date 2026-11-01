@@ -253,3 +253,20 @@ cannot recreate the rejected unions. Deactivation alone stops future automatic
 decisions; it does not dissolve existing groups. Keep the backup until these
 checks succeed. No production migration, activation or source verification is
 performed by the automated test suite.
+
+
+### Adding ready collectors on an existing VPS
+
+After committing and pushing adapter changes, pull them on the VPS and run
+`./deploy up`. Deployment builds the updated images, stops the old collector,
+appends missing adapters from `scrapers/scrapers.example.toml` to the persisted
+`/etc/nossa-inflacao/scrapers.toml`, registers the shops and recreates the scheduler.
+Existing collector entries, custom settings, spool paths and explicit disables
+are preserved. `NOSSA_CONFIG_DIR` selects an alternative configuration directory.
+New adapters are enabled by default in the template; an existing `enabled = false`
+entry stays disabled until explicitly changed.
+
+The scheduler uses `COLLECTION_TIME` from `production.env` (default `09:00`) in
+`America/Sao_Paulo`. Collectors run sequentially, starting at that time; they do
+not all start simultaneously. Deploying after the scheduled time waits until the
+next day. `./deploy collect` remains the explicit immediate-collection command.

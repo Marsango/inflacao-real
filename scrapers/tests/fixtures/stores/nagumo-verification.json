@@ -1,0 +1,171 @@
+{
+  "channel": "pickup",
+  "store_id": "13",
+  "postal_code": "08030040",
+  "city": "São Paulo",
+  "state": "SP",
+  "source_samples": [
+    {
+      "source_product_id": "293303",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=arroz&start=0&sz=24",
+      "captured_at": "2026-11-01T11:13:52.370432+00:00"
+    },
+    {
+      "source_product_id": "139151",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=feijao&start=0&sz=24",
+      "captured_at": "2026-11-01T11:13:58.038834+00:00"
+    },
+    {
+      "source_product_id": "620093",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=leite&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:01.167118+00:00"
+    },
+    {
+      "source_product_id": "153119",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=cafe&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:03.821594+00:00"
+    },
+    {
+      "source_product_id": "359504",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=detergente&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:05.597860+00:00"
+    },
+    {
+      "source_product_id": "2011",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:07.931900+00:00"
+    },
+    {
+      "source_product_id": "2004",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:07.931900+00:00"
+    },
+    {
+      "source_product_id": "1991",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:07.931900+00:00"
+    },
+    {
+      "source_product_id": "15325",
+      "source_url": "https://www.nagumo.com.br/on/demandware.store/Sites-Nagumo-Site/pt_BR/Search-UpdateGrid?q=banana&start=0&sz=24",
+      "captured_at": "2026-11-01T11:14:07.931900+00:00"
+    }
+  ],
+  "rendered_samples": [
+    {
+      "header": [
+        "Retirada\nConsultar Horários\n\nLoja 013-CURUCA\n\nTrocar de Loja",
+        "Retirada  Consultar horários \n                        Loja 013-CURUCA\n                     Trocar de Loja ",
+        " Retirar na Loja \n                            013-CURUCA\n                         Trocar de Loja"
+      ],
+      "card": "Oferta\n11%\nLeite Uht Integral com Tampa Italac 1L\nUnidade: 1\n R$ 5,39\nPor: R$ 4,79\nAdicionar ",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/leite-uht/leite-uht-integral-com-tampa-italac-1l-620093.html",
+      "labels": [
+        {
+          "alt": "Leite Uht Integral com Tampa Italac 1L",
+          "src": "https://ngostpubprd001.blob.core.windows.net/produtos/assets/ofertas-ecommerce/620093.webp"
+        },
+        {
+          "alt": "NGM_13_M",
+          "src": "https://www.nagumo.com.br/on/demandware.static/-/Sites/default/dw0eeff146/meunagumo.png"
+        }
+      ],
+      "source_url": "https://www.nagumo.com.br/busca?q=leite",
+      "captured_at": "2026-11-01T11:20:38.844246+00:00",
+      "source_product_id": "620093"
+    },
+    {
+      "header": [
+        "Retirada\nConsultar Horários\n\nLoja 013-CURUCA\n\nTrocar de Loja",
+        "Retirada  Consultar horários \n                        Loja 013-CURUCA\n                     Trocar de Loja ",
+        " Retirar na Loja \n                            013-CURUCA\n                         Trocar de Loja"
+      ],
+      "card": "Acelerador\nCafé Torrado E Moído Tradicional Vácuo Melitta 500G\nUnidade: 1\nR$ 25,90\nAdicionar ",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/cafe/caf%C3%A9-torrado-e-mo%C3%ADdo-tradicional-v%C3%A1cuo-melitta-500g-153119.html",
+      "labels": [
+        {
+          "alt": "Café Torrado E Moído Tradicional Vácuo Melitta 500G",
+          "src": "https://ngostpubprd001.blob.core.windows.net/produtos/assets/ofertas-ecommerce/153119.webp"
+        }
+      ],
+      "source_url": "https://www.nagumo.com.br/busca?q=cafe",
+      "captured_at": "2026-11-01T11:21:04.907246+00:00",
+      "source_product_id": "153119"
+    },
+    {
+      "url": "https://www.nagumo.com.br/busca?q=feijao",
+      "title": "Sites-Nagumo-Site",
+      "body_excerpt": "Nossas lojas\n\nInstitucional\n\nMeu Nagumo\n\nProdutos Nagumo\n\nFale conosco\n\nPromoções\n\nDoce Novembro\n\nIr para o conteúdo principal\nIr para o rodapé\nRetirada\nConsultar Horários\n\nLoja 013-CURUCA\n\nTrocar de Loja\n\nLogin/Cadastrar\n0\nMeu Carrinho\nSeu carrinho está vazio\nBem-vindo(a)\nSupermercados Nagumo\n\nEntre para continuar sua compra\n\nEntrar\n\nDepartamentos\n\n Açougue\n Básicos e Matinais\n Bazar\n Bebidas\n Frios e Laticínios\n Hortifruti\n Limpeza\n Padaria\n Peixaria\n Pet Shop\nAçougue\nBebidas\nHortifruti\nMercearia Doce\nMercearia Salgada\nPadaria\nProdutos Nagumo\nNagumo\n\n152 Produtos encontrados\n\nOrdenar por:\n\nMenor Preço\nMaior Preço\nA - Z\nZ - A\nMais Vendidos\nMais Recentes\nRelevância\n Produtos em Oferta\nPreço\n\n Até R$ 10\n R$ 10 - R$ 25\n R$ 25 - R$ 50\n R$ 50 - R$ 100\nCategoria\n\n BASICOS E MATINAIS\n departamen",
+      "header": [
+        "Retirada\nConsultar Horários\n\nLoja 013-CURUCA\n\nTrocar de Loja",
+        "Retirada  Consultar horários \n                        Loja 013-CURUCA\n                     Trocar de Loja ",
+        " Retirar na Loja \n                            013-CURUCA\n                         Trocar de Loja"
+      ],
+      "card": "Feijao Carioca Tipo 1 Camil 1Kg\nUnidade: 1\nR$ 8,95\nAdicionar ",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/basicos-e-matinais/commodities/feijao/feijao-carioca-tipo-1-camil-1kg-139151.html",
+      "labels": [
+        {
+          "alt": "Feijao Carioca Tipo 1 Camil 1Kg",
+          "src": "https://ngostpubprd001.blob.core.windows.net/produtos/assets/ofertas-ecommerce/139151.webp"
+        }
+      ],
+      "source_url": "https://www.nagumo.com.br/busca?q=feijao",
+      "captured_at": "2026-11-01T11:24:03.453791+00:00",
+      "source_product_id": "139151"
+    },
+    {
+      "url": "https://www.nagumo.com.br/busca?q=detergente",
+      "title": "Sites-Nagumo-Site",
+      "body_excerpt": "Nossas lojas\n\nInstitucional\n\nMeu Nagumo\n\nProdutos Nagumo\n\nFale conosco\n\nPromoções\n\nDoce Novembro\n\nIr para o conteúdo principal\nIr para o rodapé\nRetirada\nConsultar Horários\n\nLoja 013-CURUCA\n\nTrocar de Loja\n\nLogin/Cadastrar\n0\nMeu Carrinho\nSeu carrinho está vazio\nBem-vindo(a)\nSupermercados Nagumo\n\nEntre para continuar sua compra\n\nEntrar\n\nDepartamentos\n\n Açougue\n Básicos e Matinais\n Bazar\n Bebidas\n Frios e Laticínios\n Hortifruti\n Limpeza\n Padaria\n Peixaria\n Pet Shop\nAçougue\nBebidas\nHortifruti\nMercearia Doce\nMercearia Salgada\nPadaria\nProdutos Nagumo\nNagumo\n\n142 Produtos encontrados\n\nOrdenar por:\n\nMenor Preço\nMaior Preço\nA - Z\nZ - A\nMais Vendidos\nMais Recentes\nRelevância\n Produtos em Oferta\nPreço\n\n Até R$ 10\n R$ 10 - R$ 25\n R$ 25 - R$ 50\n R$ 50 - R$ 100\nCategoria\n\n departamentos\nSubcategoria\n\n B",
+      "header": [
+        "Retirada\nConsultar Horários\n\nLoja 013-CURUCA\n\nTrocar de Loja",
+        "Retirada  Consultar horários \n                        Loja 013-CURUCA\n                     Trocar de Loja ",
+        " Retirar na Loja \n                            013-CURUCA\n                         Trocar de Loja"
+      ],
+      "card": "Detergente Líquido Clear Ypê 500Ml\nUnidade: 1\nR$ 2,95\nAdicionar ",
+      "product_url": "https://www.nagumo.com.br/categoria/departamentos/limpeza/especialista-cozinha/lava-louca/detergente-l%C3%ADquido-clear-yp%C3%AA-500ml-359504.html",
+      "labels": [
+        {
+          "alt": "Detergente Líquido Clear Ypê 500Ml",
+          "src": "https://ngostpubprd001.blob.core.windows.net/produtos/assets/ofertas-ecommerce/359504.webp"
+        }
+      ],
+      "source_url": "https://www.nagumo.com.br/busca?q=detergente",
+      "captured_at": "2026-11-01T11:24:27.019791+00:00",
+      "source_product_id": "359504"
+    },
+    {
+      "source_product_id": "293303",
+      "source_url": "https://www.nagumo.com.br",
+      "captured_at": "2026-11-01T11:12:53.135075+00:00",
+      "header": "Retirada / Loja 013-CURUCA",
+      "card": "Oferta 12% Arroz Branco Tipo 1 Camil 5Kg Unidade: 1 R$ 23,70 Por: R$ 20,90 Adicionar"
+    },
+    {
+      "source_product_id": "2004",
+      "source_url": "https://www.nagumo.com.br",
+      "captured_at": "2026-11-01T11:12:53.135075+00:00",
+      "header": "Retirada / Loja 013-CURUCA",
+      "card": "Oferta 57% Banana Nanica KG Unidade: aprox. 200g R$ 1,40 Por: R$ 0,60 R$ 2,98/kg Adicionar"
+    },
+    {
+      "source_product_id": "2011",
+      "source_url": "https://www.nagumo.com.br",
+      "captured_at": "2026-11-01T11:12:53.135075+00:00",
+      "header": "Retirada / Loja 013-CURUCA",
+      "card": "Banana Prata KG Unidade: aprox. 200g R$ 2,00 R$ 9,98/kg Adicionar"
+    },
+    {
+      "source_product_id": "206396",
+      "source_url": "https://www.nagumo.com.br",
+      "captured_at": "2026-11-01T11:12:53.135075+00:00",
+      "header": "Retirada / Loja 013-CURUCA",
+      "card": "Oferta 35% Peito De Frango Sem Osso Resfriado Unidade: aprox. 500g R$ 12,99 Por: R$ 8,49 R$ 16,98/kg Adicionar"
+    }
+  ],
+  "notes": [
+    "Source and independent rendered capture times differ; all use Vila Curuçá pickup.",
+    "No cookies, customer accounts, tokens or session headers are retained.",
+    "Unavailable rice listing 252724 and empty search are captured source cases; parser mutations and two-date replay are synthetic."
+  ]
+}

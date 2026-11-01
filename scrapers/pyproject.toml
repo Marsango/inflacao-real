@@ -15,6 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.14,<1"]
+browser = ["botasaurus==4.0.97", "botasaurus-driver==4.0.101"]
 
 [project.scripts]
 inflacao-scraper = "inflacao_scrapers.cli:main"

@@ -1,7 +1,11 @@
 # Shop collectors
 
 The registered adapters collect public VTEX catalogs for **Super Muffato,
-Angeloni, and Festval** around Curitiba. The core supplies brand-independent
+Angeloni, and Festval** around Curitiba, plus **Mambo** delivery and **Hirota**
+Nazaré pickup and **Pão de Açúcar** Ricardo Jafet delivery in São Paulo/SP.
+Hirota and Pão de Açúcar use their own public APIs. Sonda reads its public HTML catalog with fulfillment context explicitly unknown;
+see [São Paulo setup, evidence and limitations](../docs/plans/sao-paulo-retailers.md).
+The core supplies brand-independent
 monitoring targets through its authenticated scope endpoint. Migration 00006
 seeds 16 targets covering the DIEESE basket's 13 food groups, regional flour/sugar
 variants, and pasta. Migrations 00007–00010 expand the scope to **96 targets**,
@@ -19,8 +23,11 @@ These groups are not a statistically representative inflation basket.
 | `super-muffato` | Champagnat online branch, sales channel `8`; no CEP selected | Paginated target searches |
 | `angeloni` | Delivery catalog for CEP `80730201`, mapped to Angeloni Bigorrilho | Catalog category browsing, filtered by core targets |
 | `festval` | Delivery catalog for CEP `80730201`, mapped to regional seller `meufestvaldark` | Paginated target searches on sales channel `2` |
+| `hirota` | Pickup at Avenida Nazaré 1299, CEP `04263100`, organization 171, filial 1, distribution center 1 | Department browsing filtered by core scope; diagnostic discovery samples the public best sellers |
+| `mambo` | Delivery catalog for São Paulo CEP `01310200`, mapped to regional seller `mambodelivery215`; packaged products and advertised kg prices with portions up to 3 kg | Paginated target searches on sales channel `1` |
+| `nagumo` | Vila Curuçá pickup, São Paulo/SP, store `13`, branch CEP `08030040` | Public HTTP searches filtered by core targets; ordinary/member offers and advertised kg prices |
 
-The two delivery adapters resolve their configured CEP through the public regions
+The three delivery adapters resolve their configured CEP through the public regions
 endpoint at the start of every run. The response must contain the configured
 `regional_seller_id`; a missing/ambiguous mapping stops that scraper before price
 collection. The resolved region is sent explicitly in the request and public
@@ -46,6 +53,37 @@ the local virtual environment. Editable mode (`-e`) uses source changes directly
 `[dev]` adds pytest and Ruff. No service, scheduler, browser, or system-wide
 installation is needed. Database access is not part of scraper operation or tests.
 
+Hirota additionally requires Chrome/Chromium and the optional browser packages:
+
+```sh
+.venv/bin/pip install -e '.[browser]'
+.venv/bin/inflacao-scraper --config hirota.example.toml discover --query leite --limit 1
+.venv/bin/pytest tests/hirota/test_live.py --live -q
+```
+
+The browser initializes a fresh anonymous storefront session once per run. There
+is no customer login or saved profile. Session headers stay in memory, outside
+configuration serialization and spool payloads. API requests then use the shared
+HTTP pacing/retry policy. Only the verified Nazaré pickup context is accepted;
+missing/changed branch data stops collection. Browser caching, exports and task
+retries are disabled. Set `chrome_executable_path` only if automatic browser
+selection fails. The deployment image includes Chromium and the pinned browser
+runtime. HTTP-only adapters do not launch a browser. See
+[Hirota evidence and supported formats](../docs/evidence/hirota-onboarding.md).
+
+Nagumo uses HTTP only, with a fresh anonymous session and explicit selection of
+Vila Curuçá pickup on every run. No browser extra or customer login is required:
+
+```sh
+.venv/bin/inflacao-scraper --config nagumo.example.toml discover --query leite --limit 1
+.venv/bin/pytest tests/nagumo/test_live.py --live -q
+```
+
+The adapter checks the selected branch after every price page. Ordinary and
+Meu Nagumo member prices stay separate; variable-weight offers use advertised
+kg prices without a fixed package inferred from portions. See
+[Nagumo setup, source evidence and limits](../docs/plans/nagumo-retailer.md).
+
 `config.toml` and `data/` are ignored by Git. Set a unique `scraper_id` for each
 independent installation. Keep the ingestion token only in the environment.
 
@@ -60,12 +98,16 @@ The same command runs every enabled entry in `config.toml`:
 Use one `[[scrapers]]` table per shop/store configuration. Each table has its own
 adapter, scraper/shop identity, core URL, request settings, branch selection,
 and fallback spool. The adapter name selects an implementation from
-[`ADAPTERS`](src/inflacao_scrapers/adapters/registry.py). Muffato, Angeloni and
-Festval are registered. The complete three-shop setup is in
+[`ADAPTERS`](src/inflacao_scrapers/adapters/registry.py). Muffato, Angeloni,
+Festval, Mambo, Hirota, Pão de Açúcar, Sonda and Nagumo are registered. All eight
+are enabled in the default schedule configuration in
 [`scrapers.example.toml`](scrapers.example.toml). Individual configurations are in
 [`angeloni.example.toml`](angeloni.example.toml),
 [`festval.example.toml`](festval.example.toml), and
-[`muffato.example.toml`](muffato.example.toml). For example:
+[`muffato.example.toml`](muffato.example.toml). Mambo has a
+[standalone example](mambo.example.toml) and a
+[São Paulo runner example](sao-paulo.example.toml); all five São Paulo collectors
+are enabled by default. See [Sonda setup and limits](../docs/plans/sonda-retailer.md). For example:
 
 ```toml
 [[scrapers]]
@@ -580,3 +622,57 @@ The shared parser normalizes measurement-unit spelling and whitespace (`UN`,
 package prices; multiplier bounds and regional kilogram policies still apply.
 Ambiguous package quantities remain unknown and are excluded by core package
 comparability rules rather than being guessed or discarding the observation.
+
+### Verify the deployed browser runtime
+
+From the repository root, build a verification image and run the disposable
+Testcontainers browser smoke (using a Python environment with pytest and
+Testcontainers installed):
+
+```sh
+docker build -f deployment/scrapers.Dockerfile -t nossa-inflacao-scrapers:verify .
+python -m pytest deployment/tests/test_scraper_browser.py -q
+NOSSA_LIVE_SHOPS=1 python -m pytest deployment/tests/test_scraper_browser.py -q
+```
+
+The default check opens a local HTML document. The explicit live check performs
+Hirota discovery in that same container, without contacting the core or ingesting
+observations. Containers register cleanup before startup, including failed tests.
+The image runs Chromium as the collector user with its own writable home directory.
+
+## Pão de Açúcar
+
+The [standalone configuration](pao-de-acucar.example.toml) uses ordinary HTTP,
+with no browser extra. Resolve Ricardo Jafet store 461 / ENTREGA EXPRESS 842 for
+public-address CEP 04115090 every run. This differs from Mambo's MASP context.
+Category browsing is bounded to 2,000 pages of 12 products, filtered by the core
+scope. Unknown club/payment/coupon restrictions stay unknown; unsupported
+promotions and unadvertised weight bases produce issues. See the
+[source evidence and supported formats](../docs/evidence/pao-de-acucar-onboarding.md).
+
+From `scrapers/`:
+
+```sh
+.venv/bin/inflacao-scraper --config pao-de-acucar.example.toml discover --query arroz --limit 1
+.venv/bin/pytest tests/pao_de_acucar/test_live.py --live -q
+```
+
+Use `collect` with an authorized core token and monitoring API to ingest. The
+combined SP example leaves this entry disabled until deployment is ready. Full
+scope coverage and two dates of live history have not been measured.
+
+### Sonda
+
+The public HTML adapter needs the normal HTTP dependencies, with no browser or
+login. Use [sonda.example.toml](sonda.example.toml) for discovery and collection.
+The source is the public online catalog: branch, city, CEP and pickup prices
+are unverified and stay unknown in ingestion. Fresh variable-weight listings
+and unverified conditional badges report explicit issues. See
+[source evidence, commands and rollout limits](../docs/plans/sonda-retailer.md).
+
+
+The default local `config.toml` and versioned `scrapers.example.toml` include all
+ready adapters. New production installations copy that template. For existing installations, `./deploy up` appends missing adapters to
+`/etc/nossa-inflacao/scrapers.toml` after building and stopping the old scheduler,
+then recreates it. Existing entries, including explicit disables, are preserved. Retain the collector identity authorized by that core,
+separate spool paths, and the matching shop authorization/registration.

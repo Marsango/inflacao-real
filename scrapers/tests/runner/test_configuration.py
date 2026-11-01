@@ -134,6 +134,9 @@ def test_runner_root_cannot_silently_drop_settings(tmp_path):
 def test_runner_example_loads():
     path = Path(__file__).parents[2] / "scrapers.example.toml"
     settings = load_configurations(path)
-    assert len(settings) == 3
     assert settings[0].sales_channel == "8"
-    assert [setting.adapter for setting in settings] == ["super-muffato", "angeloni", "festval"]
+    assert [setting.adapter for setting in settings] == [
+        "super-muffato", "angeloni", "festval", "mambo", "hirota",
+        "pao-de-acucar", "sonda", "nagumo",
+    ]
+    assert len({setting.spool_path for setting in settings}) == len(settings)

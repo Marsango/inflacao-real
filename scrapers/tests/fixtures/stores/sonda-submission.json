@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "submission_id": "c04a7e61-72d3-49cb-829a-f80b4a682948",
+  "scraper_id": "collector-sp-01",
+  "shop_id": "sonda",
+  "run_id": "b89dc064-9c8c-464e-9ced-a1c499658e4e",
+  "created_at": "2026-11-01T11:14:04Z",
+  "collector": {
+    "name": "sonda",
+    "version": "0.1.0"
+  },
+  "observations": [
+    {
+      "observation_id": "22f41096-749d-491e-86d6-e15182a43419",
+      "observed_at": "2026-11-01T11:14:04Z",
+      "collection_method": "html",
+      "source_url": "https://www.sondadelivery.com.br/delivery/categoriafilha/Mercearia-B%C3%A1sica-Arroz",
+      "product_url": "https://www.sondadelivery.com.br/delivery/produto/arroz-branco-camil-1kg/1000001137",
+      "product": {
+        "source_product_id": "298565",
+        "name": "Arroz Branco Camil 1kg",
+        "brand": null,
+        "gtin": null,
+        "package": {
+          "quantity": "1",
+          "unit": "kg",
+          "count": 1
+        }
+      },
+      "context": {
+        "seller_id": null,
+        "store_id": null,
+        "postal_code": null,
+        "city": null,
+        "state": null,
+        "channel": "online"
+      },
+      "availability": "in_stock",
+      "offers": [
+        {
+          "amount": "6.92",
+          "currency": "BRL",
+          "basis": "package",
+          "reference_amount": null,
+          "conditions": {
+            "payment_method": "unknown",
+            "installments": null,
+            "membership_required": null,
+            "membership_program": null,
+            "coupon_required": null,
+            "minimum_quantity": null,
+            "description": "Catálogo público online Sonda. Loja, CEP e condições de retirada não selecionados; uniformidade regional de preços não verificada. Estoque sujeito à data da entrega. Condições de pagamento, clube e cupom não informadas. "
+          }
+        }
+      ]
+    }
+  ]
+}

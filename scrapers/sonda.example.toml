@@ -1,0 +1,10 @@
+adapter = "sonda"
+scraper_id = "collector-sp-01"
+spool_path = "data/sonda/spool.sqlite3"
+request_interval_seconds = 1.0
+max_catalog_pages = 600
+# Leave category_paths empty to discover public departments from navigation.
+# Optional focused diagnostic, e.g.:
+# category_paths = ["/delivery/categoriafilha/Mercearia-B%C3%A1sica-Arroz"]
+# Public online catalog: store, seller, CEP, city and state remain unknown.
+# No login or browser runtime required. Pickup prices are not verified.

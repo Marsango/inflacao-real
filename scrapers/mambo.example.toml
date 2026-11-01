@@ -1,0 +1,16 @@
+# Public regional catalog, not verified checkout or physical shelf prices.
+adapter = "mambo"
+scraper_id = "muffato-curitiba-01"
+shop_id = "mambo"
+shop_url = "https://www.mambo.com.br"
+core_url = "http://127.0.0.1:8080"
+ingestion_token_env = "INGESTION_TOKEN"
+sales_channel = "1"
+seller_id = "1"
+postal_code = "01310200"
+regional_seller_id = "mambodelivery215"
+store_id = "seller:mambodelivery215"
+city = "São Paulo"
+state = "SP"
+max_search_pages = 50
+spool_path = "data/mambo/spool.sqlite3"

@@ -12,6 +12,7 @@ type ContextSeries struct {
 	ShopID     string       `json:"shopId"`
 	ShopName   string       `json:"shopName"`
 	Label      string       `json:"label"`
+	Location   string       `json:"location"`
 	ProductURL string       `json:"productUrl"`
 	Points     []PricePoint `json:"points"`
 }
@@ -63,7 +64,8 @@ type Period struct {
 }
 
 type History struct {
-	ShopPrices []ShopHistory `json:"shopPrices"`
+	ShopPrices      []ShopHistory `json:"shopPrices"`
+	AvailablePeriod *Period       `json:"availablePeriod"`
 
 	UnknownConditions  bool       `json:"unknownConditions"`
 	Period             Period     `json:"period"`

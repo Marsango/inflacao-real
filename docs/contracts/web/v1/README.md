@@ -6,6 +6,14 @@ retain their existing bearer authentication. Never put the ingestion token in th
 browser. Responses are JSON with `Cache-Control: no-store`. Each database request
 has a ten-second deadline and follows request cancellation.
 
+History `coverage` text includes the observed city/state locations for the
+requested interval, including contexts excluded from the comparison. Unknown
+locations are explicit. The overview can span multiple cities; its methodology
+discloses that the monitored city/retailer composition can change. The same-context
+comparison rule prevents a price in one city from becoming the temporal endpoint
+of a different city's price. The existing dashboard displays the coverage text;
+no additional public response field or city filter is introduced.
+
 ## Product catalog
 
 `GET /api/v1/products?limit=100&after=123`
@@ -73,20 +81,21 @@ See the [example response](history.example.json), also used by frontend tests.
 
 | Field | Meaning |
 | --- | --- |
-| `period`, `timeZone` | Requested inclusive dates and the daily observation timezone. |
+| `period`, `timeZone` | Requested inclusive dates and the daily observation timezone. The selection is preserved even when it extends beyond the available data. |
+| `availablePeriod` | First and last dates with an eligible daily context price **inside the request**, or `null` when no eligible price exists. Shared effective interval for the chart and comparison panel, including overview products excluded from the panel. It describes the bounds, not continuous daily coverage. |
 | `title`, `unit` | Display title; `BRL` for product prices or `percent` for the overview. |
 | `priceBasis` | `package`, `kg`, `l`, or `unit` for the product's selected basis; `null` for the overview or an undetermined basis. |
 | `shopPrices` | Product-only context histories with `shopId`, `shopName`, `context`, `productUrl`, daily centavo `points`, and `included` in the matched panel. Unavailable/ineligible observations stay null. Overview returns `[]`. |
-| `points` | Chronological `{date, value}` entries. Product values are integer centavos for the stated basis; overview values are integer basis points (803 = 8.03%). `null` means no selected price or incomplete coverage, never zero. |
+| `points` | Chronological `{date, value}` entries within `availablePeriod`, retaining internal gaps. Product values are integer centavos for the stated basis; overview values are integer basis points (803 = 8.03%). Without a matched product panel, product points show the lowest eligible context price per day, independently of variation. `null` means no selected price or incomplete coverage, never zero. |
 | `latestPriceMinor` | Lowest eligible available context price on the most recent day with any price in the period, or `null`; always `null` for the overview. Independent of the matched panel. |
 | `changeBasisPoints` | Core-calculated change, rounded to integer basis points. `null` for fewer than two usable days, a nonpositive product baseline, or an unrepresentable result. |
-| `comparisonStart`, `comparisonEnd` | Requested start and end dates when a matched comparison exists and the dates differ; otherwise both `null`. No automatic baseline shifts. |
+| `comparisonStart`, `comparisonEnd` | Effective start and end dates when a matched comparison exists and the dates differ; otherwise both `null`. A wider selection uses the available dates and explicitly discloses the actual comparison period. |
 | `collectedAt` | Latest source `observed_at` among the selected product(s)' raw measurements **inside the requested period**, with explicit timezone; `null` if none. This is not ingestion receipt time or necessarily the date of the last selected price. |
 | `stale` | Latest source observation is more than 48 hours old at request time. Old historical intervals can be stale by this definition. |
 | `unknownConditions` | Some contexts use advertised prices with incompletely reported buying conditions. This does not mean the price is available unconditionally. The UI displays a notice. |
-| `counts` | Observed `products`, distinct `shops`, `streams`, inclusive `days`, and `pricedDays` with usable plotted values. `includedProducts`, `includedShops` (distinct across products), and `includedStreams` count the matched panel; subtraction gives exclusions. Empty histories have zero counts. |
+| `counts` | Observed `products`, distinct `shops`, `streams`, inclusive effective `days`, and `pricedDays` with usable plotted values. Without eligible prices, `days` covers the request. `includedProducts`, `includedShops` (distinct across products), and `includedStreams` count the matched panel; subtraction gives exclusions. Empty histories have zero counts. |
 | `coverage` | Portuguese explanation of those counts. |
-| `methodology`, `methodologyVersion` | Portuguese explanation and stable calculation identifier (`matched-equivalence-v3`). |
+| `methodology`, `methodologyVersion` | Portuguese explanation and stable calculation identifier (`available-period-v4`). |
 
 Money and percentages cross the JSON boundary as safe integers. Intermediate
 averages and relative changes use exact rational arithmetic. Rounding occurs only
@@ -95,12 +104,21 @@ results outside JavaScript's safe integer range are `null`.
 
 The UI displays available prices separately from matched variation. Product chart
 prices use the matched panel's context averages within each shop, then equal shop
-weights. The summary's lowest available price can differ from that chart and can
+weights. Without that panel, the chart explicitly labels the lowest available
+price per day and warns that changing contexts do not establish a comparable
+price change. The summary's lowest available price can differ from that chart and can
 come from an excluded context. Percentage variation averages context relatives,
 not ratios of those average price levels; they need not agree when initial prices
 differ. Every eligible shop is counted once per product regardless of context count.
 
-## Methodology: matched-equivalence-v3
+The chart renders a single available day as a point; no change or comparison dates
+are returned. A single overview point is a reference baseline, not a measured zero
+change. Below the chart, a Portuguese explanation gives the available dates when
+they differ from the selection. A selection wholly outside the data stays empty;
+the API never fetches observations outside it. If no overview panel exists, there
+is no comparable percentage series; users can select a product for its prices.
+
+## Methodology: available-period-v4
 
 1. Select historical product assignments and source observation times inside the
    requested inclusive São Paulo dates. Do not use current listing assignments.
@@ -116,10 +134,14 @@ differ. Every eligible shop is counted once per product regardless of context co
    offer, requiring in-stock availability. Ties use scraper identity and observation
    UUID. A later invalid or unavailable observation never falls back to an earlier
    price. Display these daily context prices even when excluded from variation.
-5. Fix the comparison panel to contexts with valid prices on **both requested
-   endpoints**, requiring a strictly positive starting price. Do not substitute
-   another shop or move the baseline when an endpoint is missing. For a single
-   date, prices are visible but no variation or comparison dates are returned.
+5. Find the first and last eligible daily price dates across the selected
+   products and contexts, inside the request. Trim only the empty outer days;
+   preserve internal gaps. Fix the comparison panel to contexts with valid prices
+   on **both effective endpoints**, requiring a strictly positive starting price.
+   Use one shared effective interval for the overview, without moving individual
+   product or context baselines or substituting shops. Return the actual comparison
+   dates. For a single date, prices are visible but no variation or comparison
+   dates are returned.
 6. Calculate each context's relative change from its own starting price. Average
    context changes within each shop, then average shops equally per product.
    The overview averages eligible products equally. A product with no matched
@@ -128,6 +150,8 @@ differ. Every eligible shop is counted once per product regardless of context co
    the product point null; a missing included product makes the overview point
    null. Do not drop participants mid-series, interpolate, or carry prices forward.
    Endpoint coverage determines inclusion; gaps do not invalidate endpoint change.
+   Without a product panel, show daily minimum available prices as price context
+   only; never derive variation from that changing set of offers.
 8. Report total and included products, distinct shops and contexts, and days with
    usable plotted values. There is no minimum sample-size threshold; coverage
    must accompany the result. The overview is a monitored-sample index, not

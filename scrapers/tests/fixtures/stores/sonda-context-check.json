@@ -1,0 +1,40 @@
+{
+  "delivery_text": "ATUALMENTE ATENDEMOS*\n\nSão Paulo Capital\nGuarulhos\nAlphaville\nDiadema\nABC\nOsasco\nBarueri\n\n* Consulte disponibilidade\n\nInforme seu CEP para verificar a disponibilidade e valor frete de entrega em sua região.\n\nNOSSAS ENTREGAS SÃO REALIZADAS DE SEGUNDA À SÁBADO NOS PERÍODOS:\n\nTIPO DE ENTREGA\tHORÁRIO\nMANHÃ\tDAS 07:00 ÀS 11:00\nINTERMEDIÁRIO\tDAS 08:00 ÀS 16:00\nTARDE\tDAS 12:00 ÀS 18:00",
+  "service_result": "ATENDEMOS SUA REGIÃO!\n\nO frete é no valor de R$ 14,90.\n\nQuero me cadastrar!",
+  "branch_id": "",
+  "header": "Como Comprar\nEntrega\nFormas de Pagamento\nListas Prontas\nLojas Físicas\nCentral de Atendimento\n\nSonda Supermercado Delivery\n\n \n\nENTRE ou CADASTRE-SE\n\n \nBuscar\n0\nTOTAL: R$ 0,00\n \nToggle navigation\n\nFaça seu Login ou cadastre-se\n\n Listas Prontas\nMercearia\nBebidas não Alcoólicas\nLimpeza\nAçougue\nHortifrúti\nAdega\nFrios e Laticínios\nSaúde e Bem Estar\nUtilidades e Bazar\nHigiene e Beleza\nPadaria\nCongelados\nPet Shop\nPeixaria\nSuperofertas",
+  "pickup_choices": "",
+  "catalog": {
+    "branch_id": "",
+    "products": [
+      {
+        "sku": "1000051420",
+        "name": "Abacaxi em calda rodelas Schramm 400g",
+        "displayed_price": "27,16",
+        "structured_price": "2.69",
+        "url": "/delivery/produto/abacaxi-em-calda-rodelas-schramm-400g/1000051420"
+      },
+      {
+        "sku": "1000055053",
+        "name": "Abacaxi em Calda Zero Adição de Açúcar Schramm Lata 400g",
+        "displayed_price": "23,09",
+        "structured_price": "2.69",
+        "url": "/delivery/produto/abacaxi-em-calda-zero-adicao-de-acucar-schramm-lata-400g/1000055053"
+      },
+      {
+        "sku": "593311",
+        "name": "Abacaxi em rodelas em calda Predilecta lata 400g",
+        "displayed_price": "33,21",
+        "structured_price": "2.69",
+        "url": "/delivery/produto/abacaxi-em-rodelas-em-calda-predilecta-lata-400g/1000004434"
+      }
+    ],
+    "next_page": "/delivery/categoria/Mercearia/0/2/15"
+  },
+  "captured_at": "2026-11-01T11:08:16.520303+00:00",
+  "purpose": "Unresolved-context research evidence; not valid for ingestion",
+  "postal_code_checked": "01310200",
+  "delivery_url": "https://www.sondadelivery.com.br/delivery/Entrega",
+  "catalog_url": "https://www.sondadelivery.com.br/delivery/categoria/Mercearia",
+  "method": "Fresh anonymous Botasaurus browser; submit public CEP form, then visit category in same session"
+}
