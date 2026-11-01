@@ -348,8 +348,10 @@ scraper token; ingestion and monitoring routes retain their authentication.
 
 `GET /api/v1/groups` lists the curated Cesta básica, Hortifruti, Doces and Carnes
 filters. Pass their stable `group` ID to products or history to restrict the
-selection. Core ingestion already labels products with discovery targets;
-migration 13 backfills missing labels on existing products and listings. Curated
+selection. Core ingestion already labels products with discovery targets. Existing
+products and listings are not backfilled during startup; a future category
+assignment endpoint will apply the same matching rules to the existing catalog.
+Curated
 groups reuse those labels, preserve equivalence and historical assignments, and
 apply the existing equal-product-weight methodology. Cesta básica is not an
 official basket cost or index. The web contract documents membership and scope.
