@@ -38,6 +38,14 @@ To edit, use `sudoedit /etc/nossa-inflacao/production.env` or the TOML file, the
 Changing POSTGRES_PASSWORD in that file does not change an existing database's password;
 password rotation requires an explicit matching PostgreSQL change.
 
+The core's calculated history cache is enabled automatically on fresh installs and
+updates. It uses process memory, so no service or persisted configuration migration
+is needed. Optional `HISTORY_CACHE_TTL=5m`, `HISTORY_CACHE_MAX_ENTRIES=500` and
+`HISTORY_CACHE_MAX_BYTES=33554432` overrides can be added to `production.env`;
+rerun `./deploy up` to recreate the core with those settings. Existing secrets and
+scraper configuration are preserved. See the [core cache documentation](../core/README.md#calculated-history-cache)
+for invalidation, memory accounting and log counters.
+
 The fixed Compose project name is `nossa-inflacao`. Named volumes `nossa-inflacao_postgres_data`
 and `nossa-inflacao_scraper_data` survive container replacement and checkout relocation.
 Do not run Compose down with --volumes. Application containers run as UID 10001, drop

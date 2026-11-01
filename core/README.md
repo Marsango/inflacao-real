@@ -34,6 +34,9 @@ already-exported environment variables take precedence. Alternatively, supply
 | `INGESTION_MAX_ATTEMPTS` | `5`, including the initial attempt |
 | `INGESTION_RETRY_BASE` | `1m` |
 | `INGESTION_RETRY_MAX` | `1h` |
+| `HISTORY_CACHE_TTL` | `5m`, positive duration |
+| `HISTORY_CACHE_MAX_ENTRIES` | `500`, positive entry count |
+| `HISTORY_CACHE_MAX_BYTES` | `33554432` (32 MiB), positive retained JSON byte limit |
 
 Startup has a one-minute connection/migration timeout and fails if either step
 fails. Goose tracks applied versions and uses a PostgreSQL advisory lock to
@@ -41,6 +44,8 @@ serialize migrations across simultaneous core starts. Repeated starts apply only
 new migrations. The process serves requests until SIGINT/SIGTERM, then drains
 active requests for up to ten seconds before closing the database. Database
 operations have a ten-second request timeout and inherit request cancellation.
+Shared history calculations have their own ten-second deadline; individual
+requests can stop waiting without canceling calculations needed by other readers.
 Shutdown cancels and joins the worker before closing the database; unfinished
 processing rolls back and remains pending for the next startup.
 
@@ -364,6 +369,44 @@ from `web/`. Vite forwards `/api` to the core. No frontend deployment is configu
 Tests cover the complete ingest/worker/database/read path using the shared
 `internal/testdatabase.New` helper with fresh migrated PostgreSQL Testcontainers.
 The existing database tests keep their `testDatabase(t)` wrapper around that helper.
+
+### Calculated history cache
+
+The core caches successful overview and product histories, including empty
+histories, in process memory. Keys include product ID (or `global`), both requested
+dates, methodology version, and the committed catalog revision. Search suggestions
+continue to query PostgreSQL directly. No external cache service is required.
+
+Every history request checks the small `catalog_decisions.revision` value in
+PostgreSQL. Ingestion processing and equivalence decisions already advance that
+revision atomically with their data changes. A newly observed revision clears the
+local cache, including old historical intervals affected by late observations or
+reversible group edits. Queuing a submission does not invalidate results. In-flight
+calculations use revision-specific keys and cannot restore an older generation.
+Requests already in progress may complete using their earlier database snapshot.
+Separate core instances each check the same committed revision.
+
+Entries expire five minutes after calculation, without extending expiry on hits.
+Least-recently-used entries are evicted at 500 histories or 32 MiB of retained JSON
+by default. The byte limit excludes temporary calculation/decoding allocations and
+entry bookkeeping; the entry count also bounds bookkeeping. An oversized history
+is returned without retaining it. Failures and unknown-product responses are not
+cached. Concurrent misses for the same revision and selection share one calculation,
+which is canceled on application shutdown. Each reader receives an independent
+decoded history with `stale` refreshed at serving time and the original `collectedAt`.
+
+Configure the `HISTORY_CACHE_*` settings above to tune these limits. All must be
+positive; invalid settings prevent startup. Restarts empty the cache. A failed
+revision check returns the existing API error rather than serving an unverifiable
+cached value. Direct SQL changes outside the normal ingestion/equivalence paths
+must advance `catalog_decisions.revision` in the same transaction or restart the
+core; otherwise cached results can remain until TTL expiry.
+
+Structured `history cache calculation` logs report calculation duration and
+cumulative hit, miss, calculation, failure, eviction and invalidation counts, along
+with retained entries and bytes. Calculations are timed separately from revision
+checks. HTTP responses retain `Cache-Control: no-store`; this cache is internal to
+the core and preserves the public response schema and calculation methodology.
 
 ### Reversible product equivalence
 

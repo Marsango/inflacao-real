@@ -19,6 +19,14 @@ var productsQuery string
 
 type PostgresStore struct{ DB *sql.DB }
 
+// Revision advances atomically with ingestion processing and equivalence decisions.
+func (store PostgresStore) Revision(requestContext context.Context) (int64, error) {
+	var revision int64
+	row := store.DB.QueryRowContext(requestContext, `SELECT revision FROM catalog_decisions`)
+	err := row.Scan(&revision)
+	return revision, err
+}
+
 func (store PostgresStore) Products(requestContext context.Context, request ProductRequest) (Products, error) {
 	rows, err := store.DB.QueryContext(requestContext, productsQuery, request.After, request.Limit+1, request.Query)
 	if err != nil {

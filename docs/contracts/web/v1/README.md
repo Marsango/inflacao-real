@@ -3,8 +3,19 @@
 The React dashboard reads the Go core over same-origin HTTP. These two GET
 endpoints are public and read-only; scraper ingestion and monitoring configuration
 retain their existing bearer authentication. Never put the ingestion token in the
-browser. Responses are JSON with `Cache-Control: no-store`. Each database request
-has a ten-second deadline and follows request cancellation.
+browser. Responses are JSON with `Cache-Control: no-store`. Each request has a
+ten-second deadline and follows request cancellation. Concurrent history requests
+may share a calculation with its own ten-second deadline; canceling one request
+stops that reader without canceling work needed by other readers.
+
+The core internally caches successful calculated histories by product, requested
+dates, methodology version and committed catalog revision, with bounded memory
+and a five-minute default TTL. Each request checks the revision; newly committed
+ingestion processing and equivalence edits invalidate earlier entries. Queued
+submissions do not invalidate history. Requests already in progress can complete
+against an earlier snapshot. `stale` is refreshed when serving a cached history;
+`collectedAt` always remains the source observation timestamp. This does not enable
+browser or proxy caching and does not change response fields or methodology.
 
 History `coverage` text includes the observed city/state locations for the
 requested interval, including contexts excluded from the comparison. Unknown

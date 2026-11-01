@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+const MethodologyVersion = "available-period-v4"
+
 const methodology = "O intervalo efetivo vai da primeira à última data com preço elegível dentro do período solicitado. " +
 	"Painel de contextos com preços comparáveis nas duas pontas desse intervalo, com base inicial positiva. " +
 	"Cada contexto usa a última observação diária e o menor preço elegível em BRL, sem restrições explícitas de pagamento, clube, cupom ou compra múltipla. " +
@@ -40,10 +42,14 @@ func Build(series []ProductSeries, global bool, shopCount int, now time.Time) Hi
 }
 
 func finishContext(history *History, now time.Time) {
-	history.Stale = history.CollectedAt != nil && now.Sub(*history.CollectedAt) > 48*time.Hour
+	history.RefreshFreshness(now)
 	history.Coverage = fmt.Sprintf("%d de %d produto(s), %d de %d loja(s), %d de %d contexto(s) incluídos na comparação; %d de %d dias com valores no gráfico.",
 		history.Counts.IncludedProducts, history.Counts.Products, history.Counts.IncludedShops, history.Counts.Shops,
 		history.Counts.IncludedStreams, history.Counts.Streams, history.Counts.PricedDays, history.Counts.Days)
+}
+
+func (history *History) RefreshFreshness(now time.Time) {
+	history.Stale = history.CollectedAt != nil && now.Sub(*history.CollectedAt) > 48*time.Hour
 }
 
 func collectMetadata(history *History, series []ProductSeries) {
@@ -101,7 +107,7 @@ func summarize(history *History, series []ProductSeries, global bool) {
 
 func emptyHistory() History {
 	return History{Title: "Variação dos produtos monitorados", Unit: "percent", Points: []Point{}, ShopPrices: []ShopHistory{},
-		Methodology: methodology, MethodologyVersion: "available-period-v4", TimeZone: "America/Sao_Paulo", Coverage: "Nenhuma observação no período."}
+		Methodology: methodology, MethodologyVersion: MethodologyVersion, TimeZone: "America/Sao_Paulo", Coverage: "Nenhuma observação no período."}
 }
 
 func includeShop(shops map[string]bool, context ContextSeries) {

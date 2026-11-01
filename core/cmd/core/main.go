@@ -13,11 +13,8 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"inflacao-real/core/internal/admin"
 	"inflacao-real/core/internal/database"
 	"inflacao-real/core/internal/ingestion"
-	"inflacao-real/core/internal/monitoring"
-	"inflacao-real/core/internal/webapi"
 )
 
 func main() {
@@ -40,7 +37,7 @@ func run() error {
 		return err
 	}
 	defer pool.Close()
-	application, err := newApplication(pool)
+	application, err := newApplication(requestContext, pool)
 	if err != nil {
 		return err
 	}
@@ -80,15 +77,9 @@ type application struct {
 	worker *ingestion.Worker
 }
 
-func newApplication(pool *sql.DB) (application, error) {
-	auth := ingestion.AuthFromEnv(os.Getenv)
-	router, err := ingestion.NewRouter(ingestion.PostgresStore{DB: pool}, auth)
+func newApplication(requestContext context.Context, pool *sql.DB) (application, error) {
+	router, err := newRouter(requestContext, pool)
 	if err != nil {
-		return application{}, err
-	}
-	monitoring.RegisterRoutes(router, monitoring.PostgresStore{DB: pool}, auth.Authenticate)
-	webapi.RegisterRoutes(router, webapi.PostgresStore{DB: pool})
-	if err := admin.RegisterRoutes(router, pool, os.Getenv); err != nil {
 		return application{}, err
 	}
 	worker, err := createWorker(pool)
