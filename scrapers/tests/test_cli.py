@@ -41,6 +41,8 @@ def scope_response(include_failure):
 
 def collection_handler(source_bytes, requests, *, delivery_status=202, include_failure=True):
     def handler(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         if request.url.path == "/api/v1/monitoring-targets":
             assert request.headers["authorization"] == "Bearer secret"
@@ -67,7 +69,7 @@ def test_collect_delivers_before_later_source_failure(tmp_path, monkeypatch, sou
     assert len(requests) == 4
     assert requests[2].method == "POST"
     assert requests[2].url.path == "/api/v1/ingestion/submissions"
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 @pytest.mark.parametrize("status", [200, 202])
@@ -86,7 +88,7 @@ def test_collect_command_delivers_without_creating_storage(
     assert len(requests) == 3
     assert requests[-1].method == "POST"
     assert "complete=True" in capsys.readouterr().out
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 def test_collect_command_saves_failed_delivery_at_configured_path(

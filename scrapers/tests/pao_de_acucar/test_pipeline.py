@@ -47,6 +47,8 @@ def execute(tmp_path, monkeypatch, failure=None):
     requests = []
 
     def respond(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         if request.url.host != "127.0.0.1":
             assert "authorization" not in request.headers
@@ -74,7 +76,7 @@ def test_real_runner_delivers_with_provenance(tmp_path, monkeypatch):
     assert document["shop_id"] == document["collector"]["name"] == "pao-de-acucar"
     assert len(document["observations"]) == 12
     assert document["observations"][0]["context"]["postal_code"] == "04115090"
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
     assert not any("/busca" in str(request.url) for request in requests)
 
 

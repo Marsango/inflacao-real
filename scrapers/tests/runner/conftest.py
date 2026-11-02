@@ -122,6 +122,8 @@ def run_scrapers(tmp_path, monkeypatch, source_bytes, observation, additional_ad
 
 def recording_handler(requests, source_bytes, observation, failures):
     def handler(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         return response_for(request, source_bytes, observation, failures)
 

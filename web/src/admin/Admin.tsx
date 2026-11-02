@@ -7,15 +7,17 @@ import { CatalogReview } from './CatalogReview';
 import type { Candidate } from './api';
 import { AuditLog } from './AuditLog';
 import './admin.css';
+import { Scrapers } from '../scrapers/Scrapers';
 
 export function Admin() {
   const admin = useAdmin();
   const [selected, setSelected] = useState<Candidate | null>(null);
-  return <main className="page-width admin"><a href="/">Nossa inflação</a><h1>Administração de equivalências</h1>
+  return <main className="page-width admin"><a href="/">Nossa inflação</a><h1>Administração</h1>
     {admin.error && <p role="alert">{admin.error}</p>}
     {!admin.session ? <Login login={admin.login} busy={admin.busy} /> : <>
       <p>Responsável: {admin.session.username}</p><button disabled={admin.busy} onClick={() => void admin.logout()}>Sair</button>{' '}
       <button disabled={admin.busy} onClick={() => { setSelected(null); void admin.refresh(); }}>Atualizar catálogo</button>
+      <Scrapers csrf={admin.session.csrf} />
       {!admin.snapshot ? <p role="status">Carregando catálogo…</p> : <AdminCatalog admin={admin} selected={selected} select={setSelected} />}
     </>}</main>;
 }

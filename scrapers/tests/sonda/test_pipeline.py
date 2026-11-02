@@ -27,6 +27,8 @@ def execute(tmp_path, monkeypatch, fail=False):
 
 def responder(requests, fail):
     def respond(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         if request.url.host != "127.0.0.1":
             assert "authorization" not in request.headers
@@ -53,7 +55,7 @@ def test_shared_collection_delivers_unknown_context_and_reports_scope(
     assert all(item["context"]["channel"] == "online" for item in document["observations"])
     assert all(item["context"]["city"] is None for item in document["observations"])
     assert "target=pantry matched_listings=" in capsys.readouterr().out
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 def test_failed_delivery_spools_identical_payload_and_retries(tmp_path, monkeypatch):

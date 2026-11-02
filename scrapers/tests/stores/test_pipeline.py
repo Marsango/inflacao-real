@@ -64,6 +64,8 @@ def execute(tmp_path, monkeypatch, samples, failed_shop=None, empty=False, wrong
     requests = []
 
     def handler(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         return response_for(request, samples, failed_shop, empty, wrong_region or {})
 
@@ -106,7 +108,7 @@ def test_both_registered_scrapers_collect_and_deliver_without_local_storage(
         document["observations"][0]["context"]["postal_code"] == "80730201"
         for document in documents
     )
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
     assert "scrapers=2 failed=0 complete=True" in capsys.readouterr().out
 
 
@@ -118,7 +120,7 @@ def test_failed_angeloni_delivery_is_saved_and_festval_still_runs(tmp_path, monk
         payload = next(spool.pending())[1]
         attempted = next(request.content for request in requests if request.method == "POST")
         assert payload == attempted
-    assert not (tmp_path / "data/festval").exists()
+    assert not list((tmp_path / "data/festval").rglob("spool.sqlite3"))
 
 
 def test_wrong_region_stops_that_scraper_before_prices_are_fetched(tmp_path, monkeypatch, samples):
@@ -133,7 +135,7 @@ def test_empty_core_scope_does_not_contact_either_shop(tmp_path, monkeypatch, sa
     assert status == 0
     assert len(requests) == 2
     assert all(request.url.host == "127.0.0.1" for request in requests)
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 def add_new_department(sample):
@@ -162,6 +164,8 @@ def new_scope_response():
 
 def automatic_catalog_handler(samples, requests):
     def handler(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         if request.url.path == "/api/v1/monitoring-targets":
             return new_scope_response()
@@ -197,4 +201,4 @@ def test_core_target_in_new_department_collects_without_scraper_configuration_ch
     assert documents[0]["shop_id"] == "angeloni"
     observation = documents[0]["observations"][0]
     assert observation["product"]["name"] == "Sorvete de Baunilha 500g"
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))

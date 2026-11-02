@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scraper_id",
+    "shop_id",
+    "run_id",
+    "scraper_name",
+    "started_at",
+    "finished_at",
+    "observations",
+    "errors",
+    "warnings",
+    "omitted",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "scraper_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "shop_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uuid"
+    },
+    "scraper_name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "started_at": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "observations": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errors": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warnings": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "omitted": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "diagnostics": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "category",
+          "message"
+        ],
+        "properties": {
+          "severity": {
+            "enum": [
+              "error",
+              "warning"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        }
+      }
+    }
+  }
+}

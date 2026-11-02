@@ -4,9 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
+
+	"inflacao-real/core/internal/ingestion"
+	"inflacao-real/core/internal/scraperhealth"
 )
 
 type handler struct {
@@ -36,6 +40,8 @@ func (owner handler) register(router *gin.Engine) {
 	routes := router.Group("/api/v1/admin", bounded, origin)
 	routes.POST("/session", owner.login)
 	protected := routes.Group("", owner.authenticate)
+	auth := ingestion.AuthFromEnv(os.Getenv)
+	scraperhealth.RegisterAdmin(protected, owner.database, auth.ScraperID, auth.ShopIDs)
 	protected.GET("/session", owner.session)
 	protected.DELETE("/session", owner.logout)
 	protected.GET("/candidates", owner.candidates)

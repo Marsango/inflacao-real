@@ -2,14 +2,16 @@
 
 import json
 import os
+import sqlite3
 import sys
 from functools import partial
 
 import httpx
 
-from .collection import collect_scope
+from .collection import CollectionRun, collect_scope
 from .config import Settings
 from .delivery import Spool, deliver
+from .diagnostics.delivery import complete, diagnostic_spool, try_replay
 from .history_refresh import request_history_refresh
 from .transport import Requester
 
@@ -82,14 +84,46 @@ def deliver_command(settings: Settings, arguments, adapter) -> int:
 def collect_command(settings: Settings, arguments, adapter) -> int:
     with create_client(settings) as client:
         requester = create_requester(client, settings)
-        spool_factory = partial(create_spool, settings, arguments)
+        return monitored_collection(requester, settings, arguments, adapter)
+
+
+def monitored_collection(requester, settings, arguments, adapter):
+    run = CollectionRun(adapter.name)
+    token = os.environ.get(settings.ingestion_token_env, "")
+    try:
+        spool = diagnostic_spool(settings, arguments)
+    except (OSError, sqlite3.Error, ValueError):
+        print("Diagnostic queue unavailable; collection cannot be monitored", file=sys.stderr)
+        execute_collection(requester, settings, arguments, adapter, token, run)
+        return 1
+    with spool:
+        return collect_with_diagnostics(spool, requester, settings, arguments, adapter, token, run)
+
+
+def collect_with_diagnostics(spool, requester, settings, arguments, adapter, token, run):
+    try_replay(spool, requester, settings, token)
+    result = execute_collection(requester, settings, arguments, adapter, token, run)
+    delivered = complete(spool, requester, settings, token, run)
+    return int(bool(result) or not delivered)
+
+
+def execute_collection(requester, settings, arguments, adapter, token, run):
+    try:
         return collect_scope(
-            requester,
-            spool_factory,
-            settings,
-            os.environ.get(settings.ingestion_token_env, ""),
-            adapter,
+            requester, partial(create_spool, settings, arguments), settings, token, adapter, run,
         )
+    except Exception as error:
+        message = safe_collection_error(error)
+        run.issue(message)
+        return run.finish()
+
+
+def safe_collection_error(error):
+    if isinstance(error, httpx.HTTPError):
+        return "HTTP request failed"
+    if isinstance(error, (ValueError, RuntimeError, OSError, sqlite3.Error)):
+        return str(error)
+    return f"Unexpected {type(error).__name__} during scraper execution"
 
 
 COMMANDS = {

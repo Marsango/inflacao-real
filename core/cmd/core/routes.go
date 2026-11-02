@@ -12,6 +12,7 @@ import (
 	"inflacao-real/core/internal/historyprecompute"
 	"inflacao-real/core/internal/ingestion"
 	"inflacao-real/core/internal/monitoring"
+	"inflacao-real/core/internal/scraperhealth"
 	"inflacao-real/core/internal/webapi"
 )
 
@@ -21,6 +22,7 @@ func newRouter(requestContext context.Context, pool *sql.DB, precomputed *histor
 	if err != nil {
 		return nil, err
 	}
+	scraperhealth.Register(router, pool, auth)
 	historyprecompute.RegisterRoutes(router, precomputed, auth.Authenticate, auth.ScraperID, auth.ShopIDs)
 	monitoring.RegisterRoutes(router, monitoring.PostgresStore{DB: pool}, auth.Authenticate)
 	if err := registerWebAPI(requestContext, router, precomputed); err != nil {

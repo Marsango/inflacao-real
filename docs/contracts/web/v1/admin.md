@@ -119,3 +119,7 @@ observações. Uma união muda a unidade de agregação da visão global para o 
 anúncios e condições conservam seus próprios fluxos. Nenhuma conversão de preço
 por pacote para kg é feita. A busca pública consulta nomes de todos os membros e
 retorna uma linha por representante, preservando a exigência de cobertura.
+
+## Coletores
+
+A mesma sessão permite revisar [relatórios e diagnósticos dos coletores](../../scraper-reports/v1/README.md).

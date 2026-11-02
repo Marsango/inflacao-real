@@ -26,7 +26,7 @@ def test_registered_adapters_run_with_independent_settings_and_provenance(run_sc
     assert any(request.url.path == "/custom-catalog" for request in execution.requests)
     assert len(execution.clients) == 2
     assert all(client.is_closed for client in execution.clients)
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 def test_each_scraper_uses_its_own_core_and_token(run_scrapers):
@@ -106,7 +106,7 @@ def test_delivery_failure_saves_only_failed_scraper_and_continues(run_scrapers, 
     with Spool(path) as spool:
         assert spool.status()[0] == 1
         assert next(spool.pending())[1] == attempted[0].content
-    assert not (tmp_path / "data/fixture-shop").exists()
+    assert not list((tmp_path / "data/fixture-shop").rglob("spool.sqlite3"))
 
 
 def test_saved_batch_can_be_delivered_by_shared_runner(run_scrapers, tmp_path):
@@ -134,4 +134,4 @@ def test_discovery_uses_each_registered_adapter(run_scrapers, tmp_path):
     assert execution.status == 0
     assert len(execution.requests) == 2
     assert not submissions(execution)
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))

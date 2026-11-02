@@ -8,11 +8,13 @@ import (
 
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/pressly/goose/v3"
+
+	"inflacao-real/core/internal/testdatabase"
 )
 
 const applicationTablesSQL = `SELECT count(*) FROM information_schema.tables
 		WHERE table_schema = current_schema() AND table_name IN
-		('ingestion_payloads', 'shops', 'products', 'shop_products', 'price_observations', 'observation_identities', 'monitoring_targets', 'product_monitoring_targets', 'catalog_decisions', 'product_equivalence', 'product_exclusions', 'equivalence_audit', 'admin_sessions', 'admin_login_throttle', 'history_precomputations', 'history_refresh_requests', 'history_daily_state', 'history_daily_days', 'history_daily')`
+		('ingestion_payloads', 'shops', 'products', 'shop_products', 'price_observations', 'observation_identities', 'monitoring_targets', 'product_monitoring_targets', 'catalog_decisions', 'product_equivalence', 'product_exclusions', 'equivalence_audit', 'admin_sessions', 'admin_login_throttle', 'history_precomputations', 'history_refresh_requests', 'history_daily_state', 'history_daily_days', 'history_daily', 'scraper_runs', 'scraper_diagnostics')`
 
 const requiredIdentitySQL = `SELECT count(*)=2 AND bool_and(is_nullable='NO' AND column_default IS NULL)
 		FROM information_schema.columns WHERE table_schema=current_schema() AND table_name='price_observations'
@@ -63,12 +65,12 @@ func TestMigrationsUpRepeatDownAndUp(test *testing.T) {
 	requireNoError(test, Migrate(requestContext, pool))
 	provider, err := migrationProvider(pool)
 	requireNoError(test, err)
-	assertMigrationVersion(test, requestContext, provider, 16)
+	assertMigrationVersion(test, requestContext, provider, 17)
 	_, err = provider.DownTo(requestContext, 0)
 	requireNoError(test, err)
 	assertApplicationTables(test, requestContext, pool, 0)
 	requireNoError(test, Migrate(requestContext, pool))
-	assertApplicationTables(test, requestContext, pool, 19)
+	assertApplicationTables(test, requestContext, pool, 21)
 	assertWorkerSQL(test, requestContext, pool, requiredIdentitySQL)
 }
 
@@ -77,6 +79,33 @@ func assertMigrationVersion(test *testing.T, requestContext context.Context, pro
 	if err != nil || version != expected {
 		test.Fatalf("expected migration version %d; got %d, error %v", expected, version, err)
 	}
+}
+
+func TestScraperReportsUpgradeFromVersion16(test *testing.T) {
+	requestContext, pool := testdatabase.New(test, Open, migrateThroughVersion16)
+	_, err := pool.ExecContext(requestContext, `INSERT INTO shops(id,name,website_url)
+		VALUES('migration-test','Migration test','https://example.com')`)
+	requireNoError(test, err)
+	requireNoError(test, Migrate(requestContext, pool))
+	provider, err := migrationProvider(pool)
+	requireNoError(test, err)
+	assertMigrationVersion(test, requestContext, provider, 17)
+	assertApplicationTables(test, requestContext, pool, 21)
+	var preserved bool
+	err = pool.QueryRowContext(requestContext, `SELECT EXISTS(SELECT 1 FROM shops WHERE id='migration-test')`).Scan(&preserved)
+	requireNoError(test, err)
+	if !preserved {
+		test.Fatal("scraper reports migration removed existing shop data")
+	}
+}
+
+func migrateThroughVersion16(requestContext context.Context, pool *sql.DB) error {
+	provider, err := migrationProvider(pool)
+	if err != nil {
+		return err
+	}
+	_, err = provider.UpTo(requestContext, 16)
+	return err
 }
 
 func TestSameDayCompactionMigrationPreservesExistingObservations(test *testing.T) {

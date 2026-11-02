@@ -27,7 +27,7 @@ def test_collect_scope_delivers_hirota_with_provenance_without_spooling(tmp_path
     assert all(item["context"]["channel"] == "pickup" for item in observations)
     assert all(item["source_url"].startswith(API_BASE) for item in observations)
     assert all(item["context"]["postal_code"] == "04263100" for item in observations)
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
     assert not any("/busca" in request.url.path for request in requests)
 
 
@@ -35,7 +35,7 @@ def test_collect_scope_delivers_hirota_with_provenance_without_spooling(tmp_path
 def test_context_and_access_failures_prevent_delivery(tmp_path, monkeypatch, failure):
     status, requests = execute_hirota(tmp_path, monkeypatch, failure)
     assert status == 1 and not submissions(requests)
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
     if failure == "context":
         assert not any(request.url.path.endswith("/produtos") for request in requests)
 

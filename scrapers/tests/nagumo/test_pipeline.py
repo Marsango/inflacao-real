@@ -23,7 +23,7 @@ def test_cli_collects_core_scope_with_pickup_provenance_without_creating_spool(
     assert item["context"]["channel"] == "pickup" and item["context"]["city"] == "São Paulo"
     assert item["source_url"].startswith("https://www.nagumo.com.br/on/demandware.store/")
     assert documents[0]["collector"]["name"] == "nagumo" and documents[0]["collector"]["version"]
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
     assert "matched_listings=" in capsys.readouterr().out
 
 
@@ -33,7 +33,7 @@ def test_cli_collects_core_scope_with_pickup_provenance_without_creating_spool(
 def test_context_and_access_failures_prevent_delivery(tmp_path, monkeypatch, failure):
     status, requests = execute_nagumo(tmp_path, monkeypatch, failure)
     assert status == 1 and not submissions(requests)
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 def test_search_page_cap_never_reports_complete(tmp_path, monkeypatch, capsys):

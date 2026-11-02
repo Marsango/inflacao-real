@@ -2,6 +2,7 @@
 
 import sys
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 import httpx
@@ -9,6 +10,7 @@ import httpx
 from .delivery import batches
 from .delivery.client import DeliveryTarget
 from .delivery.immediate import DeliveryFailure, ImmediateDelivery
+from .diagnostics.report import record
 from .history_refresh import request_history_refresh
 from .scope import fetch_scope
 from .transport import RequestFailure
@@ -22,6 +24,8 @@ class CollectionRun:
     failures: int = 0
     warnings: int = 0
     unknown_packages: int = 0
+    started_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    diagnostics: list[dict] = field(default_factory=list)
     available_prices: int = 0
     unavailable: int = 0
     seen: set[str] = field(default_factory=set)
@@ -29,22 +33,15 @@ class CollectionRun:
     def issue(self, message: str) -> None:
         print(f"run_id={self.identity} {message}", file=sys.stderr)
         self.failures += 1
+        record(self, "error", message)
 
     def warning(self, message: str) -> None:
         print(f"run_id={self.identity} warning: {message}", file=sys.stderr)
         self.warnings += 1
+        record(self, "warning", message)
 
     def checkpoint(self, page, delivery, settings, target_id) -> set[str]:
-        observations = [observation for observation in page.observations if self.keep(observation)]
-        self.unknown_packages += sum(unknown_package(observation) for observation in observations)
-        self.available_prices += sum(available_price(item) for item in observations)
-        self.unavailable += sum(item.availability == "out_of_stock" for item in observations)
-        submissions = collection_batches(observations, settings, self)
-        for submission in submissions:
-            self.observations += len(submission.observations)
-            delivery.submit(submission)
-        report_page(self, page, target_id)
-        return {source_identity(observation) for observation in page.observations}
+        return checkpoint(self, page, delivery, settings, target_id)
 
     def keep(self, observation) -> bool:
         identity = source_identity(observation)
@@ -62,6 +59,19 @@ class CollectionRun:
             f"complete={self.failures == 0}"
         )
         return int(self.failures != 0)
+
+
+def checkpoint(run, page, delivery, settings, target_id):
+    observations = [observation for observation in page.observations if run.keep(observation)]
+    run.unknown_packages += sum(unknown_package(observation) for observation in observations)
+    run.available_prices += sum(available_price(item) for item in observations)
+    run.unavailable += sum(item.availability == "out_of_stock" for item in observations)
+    submissions = collection_batches(observations, settings, run)
+    for submission in submissions:
+        run.observations += len(submission.observations)
+        delivery.submit(submission)
+    report_page(run, page, target_id)
+    return {source_identity(observation) for observation in page.observations}
 
 
 def collection_batches(observations, settings, run):
@@ -84,9 +94,9 @@ def unknown_package(observation) -> bool:
     return any(offer.basis == "package" for offer in observation.offers)
 
 
-def collect_scope(requester, spool_factory, settings, token: str, adapter) -> int:
+def collect_scope(requester, spool_factory, settings, token: str, adapter, run=None) -> int:
+    run = run or CollectionRun(adapter.name)
     scope = fetch_scope(requester, settings, token)
-    run = CollectionRun(adapter.name)
     print(f"run_id={run.identity} expected_targets={len(scope.targets)}", flush=True)
     if not scope.targets:
         return run.finish()

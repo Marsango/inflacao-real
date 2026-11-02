@@ -84,6 +84,8 @@ def test_sao_paulo_example_preserves_distinct_retailer_contexts_and_spools():
 
 def mambo_handler(sample, requests, wrong_region):
     def handler(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         if request.url.host == "127.0.0.1":
             return monitoring_response() if request.method == "GET" else httpx.Response(202)
@@ -114,7 +116,7 @@ def test_mambo_collects_core_scope_and_delivers_without_creating_a_spool(tmp_pat
     assert len(documents) == 1
     assert documents[0]["shop_id"] == documents[0]["collector"]["name"] == "mambo"
     assert len(documents[0]["observations"]) == 2
-    assert not (tmp_path / "data").exists()
+    assert not list((tmp_path / "data").rglob("spool.sqlite3"))
 
 
 def test_wrong_mambo_regional_seller_stops_before_prices_or_delivery(tmp_path, monkeypatch):

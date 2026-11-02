@@ -11,6 +11,7 @@ function mockApi(loggedIn = true) {
   const request = vi.fn(async (path: string, options?: RequestInit) => {
     if (options?.method === 'POST' && path.endsWith('/session')) return json({ username: 'owner', csrf: 'csrf-token' });
     if (path.endsWith('/session')) return loggedIn ? json({ username: 'owner', csrf: 'csrf-token' }) : json({}, 401);
+    if (path.endsWith('/scrapers')) return json([]);
     if (path.endsWith('/reviews')) return new Response(null, { status: 204 });
     return json(snapshot);
   });
@@ -59,7 +60,7 @@ test('rejection persists an explained decision without requiring approval verifi
 
 test('stale review shows a recovery message and keeps the pair open', async () => {
   const request = mockApi();
-  request.mockImplementation(async (path: string) => path.endsWith('/reviews') ? json({}, 409) : path.endsWith('/session') ? json({ username: 'owner', csrf: 'csrf-token' }) : json(snapshot));
+  request.mockImplementation(async (path: string) => path.endsWith('/scrapers') ? json([]) : path.endsWith('/reviews') ? json({}, 409) : path.endsWith('/session') ? json({ username: 'owner', csrf: 'csrf-token' }) : json(snapshot));
   render(<Admin />); fireEvent.click(await screen.findByRole('button', { name: 'Revisar par' }));
   fireEvent.change(screen.getByLabelText('Explicação da decisão'), { target: { value: 'Conferido' } });
   fireEvent.click(screen.getByRole('checkbox')); fireEvent.click(screen.getByRole('button', { name: 'Aprovar equivalência' }));
@@ -70,7 +71,7 @@ test('stale review shows a recovery message and keeps the pair open', async () =
 
 test('expired sessions return to the login form', async () => {
   const request = mockApi();
-  request.mockImplementation(async (path: string) => path.endsWith('/session') ? json({ username: 'owner', csrf: 'csrf-token' }) : json({}, 401));
+  request.mockImplementation(async (path: string) => path.endsWith('/scrapers') ? json([]) : path.endsWith('/session') ? json({ username: 'owner', csrf: 'csrf-token' }) : json({}, 401));
   render(<Admin />);
   expect(await screen.findByRole('alert')).toHaveTextContent('A sessão pode ter expirado');
   expect(screen.getByLabelText('Usuário')).toBeInTheDocument();
@@ -78,7 +79,7 @@ test('expired sessions return to the login form', async () => {
 
 test('group reversal requires a reason and sends the member ID', async () => {
   const request = mockApi();
-  request.mockImplementation(async (path: string) => path.endsWith('/session') ? json({ username: 'owner', csrf: 'csrf-token' }) : path.endsWith('/reviews') ? new Response(null, { status: 204 }) : json({ ...snapshot, candidates: [], products: products.map(product => ({ ...product, representative: 1 })) }));
+  request.mockImplementation(async (path: string) => path.endsWith('/scrapers') ? json([]) : path.endsWith('/session') ? json({ username: 'owner', csrf: 'csrf-token' }) : path.endsWith('/reviews') ? new Response(null, { status: 204 }) : json({ ...snapshot, candidates: [], products: products.map(product => ({ ...product, representative: 1 })) }));
   render(<Admin />); await screen.findByText('Grupo #1 · Café 1');
   const remove = screen.getAllByRole('button', { name: 'Remover do grupo', hidden: true })[0];
   expect(remove).toBeDisabled();

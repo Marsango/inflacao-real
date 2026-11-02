@@ -23,6 +23,8 @@ def execute_nagumo(tmp_path, monkeypatch, failure=None):
 
 def handler(requests, failure):
     def respond(request):
+        if request.url.path == "/api/v1/ingestion/scraper-reports":
+            return httpx.Response(201)
         requests.append(request)
         if request.url.host == "127.0.0.1":
             return core_response(request, failure)
