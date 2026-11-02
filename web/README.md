@@ -71,10 +71,19 @@ as datas efetivamente usadas quando existe uma comparação válida. Um único d
 aparece como ponto, sem variação; na visão geral, esse ponto é apenas a base de
 referência. Intervalos inteiramente sem dados continuam vazios.
 Condições de compra não informadas aparecem em um aviso: preço anunciado não
-significa preço disponível sem restrições. A metodologia e a cobertura ficam
-no rodapé. A comparação usa contextos com preços nas duas datas, com pesos
+significa preço disponível sem restrições. A cobertura, a última coleta e a
+metodologia específica (em “Metodologia deste histórico”) ficam junto ao gráfico.
+A página `/sobre`, acessível pelo rodapé, explica o projeto e a metodologia geral.
+A comparação usa contextos com preços nas duas datas, com pesos
 iguais por loja e por produto na visão geral. A tabela por loja mostra também
-preços de contextos excluídos, com lacunas explícitas. O resumo mostra o menor
+preços de contextos excluídos, com lacunas explícitas. Ela apresenta somente a
+primeira e a última data do intervalo efetivo (uma coluna para um único dia),
+independentemente do tamanho da série. Todas as ofertas retornadas continuam em
+linhas separadas. Os rótulos mostram localidade, CEP e modalidade de compra, sem
+identificadores internos de loja ou vendedor. “Ver oferta” abre a página do
+produto na loja em uma nova aba. Em telas pequenas, a tabela permite rolagem
+horizontal com foco pelo teclado; a série consolidada completa continua em
+“Ver dados em tabela”. O resumo mostra o menor
 preço disponível na última data com preço, separado da média do painel no gráfico.
 Sem painel comparável, o gráfico de produto mostra o menor preço disponível por
 dia e explica que mudanças de loja ou contexto não permitem calcular uma variação.

@@ -63,8 +63,6 @@ footer { border-top: 1px solid #e3e7e4; padding-block: 12px; font-size: 12px; co
 .footer-links { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px 28px; }
 .footer-links > a { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; color: #344c41; padding-block: 4px; text-underline-offset: 3px; }
 .footer-links > a svg { flex-shrink: 0; }
-.footer-description { max-width: 65ch; }
-.footer-description p { margin: 0 0 8px; }
 @media (max-width: 1100px) {
   fieldset { gap: 8px; }
   .controls { gap: 12px; }
@@ -97,3 +95,39 @@ footer { border-top: 1px solid #e3e7e4; padding-block: 12px; font-size: 12px; co
 .summary strong { max-width: 260px; }
 .group-filter { flex-basis: 100%; display: block; }
 .group-filter p { max-width: 100ch; margin: 6px 0 0; font-size: 12px; color: #59645e; }
+
+a { color: #24624f; text-underline-offset: 3px; }
+.shop-prices { margin-block: 24px; min-width: 0; }
+.shop-prices h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.shop-prices > p { margin: 6px 0 16px; font-size: 13px; color: #59645e; max-width: 90ch; }
+.shop-prices > .table-scroll-hint { display: none; }
+.shop-prices-table { max-width: none; min-width: 720px; font-size: 13px; }
+.shop-prices-table caption { color: #59645e; font-size: 12px; }
+.shop-prices-table thead { background: #f5f7f6; }
+.shop-prices-table th, .shop-prices-table td { vertical-align: middle; padding: 14px 16px; }
+.shop-prices-table th { font-weight: 600; }
+.shop-prices-table tbody th { width: 32%; }
+.shop-prices-table tbody tr:hover { background: #fafbf9; }
+.shop-context { display: block; margin-top: 4px; color: #59645e; font-size: 12px; font-weight: 400; max-width: 34ch; overflow-wrap: anywhere; }
+.shop-price { white-space: nowrap; }
+.missing-price { color: #59645e; font-size: 12px; white-space: normal; }
+.date-position { display: block; color: #59645e; font-weight: 400; font-size: 11px; }
+.comparison-status { display: inline-block; padding: 4px 8px; background: #f2f3f2; color: #59645e; border-radius: 4px; font-size: 12px; }
+.comparison-status.included { background: #edf4f0; color: #164a37; }
+.offer-link { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; white-space: nowrap; }
+.shop-prices > .comparison-note { margin: 10px 0 0; font-size: 12px; }
+.history-methodology { max-width: 95ch; }
+.history-methodology p + p { margin-top: 8px; }
+.about-page { max-width: 76ch; padding-block: 28px 48px; }
+.back-link { width: fit-content; margin-bottom: 24px; font-size: 13px; }
+.about-page h1 { font-size: 28px; }
+.about-intro { font-size: 17px; color: #59645e; margin: 12px 0 0; }
+.about-page section { margin-top: 32px; scroll-margin-top: 24px; }
+.about-page h2 { font-size: 21px; }
+.about-page h3 { font-size: 16px; margin: 24px 0 8px; }
+.about-page section p { margin: 12px 0; }
+@media (max-width: 760px) {
+  .shop-prices > .table-scroll-hint { display: block; margin-bottom: 8px; font-size: 12px; }
+  .shop-prices-table th, .shop-prices-table td { padding: 12px; }
+  .about-page h1 { font-size: 24px; }
+}

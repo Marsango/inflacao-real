@@ -60,8 +60,11 @@ WITH original AS (
     FROM measurements GROUP BY product_id, name, basis
 ), contexts AS (
     SELECT product_id, stream, shop_id, max(product_url) AS product_url,
-        CASE WHEN $5::boolean THEN '' ELSE concat_ws(' · ', max(seller_id), max(store_id),
-            max(postal_code), max(city), max(state), max(channel)) END AS label,
+        CASE WHEN $5::boolean THEN '' ELSE concat_ws(' · ',
+            coalesce(nullif(concat_ws('/', max(city), max(state)), ''), 'Localidade não informada'),
+            'CEP ' || max(postal_code),
+            CASE max(channel) WHEN 'delivery' THEN 'Entrega' WHEN 'pickup' THEN 'Retirada'
+                WHEN 'online' THEN 'Online' ELSE 'Modalidade não informada' END) END AS label,
         concat_ws('/', max(city), max(state)) AS location
     FROM scoped GROUP BY product_id, stream, shop_id
 ), context_series AS (
