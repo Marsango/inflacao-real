@@ -47,6 +47,8 @@ def check_private_routes(web):
                  "/api/v1/ingestion/submissions"]:
         assert request(web, path).status_code == 404
     assert request(web, "/api/v1/ingestion/submissions", "POST").status_code == 404
+    assert request(web, "/api/v1/ingestion/scraper-reports", "POST").status_code == 404
+    assert request(web, "/api/v1/ingestion/history-refresh", "POST").status_code == 404
     assert request(web, "/api/v1/products", "POST").status_code == 404
     assert request(web, "/api/v1/groups", "POST").status_code == 404
 
@@ -101,5 +103,21 @@ def test_admin_proxy_allowlist(web):
         assert response.status_code == 200
     for path, method in [("unknown", "GET"), ("products", "POST"),
                          ("session", "PUT"), ("reviews", "GET"),
-                         ("products/1/extra", "GET"), ("products/nope", "GET")]:
+                         ("products/1/extra", "GET"), ("products/nope", "GET"),
+                         ("scrapers", "POST"), ("scrapers", "DELETE"),
+                         ("scraper-diagnostics", "POST"), ("scraper-diagnostics", "PUT"),
+                         ("scraper-diagnostics/1", "GET")]:
         assert request(web, "/api/v1/admin/" + path, method).status_code == 404
+
+
+@pytest.mark.parametrize("path,method", [
+    ("scrapers", "GET"),
+    ("scraper-diagnostics?scraper_id=collector&shop_id=mambo&severity=error&before=10", "GET"),
+    ("scraper-diagnostics?scraper_id=collector&shop_id=mambo", "DELETE"),
+    ("scraper-diagnostics?scraper_id=collector&shop_id=mambo&id=1", "DELETE"),
+])
+def test_scraper_admin_proxy_routes(web, path, method):
+    response = request(web, "/api/v1/admin/" + path, method)
+    assert response.status_code == 200
+    assert response.json()["path"] == "/api/v1/admin/" + path
+    assert response.headers["Cache-Control"] == "no-store"

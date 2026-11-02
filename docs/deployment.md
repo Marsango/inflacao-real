@@ -237,7 +237,9 @@ the database remain unreachable externally. Do not start a collection for these 
 
 The optional Portuguese interface is at `/admin`; its API is documented in
 [admin v1](contracts/web/v1/admin.md). Only the explicitly listed admin methods
-and paths pass through Caddy. Scraper ingestion and monitoring remain private.
+and paths pass through Caddy, including `GET /api/v1/admin/scrapers` and
+`GET`/`DELETE /api/v1/admin/scraper-diagnostics`. Scraper ingestion and
+monitoring-target APIs remain private.
 Admin requires HTTPS, including during development (the cookie is always Secure).
 
 Generate a password hash locally, without putting the password in shell history:

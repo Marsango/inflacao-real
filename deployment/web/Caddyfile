@@ -17,7 +17,7 @@
     }
     @admin_reads {
         method GET
-        path /api/v1/admin/session /api/v1/admin/candidates /api/v1/admin/products /api/v1/admin/groups
+        path /api/v1/admin/session /api/v1/admin/candidates /api/v1/admin/products /api/v1/admin/groups /api/v1/admin/scrapers /api/v1/admin/scraper-diagnostics
     }
     handle @admin_reads {
         reverse_proxy core:8080
@@ -36,11 +36,11 @@
     handle @admin_writes {
         reverse_proxy core:8080
     }
-    @admin_logout {
+    @admin_deletes {
         method DELETE
-        path /api/v1/admin/session
+        path /api/v1/admin/session /api/v1/admin/scraper-diagnostics
     }
-    handle @admin_logout {
+    handle @admin_deletes {
         reverse_proxy core:8080
     }
     @other_api path /api /api/*
