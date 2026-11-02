@@ -75,6 +75,15 @@ The daily scheduler continues after collection failures; a running scheduler doe
 prove fresh observations. Inspect collection summaries, retry queues, and core processing
 logs. API acceptance means queued, not successfully processed. No alert service is installed.
 
+Manual `collect` and `deliver` containers are retained after exit so their
+console logs survive, including failures. The manual-command Compose override
+disables automatic restart for those containers while preserving the daily
+scheduler's restart policy. Find the exited scraper container with
+`sudo docker ps -a --filter label=com.docker.compose.service=scrapers --filter status=exited`,
+then inspect `sudo docker logs --timestamps <container>`. Remove a reviewed
+container explicitly with `sudo docker rm <container>`; keep the named data volumes.
+Older manual runs created with `--rm` cannot be recovered through Docker logs.
+
 To inspect the private API from your computer:
 
 ```sh
@@ -278,3 +287,37 @@ The scheduler uses `COLLECTION_TIME` from `production.env` (default `09:00`) in
 `America/Sao_Paulo`. Collectors run sequentially, starting at that time; they do
 not all start simultaneously. Deploying after the scheduled time waits until the
 next day. `./deploy collect` remains the explicit immediate-collection command.
+
+### History precomputation upgrade
+
+The history optimization update adds migration 14 with two small tables for saved
+calculated selections and durable refresh signals. It does not backfill the product
+catalog or rewrite observations. The normal `git pull` and `./deploy up` path applies
+the schema before starting workers. Existing deployment settings are preserved;
+no new secrets or services are needed. Migration number 13 remains retired.
+
+The core starts a background refresh loop automatically. Each updated collector
+signals it after collection or spool replay; a thirty-second revision check also
+recovers missed signals. Refresh waits until the ingestion queue drains and then
+precomputes the default previous-month-to-today overview and groups, plus recently
+used custom selections. Saved results survive core restarts and are served only
+for the current catalog revision. Review `history precomputation` logs for duration,
+estimated observation count and observation storage bytes. The ten-second public
+request deadline is unchanged. Independently deployed collectors should be updated
+after the core; temporary signal failures are warnings and do not discard batches.
+
+### Incremental daily overview upgrade
+
+Migration 15 adds the daily overview tables and an index on observation time.
+Existing dates are queued and summarized by the background worker after startup;
+aggregation is not performed by the schema migration. Collectors keep using the
+same completion notification. No extra service or configuration is required.
+
+After bootstrap, overview requests combine completed daily summaries with fresh
+raw calculations for any dirty dates in their requested period. A clean overview
+uses daily summaries exclusively. Late data and unchanged confirmations invalidate
+only their affected dates. Current equivalence decisions are applied at read time.
+Watch `daily history summarized` logs for progress and `dirty_days` in history
+precomputation metrics for backlog. Initial backfill is asynchronous, so performance
+measurements should distinguish backfill, dirty-day fallback and clean reads.
+Product history and the public request deadline remain unchanged.

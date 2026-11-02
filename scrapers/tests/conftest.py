@@ -69,3 +69,18 @@ def weighted_observation(settings):
     assert len(page.observations) == 1
     assert all("payment-basis" in issue for issue in page.warnings)
     return page.observations[0]
+
+
+@pytest.fixture(autouse=True)
+def history_refresh_notifications(monkeypatch):
+    """Keep collection payload tests focused on ingestion; exercise HTTP separately."""
+    from inflacao_scrapers import collection, commands
+
+    notifications = []
+
+    def record(requester, settings, token):
+        notifications.append((settings.shop_id, token))
+
+    monkeypatch.setattr(collection, "request_history_refresh", record)
+    monkeypatch.setattr(commands, "request_history_refresh", record)
+    return notifications

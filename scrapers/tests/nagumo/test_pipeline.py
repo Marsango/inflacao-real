@@ -8,6 +8,7 @@ from inflacao_scrapers.delivery import Spool, deliver
 from inflacao_scrapers.transport import Requester
 
 from .pipeline import execute_nagumo
+from .pipeline import grid_response as original_grid_response
 
 
 def test_cli_collects_core_scope_with_pickup_provenance_without_creating_spool(
@@ -72,3 +73,30 @@ def redeliver(spool, attempted):
 def accept(request, received):
     received.append(request)
     return httpx.Response(200)
+
+
+def unavailable_grid(request, failure):
+    response = original_grid_response(request, failure)
+    document = json.loads(response.content)
+    mark_unavailable(document["productsSearchResult"])
+    return httpx.Response(200, content=json.dumps(document))
+
+
+def mark_unavailable(products):
+    for product in products:
+        product["available"] = False
+
+
+def test_discovery_coverage_is_distinct_from_available_price_counts(
+    tmp_path, monkeypatch, capsys
+):
+    from . import pipeline
+
+    monkeypatch.setattr(pipeline, "grid_response", unavailable_grid)
+    status, requests = execute_nagumo(tmp_path, monkeypatch)
+    observations = [item for batch in submissions(requests) for item in batch["observations"]]
+    assert status == 0 and observations
+    assert all(item["offers"] == [] for item in observations)
+    output = capsys.readouterr().out
+    assert "matched_listings=" in output and "available_price_observations=0" in output
+    assert f"unavailable_observations={len(observations)}" in output

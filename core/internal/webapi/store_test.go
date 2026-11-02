@@ -1,15 +1,20 @@
 package webapi
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 	"testing"
+	"time"
 
+	"inflacao-real/core/internal/dailysummary"
 	"inflacao-real/core/internal/equivalence"
 	"inflacao-real/core/internal/ingestion"
 	"inflacao-real/core/internal/insights"
+	"inflacao-real/core/internal/selections"
 )
 
 func newMamboFixture(test *testing.T) fixture {
@@ -730,4 +735,323 @@ func assertNagumoProvenance(fixture fixture) {
 	if !preserved {
 		fixture.test.Fatal("Nagumo kg prices, membership conditions or pickup provenance lost")
 	}
+}
+
+func assertHistoryJSON(test *testing.T, expected, actual insights.History) {
+	test.Helper()
+	expectedJSON, err := json.Marshal(expected)
+	requireSuccess(test, err)
+	actualJSON, err := json.Marshal(actual)
+	requireSuccess(test, err)
+	if !bytes.Equal(expectedJSON, actualJSON) {
+		test.Fatalf("history mismatch: expected %s, actual %s", expectedJSON, actualJSON)
+	}
+}
+
+func rawOverview(fixture fixture, request HistoryRequest) insights.History {
+	transaction, err := fixture.pool.BeginTx(fixture.ctx, nil)
+	requireSuccess(fixture.test, err)
+	defer transaction.Rollback()
+	_, err = transaction.ExecContext(fixture.ctx, `SET LOCAL jit=off`)
+	requireSuccess(fixture.test, err)
+	rows, err := transaction.QueryContext(fixture.ctx, historyQuery, nil, request.Start, request.End, selections.Targets(request.Group), true)
+	requireSuccess(fixture.test, err)
+	defer rows.Close()
+	history, err := buildHistory(rows, request, "")
+	requireSuccess(fixture.test, err)
+	return history
+}
+
+func assertDailyOverview(fixture fixture, start, end, group string) {
+	fixture.test.Helper()
+	request := HistoryRequest{Product: "global", Start: start, End: end, Group: group}
+	expected := rawOverview(fixture, request)
+	store := PostgresStore{DB: fixture.pool}
+	actual, err := store.History(fixture.ctx, request)
+	requireSuccess(fixture.test, err)
+	assertHistoryJSON(fixture.test, expected, actual)
+}
+
+func TestDailyOverviewPreservesUnknownPricesBeforeUnavailableLatest(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, unknownPriceObservation)
+	fixture.submit(2, func(observation map[string]any) {
+		observation["observed_at"] = "2026-10-27T22:00:00Z"
+		observation["availability"] = "out_of_stock"
+		observation["offers"] = []any{}
+	})
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	fixture.submit(3, func(observation map[string]any) { setPrice(observation, "2026-10-29T12:00:00Z", "26.90") })
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-27", "2026-10-27", "")
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "cesta-basica")
+}
+
+func unknownPriceObservation(observation map[string]any) {
+	offer := observation["offers"].([]any)[0].(map[string]any)
+	offer["conditions"] = map[string]any{"payment_method": "unknown", "installments": nil,
+		"membership_required": nil, "membership_program": nil, "coupon_required": nil, "minimum_quantity": nil, "description": nil}
+	observation["offers"] = observation["offers"].([]any)[:1]
+}
+
+func TestDailyOverviewRebuildsOnlyLateDayAndMatchesHybridRead(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	fixture.submit(2, func(observation map[string]any) { setPrice(observation, "2026-10-29T12:00:00Z", "26.90") })
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	var previous time.Time
+	requireSuccess(test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT refreshed_at FROM history_daily_days WHERE day='2026-10-29'`).Scan(&previous))
+	fixture.submit(3, func(observation map[string]any) { setPrice(observation, "2026-10-27T22:00:00Z", "25.90") })
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	var unchanged bool
+	requireSuccess(test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT refreshed_at=$1 FROM history_daily_days WHERE day='2026-10-29'`, previous).Scan(&unchanged))
+	if !unchanged {
+		test.Fatal("late observation rebuilt an unaffected date")
+	}
+}
+
+func TestDailyOverviewUsesCurrentEquivalenceAndPackageUnits(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	fixture.submit(2, secondEquivalentListing)
+	fixture.submit(3, func(observation map[string]any) {
+		setPrice(observation, "2026-10-28T12:00:00Z", "26.90")
+		observation["product"].(map[string]any)["package"] = map[string]any{"quantity": "5000", "unit": "g", "count": 1}
+	})
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	snapshot, err := equivalence.Read(fixture.ctx, fixture.pool)
+	requireSuccess(test, err)
+	requireSuccess(test, equivalence.Apply(fixture.ctx, fixture.pool, "owner", equivalence.Decision{
+		Revision: snapshot.Revision, Action: "approve", First: 1, Second: 2, Reason: "Verified package", SourceVerified: true}))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+}
+
+func TestDailyOverviewPopulatedMonthAndQuarter(test *testing.T) {
+	for _, days := range []int{30, 90} {
+		test.Run(fmt.Sprint(days), func(test *testing.T) { checkPopulatedDailyHistory(test, days) })
+	}
+}
+
+func checkPopulatedDailyHistory(test *testing.T, days int) {
+	fixture := newFixture(test)
+	requestContext, cancel := context.WithTimeout(test.Context(), 6*time.Minute)
+	defer cancel()
+	fixture.ctx = requestContext
+	fixture.submit(1, nil)
+	seedPopulatedHistory(fixture, 1000, days, 4)
+	end := time.Date(2026, 8, 1, 0, 0, 0, 0, time.UTC).AddDate(0, 0, days-1).Format(time.DateOnly)
+	request := HistoryRequest{Product: "global", Start: "2026-08-01", End: end}
+	started := time.Now()
+	expected := rawOverview(fixture, request)
+	rawDuration := time.Since(started)
+	started = time.Now()
+	drainDailySummaries(fixture)
+	refreshDuration := time.Since(started)
+	measureDailyHistory(fixture, request, expected, rawDuration, refreshDuration, days)
+}
+
+func measureDailyHistory(fixture fixture, request HistoryRequest, expected insights.History, raw, refresh time.Duration, days int) {
+	started := time.Now()
+	store := PostgresStore{DB: fixture.pool}
+	requestContext, cancel := context.WithTimeout(fixture.ctx, 30*time.Second)
+	defer cancel()
+	actual, err := store.History(requestContext, request)
+	requireSuccess(fixture.test, err)
+	duration := time.Since(started)
+	assertHistoryJSON(fixture.test, expected, actual)
+	logDailyGrowth(fixture, days, raw, refresh, duration)
+}
+
+func logDailyGrowth(fixture fixture, days int, raw, refresh, read time.Duration) {
+	var summaries, observations int
+	requireSuccess(fixture.test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT (SELECT count(*) FROM history_daily),count(*) FROM price_observations`).Scan(&summaries, &observations))
+	fixture.test.Logf("days=%d observations=%d daily_rows=%d raw=%s initial_build=%s daily_read=%s", days, observations, summaries, raw, refresh, read)
+}
+
+func drainDailySummaries(fixture fixture) {
+	fixture.test.Helper()
+	requireSuccess(fixture.test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	var pending int
+	requireSuccess(fixture.test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT count(*) FROM history_daily_days WHERE generation<>summarized_generation`).Scan(&pending))
+	if pending > 0 {
+		drainDailySummaries(fixture)
+	}
+}
+
+func seedPopulatedHistory(fixture fixture, products, days, runs int) {
+	fixture.execute(`INSERT INTO products(id,name,package_quantity,package_unit,package_count) OVERRIDING SYSTEM VALUE
+ SELECT number+100,'Product '||number,5,'kg',1 FROM generate_series(1,$1::int) number`, products)
+	fixture.execute(`INSERT INTO shop_products OVERRIDING SYSTEM VALUE SELECT copied.* FROM shop_products source
+ CROSS JOIN generate_series(1,$1::int) number CROSS JOIN LATERAL jsonb_populate_record(NULL::shop_products,
+ to_jsonb(source)||jsonb_build_object('id',number+100,'product_id',number+100,'source_product_id','populated-'||number)) copied WHERE source.id=1`, products)
+	measurements := products * days * runs
+	fixture.execute(`INSERT INTO observation_identities SELECT copied.* FROM observation_identities source
+ CROSS JOIN generate_series(1,$1::int) number CROSS JOIN LATERAL jsonb_populate_record(NULL::observation_identities,
+ to_jsonb(source)||jsonb_build_object('observation_id',md5(number::text)::uuid)) copied`, measurements)
+	fixture.execute(`INSERT INTO price_observations OVERRIDING SYSTEM VALUE SELECT copied.* FROM price_observations source
+ CROSS JOIN generate_series(1,$1::int) number CROSS JOIN LATERAL jsonb_populate_record(NULL::price_observations,
+ to_jsonb(source)||jsonb_build_object('id',101+(number-1)*2+source.offer_index,'product_id',101+(number-1)%$2,
+ 'shop_product_id',101+(number-1)%$2,'observation_id',md5(number::text)::uuid,'price_amount',round((2000+number%37)::numeric/100,2),
+ 'observed_at',timestamptz '2026-08-01 12:00:00Z'+((number-1)/($2*$3))*interval '1 day'+((number-1)/$2%$3)*interval '1 hour')) copied
+ WHERE source.id<100`, measurements, products, runs)
+	fixture.execute(`ANALYZE`)
+}
+
+type dailyQueryPlan struct {
+	Relation string           `json:"Relation Name"`
+	Loops    float64          `json:"Actual Loops"`
+	Plans    []dailyQueryPlan `json:"Plans"`
+}
+
+func TestCleanDailyOverviewExecutesNoRawObservationScan(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	fixture.submit(2, secondPricedDay)
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	var data []byte
+	row := fixture.pool.QueryRowContext(fixture.ctx, "EXPLAIN (ANALYZE, FORMAT JSON) "+dailysummary.Query(), nil, "2026-10-01", "2026-11-01", []string{})
+	requireSuccess(test, row.Scan(&data))
+	var plans []struct{ Plan dailyQueryPlan }
+	requireSuccess(test, json.Unmarshal(data, &plans))
+	assertNoRawExecution(test, plans[0].Plan)
+}
+
+func assertNoRawExecution(test *testing.T, plan dailyQueryPlan) {
+	test.Helper()
+	if plan.Relation == "price_observations" && plan.Loops > 0 {
+		test.Fatal("clean daily overview executed a raw observation scan")
+	}
+	for _, child := range plan.Plans {
+		assertNoRawExecution(test, child)
+	}
+}
+
+func TestDailyOverviewTracksUnchangedConfirmationFreshness(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	fixture.submit(2, func(observation map[string]any) { observation["observed_at"] = "2026-10-27T14:00:00Z" })
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	var confirmed bool
+	requireSuccess(test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT bool_and(observed_at='2026-10-27T14:00:00Z') FROM history_daily`).Scan(&confirmed))
+	if !confirmed {
+		test.Fatal("unchanged confirmation did not refresh daily freshness")
+	}
+}
+
+func TestDailyOverviewPublicationConflictKeepsPreviousSummary(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	fixture.submit(2, func(observation map[string]any) { setPrice(observation, "2026-10-27T22:00:00Z", "26.90") })
+	fixture.execute(`CREATE FUNCTION conflict_daily_generation() RETURNS trigger LANGUAGE plpgsql AS $$
+ BEGIN UPDATE history_daily_days SET generation=generation+1 WHERE day='2026-10-27'; RETURN NULL; END $$`)
+	fixture.execute(`CREATE TRIGGER conflict_daily_generation AFTER INSERT ON history_daily
+ FOR EACH STATEMENT EXECUTE FUNCTION conflict_daily_generation()`)
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	var preserved bool
+	requireSuccess(test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT known_package=2490
+ AND (SELECT generation>summarized_generation FROM history_daily_days WHERE day='2026-10-27') FROM history_daily`).Scan(&preserved))
+	if !preserved {
+		test.Fatal("publication conflict exposed a partially rebuilt summary")
+	}
+	fixture.execute(`DROP TRIGGER conflict_daily_generation ON history_daily`)
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+}
+
+type weightedStream struct {
+	store, first, last string
+	otherProduct       bool
+}
+
+func TestDailyOverviewPreservesProductShopAndContextWeights(test *testing.T) {
+	fixture := newFixture(test)
+	streams := []weightedStream{{"branch-a", "24.90", "49.80", false}, {"branch-b", "10.00", "10.00", false},
+		{"second-shop", "10.00", "30.00", false}, {"other-product", "20.00", "10.00", true}, {"zero-base", "0.00", "999.00", false}}
+	for position, stream := range streams {
+		submitWeightedStream(fixture, position*2+1, stream)
+	}
+	fixture.submit(11, func(observation map[string]any) {
+		setWeightedObservation(observation, streams[0], "2026-10-28T12:00:00Z", "30.00")
+	})
+	fixture.execute(`INSERT INTO shops VALUES ('other-shop','Other shop','https://other.example')`)
+	fixture.execute(`INSERT INTO shop_products(shop_id,product_id,source_product_id,name,product_url)
+ VALUES ('other-shop',1,'other','Other listing','https://other.example/item')`)
+	fixture.execute(`UPDATE price_observations SET shop_product_id=(SELECT id FROM shop_products WHERE shop_id='other-shop') WHERE store_id='second-shop'`)
+	expected := rawOverview(fixture, HistoryRequest{Product: "global", Start: "2026-10-27", End: "2026-10-29"})
+	assertPrice(test, expected.ChangeBasisPoints, 3750)
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-27", "2026-10-29", "")
+}
+
+func submitWeightedStream(fixture fixture, number int, stream weightedStream) {
+	fixture.submit(number, func(observation map[string]any) {
+		setWeightedObservation(observation, stream, "2026-10-27T12:00:00Z", stream.first)
+	})
+	fixture.submit(number+1, func(observation map[string]any) {
+		setWeightedObservation(observation, stream, "2026-10-29T12:00:00Z", stream.last)
+	})
+}
+
+func setWeightedObservation(observation map[string]any, stream weightedStream, date, price string) {
+	setPrice(observation, date, price)
+	observation["context"].(map[string]any)["store_id"] = stream.store
+	if !stream.otherProduct {
+		return
+	}
+	product := observation["product"].(map[string]any)
+	product["source_product_id"], product["name"], product["gtin"] = "other-product", "Another product", "7891234567888"
+}
+
+func TestDailyOverviewRejectsSummariesFromAnEarlierMethod(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, nil)
+	fixture.submit(2, func(observation map[string]any) { setPrice(observation, "2026-10-28T12:00:00Z", "26.90") })
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	fixture.execute(`UPDATE history_daily SET known_package=1 WHERE day='2026-10-27'`)
+	fixture.execute(`UPDATE history_daily_state SET methodology='obsolete'`)
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	var rebuilt bool
+	requireSuccess(test, fixture.pool.QueryRowContext(fixture.ctx, `SELECT known_package=2490 FROM history_daily WHERE day='2026-10-27'`).Scan(&rebuilt))
+	if !rebuilt {
+		test.Fatal("old-method summaries were reused")
+	}
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+}
+
+func TestDailyOverviewPreservesUnitBasesAndIntervalAmbiguity(test *testing.T) {
+	for _, basis := range []string{"kg", "l", "unit"} {
+		test.Run(basis, func(test *testing.T) { checkDailyUnitBasis(test, basis) })
+	}
+}
+
+func checkDailyUnitBasis(test *testing.T, basis string) {
+	fixture := newFixture(test)
+	fixture.submit(1, func(observation map[string]any) { setUnitPrice(observation, basis) })
+	fixture.submit(2, func(observation map[string]any) {
+		setUnitPrice(observation, basis)
+		setPrice(observation, "2026-10-29T12:00:00Z", "26.90")
+	})
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	otherBasis := "kg"
+	if basis == otherBasis {
+		otherBasis = "l"
+	}
+	fixture.submit(3, func(observation map[string]any) {
+		setUnitPrice(observation, otherBasis)
+		setPrice(observation, "2026-10-28T12:00:00Z", "26.00")
+	})
+	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
+	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
+	assertDailyOverview(fixture, "2026-10-29", "2026-10-29", "")
 }

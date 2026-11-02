@@ -1,6 +1,6 @@
 WITH original AS (
-    SELECT observation.*, coalesce(membership.representative_id, observation.product_id) AS resolved_id, product.name, product.package_quantity AS canonical_quantity,
-        product.package_unit AS canonical_unit, product.package_count AS canonical_count, listing.shop_id, listing.product_url,
+    SELECT observation.*, coalesce(membership.representative_id, observation.product_id) AS resolved_id, CASE WHEN $5::boolean THEN '' ELSE product.name END AS name, product.package_quantity AS canonical_quantity,
+        product.package_unit AS canonical_unit, product.package_count AS canonical_count, listing.shop_id, CASE WHEN $5::boolean THEN '' ELSE listing.product_url END AS product_url,
         jsonb_build_array(observation.shop_product_id, seller_id, store_id,
             postal_code, city, state, channel) AS stream
     FROM price_observations observation
@@ -16,7 +16,7 @@ WITH original AS (
 ), scoped AS (
  SELECT resolved_id AS product_id, name, canonical_quantity, canonical_unit, canonical_count,
  shop_id, product_url, stream, seller_id, store_id, postal_code, city, state, channel,
- observed_at, scraper_id, observation_id, payment_method, installments, membership_required,
+ coalesce(last_seen_at, observed_at) AS observed_at, scraper_id, observation_id, payment_method, installments, membership_required,
  coupon_required, membership_program, minimum_quantity, price_amount, price_currency, price_basis,
  availability, package_quantity, package_unit, package_count FROM original
 ), bases AS (
@@ -58,21 +58,20 @@ WITH original AS (
     SELECT product_id, name, basis, bool_or(NOT known AND price IS NOT NULL) AS unknown_conditions, count(DISTINCT stream) AS streams,
         count(DISTINCT shop_id) AS shops, max(observed_at) AS collected_at
     FROM measurements GROUP BY product_id, name, basis
-), days AS (
-    SELECT $2::date + generate_series(0, $3::date - $2::date) AS day
 ), contexts AS (
     SELECT product_id, stream, shop_id, max(product_url) AS product_url,
-        concat_ws(' · ', max(seller_id), max(store_id), max(postal_code), max(city), max(state), max(channel)) AS label,
+        CASE WHEN $5::boolean THEN '' ELSE concat_ws(' · ', max(seller_id), max(store_id),
+            max(postal_code), max(city), max(state), max(channel)) END AS label,
         concat_ws('/', max(city), max(state)) AS location
     FROM scoped GROUP BY product_id, stream, shop_id
 ), context_series AS (
-    SELECT contexts.product_id, contexts.stream, contexts.shop_id, shops.name AS shop_name,
+    SELECT contexts.product_id, contexts.stream, contexts.shop_id, coalesce(shops.name, '') AS shop_name,
         contexts.label, contexts.product_url, contexts.location,
-        jsonb_agg(jsonb_build_object('date', days.day::text, 'amount', latest.price::text)
-            ORDER BY days.day) AS points
-    FROM contexts CROSS JOIN days JOIN shops ON shops.id = contexts.shop_id
+        jsonb_agg(jsonb_build_object('date', latest.day::text, 'amount', latest.price::text)
+            ORDER BY latest.day) AS points
+    FROM contexts LEFT JOIN shops ON NOT $5::boolean AND shops.id = contexts.shop_id
     LEFT JOIN latest ON latest.product_id = contexts.product_id
-        AND latest.stream = contexts.stream AND latest.day = days.day
+        AND latest.stream = contexts.stream
     GROUP BY contexts.product_id, contexts.stream, contexts.shop_id, shops.name, contexts.label, contexts.product_url, contexts.location
 )
 SELECT panel.product_id::text, panel.name, panel.basis, panel.unknown_conditions, panel.collected_at, panel.streams, panel.shops,

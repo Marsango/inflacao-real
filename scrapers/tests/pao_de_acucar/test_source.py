@@ -94,7 +94,7 @@ def test_ambiguous_mapping_and_changed_branch_stop_collection():
 def test_pagination_repeats_and_changed_totals_are_errors():
     document = source("rice")
     seen = set()
-    assert validate_page(document, 1, seen, None) == (False, 58)
+    assert validate_page(document, 1, seen, None) == (False, 58, 0)
     with pytest.raises(ValueError, match="repeated"):
         validate_page(document, 1, seen, 58)
     with pytest.raises(ValueError, match="changed"):

@@ -10,6 +10,7 @@ import (
 
 	"github.com/santhosh-tekuri/jsonschema/v6"
 
+	"inflacao-real/core/internal/dailysummary"
 	"inflacao-real/core/internal/ingestion/document"
 )
 
@@ -72,6 +73,9 @@ func (payload queuedPayload) commit(requestContext context.Context, transaction 
 		return err
 	}
 	if _, err := transaction.ExecContext(requestContext, processedPayloadSQL, payload.identity); err != nil {
+		return err
+	}
+	if err := dailysummary.MarkPayload(requestContext, transaction, payload.identity); err != nil {
 		return err
 	}
 	return transaction.Commit()

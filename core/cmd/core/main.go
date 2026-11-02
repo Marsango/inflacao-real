@@ -10,11 +10,14 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	_ "time/tzdata"
 
 	"github.com/joho/godotenv"
 
 	"inflacao-real/core/internal/database"
+	"inflacao-real/core/internal/historyprecompute"
 	"inflacao-real/core/internal/ingestion"
+	"inflacao-real/core/internal/webapi"
 )
 
 func main() {
@@ -73,12 +76,14 @@ func openDatabase(requestContext context.Context) (*sql.DB, error) {
 }
 
 type application struct {
-	server *httpServer
-	worker *ingestion.Worker
+	server      *httpServer
+	worker      *ingestion.Worker
+	precomputed *historyprecompute.Store
 }
 
 func newApplication(requestContext context.Context, pool *sql.DB) (application, error) {
-	router, err := newRouter(requestContext, pool)
+	precomputed := historyprecompute.New(pool, webapi.PostgresStore{DB: pool})
+	router, err := newRouter(requestContext, pool, precomputed)
 	if err != nil {
 		return application{}, err
 	}
@@ -86,7 +91,7 @@ func newApplication(requestContext context.Context, pool *sql.DB) (application, 
 	if err != nil {
 		return application{}, err
 	}
-	return application{server: newHTTPServer(router), worker: worker}, nil
+	return application{server: newHTTPServer(router), worker: worker, precomputed: precomputed}, nil
 }
 
 func createWorker(pool *sql.DB) (*ingestion.Worker, error) {
@@ -100,6 +105,8 @@ func createWorker(pool *sql.DB) (*ingestion.Worker, error) {
 func (application application) run(requestContext context.Context) error {
 	stop := startWorker(requestContext, application.worker)
 	defer stop()
+	stopPrecomputation := startPrecomputation(requestContext, application.precomputed)
+	defer stopPrecomputation()
 	return application.server.serve(requestContext)
 }
 

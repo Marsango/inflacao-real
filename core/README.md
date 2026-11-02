@@ -116,6 +116,24 @@ measurement and are retained with its identity. Money remains strings when
 fingerprinting. The canonicalizer supports only the validated v1 schema, whose
 JSON numbers are bounded integers and whose object keys are fixed ASCII names.
 
+Fresh IDs do not necessarily create more price-history rows. Within one
+America/Sao_Paulo day, the worker compares the latest state for the same scraper,
+shop listing and seller/store/delivery context. An unchanged canonical product,
+package, availability and full offer/condition set reuses that historical
+measurement. Offer ordering and source/run provenance do not change its price
+state. Changed state is retained, including A → B → A, and each new day permits
+a new measurement. Observation identities and full retry fingerprints are always
+retained, including confirmations whose historical offers were compacted.
+
+Migration 00016 adds nullable `last_seen_at` to historical offers. An unchanged
+confirmation advances this timestamp on every offer of the retained measurement;
+its original `observed_at`, source URL and observation identity remain intact.
+Daily histories and `collectedAt` use the last confirmation time. This also keeps
+late uploads from superseding a more recent unchanged confirmation. Confirmation
+updates, listing updates, identity reservations and queue completion commit or
+roll back together under the existing catalog transaction lock. No existing
+historical rows are deleted. See the [ingestion contract](../docs/contracts/ingestion/v1/README.md#unchanged-observations-on-the-same-day).
+
 On failure all processing writes roll back. A separate, conditional update records
 the attempt and diagnostics without overwriting a competing worker's newer state.
 Transient errors use exponential backoff (`1m`, `2m`, `4m`, ... capped at `1h`
@@ -239,6 +257,8 @@ it does not infer past identities from current catalog metadata.
   size, collection method, seller/location context (including branch/store ID),
   availability, exact prices, all price conditions including coupon requirements,
   and the product/matching method selected for that historical observation.
+  `last_seen_at` records a later unchanged confirmation within the same São Paulo
+  day, preserving the original observation time and provenance.
 - `observation_identities`: source measurement IDs and fingerprints, the first
   payload reference, and run/collector provenance. These survive raw-payload cleanup.
 
@@ -433,3 +453,105 @@ automation, reversals and authentication. Generic grouping starts disabled: prev
 and explicitly activate it from `/admin` after backup and source review. The
 worker applies enabled rules within each ingestion transaction. No scraper contract
 or package-to-kg conversion changes are introduced.
+
+### Sparse history reads and persistent precomputation
+
+History SQL returns the latest observed daily measurements without expanding every
+context across the requested calendar. The Go reader finds the common interval
+with eligible prices and inserts nulls for missing dates within it. All-null
+selections retain their requested calendar. Eligibility and known-condition
+preference still use the full requested interval. Global reads omit product names,
+shop display names, product URLs and context labels that their response does not
+use; coverage, locations, freshness and equal weights are preserved. Each history
+transaction disables PostgreSQL JIT locally. The HTTP and memory-cache calculation
+deadlines remain ten seconds.
+
+A persisted layer beneath the memory cache saves complete calculated selections
+in `history_precomputations`. Keys include the complete request and methodology;
+results are usable only at their committed catalog revision. They survive process
+restarts and memory-cache expiry. Freshness is recomputed when serving a result.
+Calculations that overlap a revision change cannot publish under the new revision.
+Failures are not saved. Results larger than 1 MiB are returned without persistence.
+Unused selections expire after seven days, and periodic pruning retains the 100
+most recently requested selections. Background recomputation does not extend their
+usage lifetime.
+
+The core precomputes the web's default previous-month-to-today global history and
+its four curated groups, using America/Sao_Paulo dates and month-end clamping. It
+also refreshes recently requested product and custom-period histories. This stores
+whole interval results rather than unconditional daily averages: condition policy,
+fixed panels and equivalence membership must remain consistent with the requested
+interval. It uses the same calculation path as live requests and retains exact
+rational arithmetic.
+
+Each scraper requests asynchronous refresh after its run or delivery replay. The
+core refresh loop is awakened by that signal and also checks every thirty seconds,
+including on startup, for stale results. It waits for the pending ingestion queue
+to drain. A completion signal makes the refresh eligible immediately; without a
+signal, it waits for two minutes without newly processed payloads before refreshing,
+so ordinary gaps between incoming batches do not repeatedly rebuild histories. A PostgreSQL advisory lock coordinates refresh across core instances;
+calculations run sequentially, at most ten selections per cycle with a two-minute
+cycle budget. The worker checks the revision and pending queue between selections
+and abandons publication if data changes. Failed selections are logged and retried;
+they do not prevent other selections from being attempted. Pending and failed
+collection work is not relabeled as successful collection. Actual coverage remains
+visible in the public history.
+
+`history precomputation` logs report cycle duration, selection count, estimated
+observation count from PostgreSQL statistics and total observation table/index
+bytes. Use these growth measurements alongside request calculation timings to track the
+incremental daily read model described below. No additional database or
+cache service is required. See the ingestion contract for the private refresh
+control endpoint. The public history response schema is unchanged.
+
+### Incremental daily summaries for the overview
+
+`history_daily` is a reusable read model with one row per source product, shopping
+context and Sao Paulo date. It records the latest measurement and confirmation
+time, exact minor-unit price candidates for known and unknown conditions, observed
+package shapes, all observed price bases, and eligibility flags from earlier
+measurements in that day. These flags preserve interval-wide condition preference
+and coverage even when a later observation is unavailable. Raw observations and
+source identities remain authoritative and are retained.
+
+Ingestion increments `history_daily_days.generation` for each submitted local date
+in the same transaction as its normalized data. This includes unchanged-price
+confirmations and late observations. After collection, the background worker
+rebuilds only dirty dates, at most ten per cycle. Publication and the summarized
+generation commit together. If ingestion changes the day during rebuilding, the
+rebuild rolls back and is retried; ingestion is not held behind a whole-day lock.
+Planner statistics are refreshed after a batch of rebuilt dates.
+
+Once bootstrap has enumerated existing dates, global history reads completed
+summaries and calculates daily candidates from raw observations only for dirty
+dates inside the request. A dirty date's previous summary is excluded, so partial
+refresh cannot double count data or silently serve an obsolete day. Clean overview
+reads execute no raw-observation scan. Product histories keep the existing raw
+path. Before bootstrap completes, the existing raw overview path remains available.
+The first backfill is asynchronous; schema migration does not aggregate history.
+
+The overview selects the requested interval's common available bounds and fixed
+comparison contexts, then applies context, shop and product weights using the
+daily rows. Window calculations avoid repeated scans of the daily panel. SQL
+combines numerators only for identical exact denominators; Go retains rational
+arithmetic through the final rounding. Thus the overview can build its graph
+without transporting or constructing all individual product/context graphs. Missing
+intermediate prices remain gaps. Current equivalence membership and group filters
+are applied when reading summaries, without rewriting every historical day.
+
+Migration 15 creates the daily tables and an observation-time index for bounded
+day rebuilds. `daily history summarized` logs show rebuilt dates, generations and
+durations. Growth logs additionally expose estimated daily-row count, daily storage
+bytes and the number of dirty dates. The saved interval results described above
+remain a separate cache above this read model.
+
+Direct SQL changes to normalized observations must also mark every affected local
+date dirty in the same transaction, in addition to advancing the catalog revision.
+A revision bump or process restart alone does not rebuild daily rows. Normal
+collector ingestion and unchanged confirmations perform this invalidation
+atomically. No public response schema or inflation methodology changes.
+
+Daily read-model state is tagged with the calculation methodology version. An older
+version is never served as current: bootstrap marks its dates dirty and rebuilds
+them with the current rules. The same raw fallback protects reads until that
+version transition is initialized.

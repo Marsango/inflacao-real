@@ -1,8 +1,15 @@
 """Bounded public category browsing using the shared pacing/retry transport."""
 
 from datetime import UTC, datetime
+from functools import partial
 from urllib.parse import urlsplit
 
+from ..adapters.catalog import (
+    SOURCE_ERRORS,
+    check_page_identities,
+    collect_categories,
+    describe_page,
+)
 from .offers import CONTEXT_NOTE
 from .pages import category_path, category_paths, parse_listing, product_identity
 from .parsing import parse_cards
@@ -25,19 +32,28 @@ def fetch(requester, settings, path, redirects=0):
 def catalog_pages(requester, settings, scope):
     paths = settings.category_paths or category_paths(fetch(requester, settings, "/delivery/")[0])
     budget = [settings.max_catalog_pages]
-    for path in paths:
-        yield from listing_pages(requester, settings, scope, path, budget)
+    pages = partial(listing_pages, requester, settings, scope, budget=budget)
+    yield from collect_categories(paths, pages, settings.shop_id)
 
 
 def listing_pages(requester, settings, scope, path, budget):
     seen, expected_pages = set(), []
     while path is not None:
         consume_budget(budget)
+        page, path = listing_page(requester, settings, scope, path, expected_pages, seen)
+        yield page
+
+
+def listing_page(requester, settings, scope, path, expected_pages, seen):
+    try:
         source, resolved_path = fetch(requester, settings, category_path(path))
+        cards, following = parse_listing(source, resolved_path, expected_pages)
+        overlap = check_identities(cards, seen)
         source_url = settings.shop_url + resolved_path
-        cards, path = parse_listing(source, resolved_path, expected_pages)
-        check_identities(cards, seen)
-        yield parse_cards(cards, settings, source_url, datetime.now(UTC), scope)
+        page = parse_cards(cards, settings, source_url, datetime.now(UTC), scope)
+        return describe_page(page, f"page={resolved_path}", overlap), following
+    except SOURCE_ERRORS as error:
+        raise ValueError(f"page={path}: {error}") from error
 
 
 def consume_budget(budget):
@@ -48,9 +64,7 @@ def consume_budget(budget):
 
 def check_identities(cards, seen):
     identities = [product_identity(card) for card in cards]
-    if len(set(identities)) != len(identities) or seen.intersection(identities):
-        raise ValueError("Sonda repeated SKU/page; collection incomplete")
-    seen.update(identities)
+    return check_page_identities(identities, seen, "Sonda")
 
 
 def prepare(requester, settings):

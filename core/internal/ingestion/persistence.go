@@ -11,6 +11,7 @@ import (
 	"inflacao-real/core/internal/catalog"
 	"inflacao-real/core/internal/equivalence"
 	"inflacao-real/core/internal/ingestion/document"
+	"inflacao-real/core/internal/ingestion/history"
 	"inflacao-real/core/internal/monitoring"
 )
 
@@ -44,9 +45,9 @@ func (writer payloadWriter) persist() error {
 	if _, err := writer.transaction.ExecContext(writer.context, catalogLockSQL); err != nil {
 		return err
 	}
-	// Stable ordering keeps rebatches from taking identity locks in opposite orders.
+	// Source-time ordering preserves changes within a rebatch; raw bytes break ties.
 	observations := writer.envelope.Observations
-	sort.Slice(observations, func(left, right int) bool { return bytes.Compare(observations[left], observations[right]) < 0 })
+	sort.Slice(observations, func(left, right int) bool { return history.Earlier(observations[left], observations[right]) })
 	var err error
 	for position := 0; position < len(observations) && err == nil; position++ {
 		err = writer.persistObservation(observations[position])
@@ -119,6 +120,11 @@ func (writer payloadWriter) requireSameFingerprint(observationID string, fingerp
 func (writer payloadWriter) persistNewObservation(observation document.Observation) error {
 	assignment, err := writer.assignListing(observation)
 	if err != nil {
+		return err
+	}
+	scraperID := writer.envelope.ScraperID
+	unchanged, err := history.SkipUnchanged(writer.context, writer.transaction, assignment.listingID, assignment.productID, scraperID, observation)
+	if err != nil || unchanged {
 		return err
 	}
 	offers := storedOffers(observation.Offers)

@@ -229,3 +229,28 @@ func TestNoEligiblePricesHasNoAvailableInterval(test *testing.T) {
 		test.Fatal("no eligible prices must not invent dates or values")
 	}
 }
+
+func TestSparseCalendarUsesSharedBoundsAndKeepsInternalGaps(test *testing.T) {
+	amount := "1200"
+	series := []ProductSeries{{Contexts: []ContextSeries{
+		{Points: []PricePoint{{Date: "2026-10-27", Amount: &amount}, {Date: "2026-10-29", Amount: &amount}}},
+		{Points: []PricePoint{{Date: "2026-10-28", Amount: &amount}}},
+	}}}
+	expanded := ExpandSparse(series, "2026-10-01", "2026-11-01")
+	first, second := expanded[0].Contexts[0].Points, expanded[0].Contexts[1].Points
+	if len(first) != 3 || first[1].Amount != nil || first[0].Date != "2026-10-27" {
+		test.Fatal("outer dates were kept or internal gap was filled")
+	}
+	if second[0].Amount != nil || second[2].Amount != nil || second[1].Amount == nil {
+		test.Fatal("contexts do not share the same calendar")
+	}
+}
+
+func TestSparseAllNullSelectionRetainsRequestedCalendar(test *testing.T) {
+	series := []ProductSeries{{Contexts: []ContextSeries{{Points: []PricePoint{{Date: "2026-10-28"}}}}}}
+	expanded := ExpandSparse(series, "2026-10-27", "2026-10-29")
+	points := expanded[0].Contexts[0].Points
+	if len(points) != 3 || points[0].Date != "2026-10-27" || points[2].Date != "2026-10-29" {
+		test.Fatal("all-null selection lost its requested calendar")
+	}
+}

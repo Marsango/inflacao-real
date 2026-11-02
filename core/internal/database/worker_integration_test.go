@@ -11,7 +11,9 @@ import (
 	"testing"
 	"time"
 
+	"inflacao-real/core/internal/dailysummary"
 	"inflacao-real/core/internal/ingestion"
+	"inflacao-real/core/internal/webapi"
 )
 
 const processedQueueSQL = `SELECT count(*)=1 AND bool_and(status='processed' AND attempts=1
@@ -307,12 +309,12 @@ func TestWorkerSkipsLockedAndDeferredRowsAcrossConcurrentWorkers(test *testing.T
 	fixture.assert(`SELECT status='processed' FROM ingestion_payloads WHERE id=$1`, identities[2])
 	fixture.processConcurrently(4, drainWorker)
 	fixture.assert(`SELECT count(*)=6 AND bool_and(attempts=1) FROM ingestion_payloads WHERE status='processed'`)
-	fixture.assert(`SELECT count(*)=12 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 FROM price_observations`)
 	fixture.releaseDeferred(lock, identities)
 	fixture.enqueueRebatches(4)
 	fixture.processConcurrently(4, processRebatch)
 	fixture.assert(`SELECT count(*)=12 AND bool_and(status='processed') FROM ingestion_payloads`)
-	fixture.assert(`SELECT count(*)=16 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 FROM price_observations`)
 }
 
 func observationNumber(number int) func(map[string]any) {
@@ -378,7 +380,7 @@ func (fixture workerFixture) releaseDeferred(lock *sql.Tx, identities []int64) {
 	fixture.execute(`UPDATE ingestion_payloads SET next_attempt_at=now() WHERE id=$1`, identities[1])
 	fixture.process()
 	fixture.assert(`SELECT count(*)=8 AND bool_and(status='processed' AND attempts=1) FROM ingestion_payloads`)
-	fixture.assert(`SELECT count(*)=16 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 FROM price_observations`)
 }
 
 func (fixture workerFixture) enqueueRebatches(count int) {
@@ -513,4 +515,283 @@ func (process runningProcess) awaitResult(test *testing.T) error {
 		test.Fatal("worker did not stop after cancellation")
 	}
 	return nil
+}
+
+func TestWorkerSkipsUnchangedSameDayHistoryAndRetainsIdentities(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", changedSourceURL)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(observed_at='2026-10-27T12:00:00Z'
+        AND last_seen_at='2026-10-27T13:00:00Z') FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 FROM observation_identities`)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(status='processed') FROM ingestion_payloads`)
+	fixture.execute(`UPDATE ingestion_payloads SET payload=NULL,payload_removed_at=now()`)
+	fixture.freshMeasurement(3, "2026-10-27T14:00:00Z", nil)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(last_seen_at='2026-10-27T14:00:00Z') FROM price_observations`)
+	fixture.assert(`SELECT count(*)=3 FROM observation_identities`)
+}
+
+func (fixture workerFixture) freshMeasurement(number int, observedAt string, change func(map[string]any)) {
+	fixture.enqueue("submission", number, func(payload map[string]any) {
+		observation := firstObservation(payload)
+		observation["observation_id"] = fmt.Sprintf("00000000-0000-4000-8000-%012d", number)
+		observation["observed_at"] = observedAt
+		if change != nil {
+			change(observation)
+		}
+	})
+	fixture.process()
+}
+
+func changedSourceURL(observation map[string]any) {
+	observation["source_url"] = "https://mercado.example.com/api/search?page=2"
+}
+
+func TestWorkerKeepsSameDayPriceChangesIncludingReturnToEarlierPrice(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", increasedRegularPrice)
+	fixture.freshMeasurement(3, "2026-10-27T14:00:00Z", nil)
+	fixture.freshMeasurement(4, "2026-10-27T15:00:00Z", nil)
+	fixture.assert(`SELECT count(*)=6 AND count(DISTINCT observation_id)=3 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=4 FROM observation_identities`)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(last_seen_at='2026-10-27T15:00:00Z')
+        FROM price_observations WHERE observed_at='2026-10-27T14:00:00Z'`)
+}
+
+func increasedRegularPrice(observation map[string]any) {
+	regularOffer(observation)["amount"] = "25.90"
+}
+
+func regularOffer(observation map[string]any) map[string]any {
+	return observation["offers"].([]any)[0].(map[string]any)
+}
+
+func TestWorkerSameDayDeduplicationUsesSaoPauloCalendar(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T23:00:00Z", nil)
+	fixture.freshMeasurement(2, "2026-10-28T02:59:59Z", nil)
+	fixture.assert(`SELECT count(*)=2 FROM price_observations`)
+	fixture.freshMeasurement(3, "2026-10-28T03:00:00Z", nil)
+	fixture.assert(`SELECT count(*)=4 FROM price_observations`)
+}
+
+func TestWorkerOfferOrderDoesNotCreateDuplicateDailyHistory(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", reverseOffers)
+	fixture.assert(`SELECT count(*)=2 FROM price_observations`)
+	fixture.assert(regularPriceSQL)
+	fixture.assert(memberPriceSQL)
+}
+
+func reverseOffers(observation map[string]any) {
+	offers := observation["offers"].([]any)
+	offers[0], offers[1] = offers[1], offers[0]
+}
+
+func TestWorkerDailyDeduplicationPreservesDistinctOfferStates(test *testing.T) {
+	for _, change := range []string{"amount", "zero", "reference", "member-price", "payment", "membership", "coupon", "minimum", "description", "package", "availability", "empty-offers", "removed-offer", "seller", "store", "postal-code", "city", "state", "channel", "unknown-store"} {
+		test.Run(change, func(test *testing.T) { checkDistinctDailyState(test, change) })
+	}
+}
+
+func checkDistinctDailyState(test *testing.T, change string) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", func(observation map[string]any) {
+		changeMeasurementState(observation, change)
+	})
+	fixture.assert(`SELECT count(DISTINCT observation_id)=2 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(status='processed') FROM ingestion_payloads`)
+}
+
+func changeMeasurementState(observation map[string]any, change string) {
+	if changeOfferState(observation, change) {
+		return
+	}
+	if changeContextState(observation, change) {
+		return
+	}
+	if change == "package" {
+		product := observation["product"].(map[string]any)
+		product["package"].(map[string]any)["quantity"] = "6"
+		return
+	}
+	observation["availability"] = "unknown"
+}
+
+func changeOfferState(observation map[string]any, change string) bool {
+	offer := regularOffer(observation)
+	switch change {
+	case "amount":
+		offer["amount"] = "25.90"
+	case "zero":
+		offer["amount"] = "0.00"
+	case "reference":
+		offer["reference_amount"] = nil
+	case "member-price":
+		observation["offers"].([]any)[1].(map[string]any)["amount"] = "23.90"
+	case "empty-offers":
+		observation["offers"] = []any{}
+	case "removed-offer":
+		observation["offers"] = observation["offers"].([]any)[:1]
+	default:
+		return changeOfferConditions(observation, change)
+	}
+	return true
+}
+
+func changeOfferConditions(observation map[string]any, change string) bool {
+	fields := map[string]string{"payment": "payment_method", "membership": "membership_required",
+		"coupon": "coupon_required", "minimum": "minimum_quantity", "description": "description"}
+	values := map[string]any{"payment": "cash", "membership": nil, "coupon": true,
+		"minimum": "2", "description": "Different price conditions"}
+	field, exists := fields[change]
+	if !exists {
+		return false
+	}
+	offer := regularOffer(observation)
+	conditions := offer["conditions"].(map[string]any)
+	conditions[field] = values[change]
+	return true
+}
+
+func changeContextState(observation map[string]any, change string) bool {
+	fields := map[string]string{"seller": "seller_id", "store": "store_id", "postal-code": "postal_code",
+		"city": "city", "state": "state", "channel": "channel", "unknown-store": "store_id"}
+	values := map[string]any{"seller": "other-seller", "store": "other-store", "postal-code": "01310200",
+		"city": "Another city", "state": "PR", "channel": "pickup", "unknown-store": nil}
+	field, exists := fields[change]
+	if !exists {
+		return false
+	}
+	location := observation["context"].(map[string]any)
+	location[field] = values[change]
+	return true
+}
+
+func TestWorkerOrdersChangesWithinOnePayloadBySourceTime(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.enqueue("submission", 1, func(payload map[string]any) {
+		original := firstObservation(payload)
+		payload["observations"] = []any{
+			variantObservation(test, original, 3, "2026-10-27T12:00:00.2Z", "24.90"),
+			variantObservation(test, original, 1, "2026-10-27T12:00:00Z", "24.90"),
+			variantObservation(test, original, 2, "2026-10-27T12:00:00.1Z", "25.90"),
+		}
+	})
+	fixture.process()
+	fixture.assert(`SELECT count(*)=6 AND count(DISTINCT observation_id)=3 FROM price_observations`)
+}
+
+func variantObservation(test *testing.T, original map[string]any, number int, observedAt, amount string) map[string]any {
+	raw, err := json.Marshal(original)
+	requireNoError(test, err)
+	var observation map[string]any
+	requireNoError(test, json.Unmarshal(raw, &observation))
+	observation["observation_id"] = fmt.Sprintf("00000000-0000-4000-8000-%012d", number)
+	observation["observed_at"] = observedAt
+	regularOffer(observation)["amount"] = amount
+	return observation
+}
+
+func TestWorkerConcurrentUnchangedMeasurementsStoreHistoryOnce(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.enqueueDistinct(4)
+	fixture.processConcurrently(4, drainWorker)
+	fixture.assert(`SELECT count(*)=2 FROM price_observations`)
+	fixture.assert(`SELECT count(*)=4 FROM observation_identities`)
+	fixture.assert(`SELECT count(*)=4 AND bool_and(status='processed') FROM ingestion_payloads`)
+}
+
+func TestWorkerUnchangedConfirmationsRemainLatestAfterLateChangedUpload(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	requireNoError(test, dailysummary.Refresh(fixture.context, fixture.database))
+	fixture.freshMeasurement(2, "2026-10-27T14:00:00Z", nil)
+	fixture.assert(`SELECT bool_and(generation>summarized_generation) FROM history_daily_days`)
+	fixture.freshMeasurement(3, "2026-10-27T13:00:00Z", increasedRegularPrice)
+	fixture.assert(`SELECT count(*)=4 FROM price_observations`)
+	fixture.assertLatestConfirmedPrice("1")
+	fixture.assertLatestConfirmedPrice("global")
+	requireNoError(test, dailysummary.Refresh(fixture.context, fixture.database))
+	fixture.assertLatestConfirmedPrice("global")
+}
+
+func (fixture workerFixture) assertLatestConfirmedPrice(product string) {
+	store := webapi.PostgresStore{DB: fixture.database}
+	request := webapi.HistoryRequest{Product: product, Start: "2026-10-27", End: "2026-10-27"}
+	result, err := store.History(fixture.context, request)
+	requireNoError(fixture.test, err)
+	if result.CollectedAt == nil || result.CollectedAt.Format(time.RFC3339) != "2026-10-27T14:00:00Z" {
+		fixture.test.Fatalf("lost latest unchanged confirmation: %v", result.CollectedAt)
+	}
+	if product != "global" && (result.LatestPriceMinor == nil || *result.LatestPriceMinor != 2490) {
+		fixture.test.Fatalf("late changed upload replaced later confirmation: %v", result.LatestPriceMinor)
+	}
+}
+
+func TestWorkerRepeatedUnavailableMeasurementsRemainOneUnknownPrice(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", unavailableWithoutOffers)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", unavailableWithoutOffers)
+	fixture.assert(`SELECT count(*)=1 AND bool_and(price_amount IS NULL AND offer_count=0
+        AND availability='out_of_stock' AND last_seen_at='2026-10-27T13:00:00Z') FROM price_observations`)
+}
+
+func unavailableWithoutOffers(observation map[string]any) {
+	observation["availability"], observation["offers"] = "out_of_stock", []any{}
+}
+
+func TestWorkerRollsBackUnchangedConfirmationWhenLaterObservationFails(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	identity := fixture.enqueue("submission", 2, func(payload map[string]any) {
+		unchanged := variantObservation(test, firstObservation(payload), 2, "2026-10-27T13:00:00Z", "24.90")
+		invalid := variantObservation(test, firstObservation(payload), 3, "2026-10-27T14:00:00Z", "24.90")
+		invalid["product"].(map[string]any)["gtin"] = "4006381333932"
+		payload["observations"] = []any{unchanged, invalid}
+	})
+	fixture.process()
+	fixture.assert(permanentFailureSQL, identity)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(last_seen_at IS NULL) FROM price_observations`)
+	fixture.assert(`SELECT count(*)=1 FROM observation_identities`)
+}
+
+func TestWorkerCompactedIdentityStillRejectsConflictsAfterPayloadCleanup(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", nil)
+	fixture.execute(`UPDATE ingestion_payloads SET payload=NULL,payload_removed_at=now()`)
+	identity := fixture.enqueue("submission", 3, conflictingConfirmation)
+	fixture.process()
+	fixture.assert(permanentFailureSQL, identity)
+	fixture.enqueue("submission", 4, unchangedConfirmation)
+	fixture.process()
+	fixture.assert(`SELECT count(*)=2 AND bool_and(last_seen_at='2026-10-27T13:00:00Z') FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 FROM observation_identities`)
+	fixture.assert(`SELECT status='processed' FROM ingestion_payloads WHERE submission_id='00000000-0000-4000-8000-000000000004'`)
+}
+
+func unchangedConfirmation(payload map[string]any) {
+	observation := firstObservation(payload)
+	observation["observation_id"] = "00000000-0000-4000-8000-000000000002"
+	observation["observed_at"] = "2026-10-27T13:00:00Z"
+}
+
+func conflictingConfirmation(payload map[string]any) {
+	unchangedConfirmation(payload)
+	increasedRegularPrice(firstObservation(payload))
 }

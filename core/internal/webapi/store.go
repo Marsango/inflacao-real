@@ -8,6 +8,7 @@ import (
 	"errors"
 	"time"
 
+	"inflacao-real/core/internal/dailysummary"
 	"inflacao-real/core/internal/insights"
 	"inflacao-real/core/internal/selections"
 )
@@ -74,11 +75,17 @@ func (store PostgresStore) History(requestContext context.Context, request Histo
 	return result, transaction.Commit()
 }
 func storedHistory(requestContext context.Context, transaction *sql.Tx, request HistoryRequest) (insights.History, error) {
+	if _, err := transaction.ExecContext(requestContext, `SET LOCAL jit = off`); err != nil {
+		return insights.History{}, err
+	}
 	name, productID, err := resolveProduct(requestContext, transaction, request.Product)
 	if err != nil {
 		return insights.History{}, err
 	}
-	rows, err := transaction.QueryContext(requestContext, historyQuery, productID, request.Start, request.End, selections.Targets(request.Group))
+	if request.Product == "global" {
+		return storedOverview(requestContext, transaction, request)
+	}
+	rows, err := transaction.QueryContext(requestContext, historyQuery, productID, request.Start, request.End, selections.Targets(request.Group), false)
 	if err != nil {
 		return insights.History{}, err
 	}
@@ -91,6 +98,7 @@ func buildHistory(rows *sql.Rows, request HistoryRequest, name string) (insights
 	if err != nil {
 		return insights.History{}, err
 	}
+	series = insights.ExpandSparse(series, request.Start, request.End)
 	global := request.Product == "global"
 	result := insights.Build(series, global, shops, time.Now())
 	result.Period = insights.Period{Start: request.Start, End: request.End}
@@ -158,4 +166,29 @@ func readProductSeries(rows *sql.Rows) (insights.ProductSeries, int, error) {
 	}
 	err = json.Unmarshal(points, &product.Contexts)
 	return product, shops, err
+}
+
+func storedOverview(requestContext context.Context, transaction *sql.Tx, request HistoryRequest) (insights.History, error) {
+	initialized, err := dailysummary.Initialized(requestContext, transaction)
+	if err != nil {
+		return insights.History{}, err
+	}
+	if initialized {
+		return summarizedOverview(requestContext, transaction, request)
+	}
+	rows, err := transaction.QueryContext(requestContext, historyQuery, nil, request.Start, request.End, selections.Targets(request.Group), true)
+	if err != nil {
+		return insights.History{}, err
+	}
+	defer rows.Close()
+	return buildHistory(rows, request, "")
+}
+
+func summarizedOverview(requestContext context.Context, transaction *sql.Tx, request HistoryRequest) (insights.History, error) {
+	history, err := dailysummary.History(requestContext, transaction, request.Start, request.End, selections.Targets(request.Group))
+	if err != nil {
+		return history, err
+	}
+	history.Period = insights.Period{Start: request.Start, End: request.End}
+	return describeSelection(history, request), nil
 }

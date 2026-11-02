@@ -9,6 +9,7 @@ import httpx
 from .delivery import batches
 from .delivery.client import DeliveryTarget
 from .delivery.immediate import DeliveryFailure, ImmediateDelivery
+from .history_refresh import request_history_refresh
 from .scope import fetch_scope
 from .transport import RequestFailure
 
@@ -21,6 +22,8 @@ class CollectionRun:
     failures: int = 0
     warnings: int = 0
     unknown_packages: int = 0
+    available_prices: int = 0
+    unavailable: int = 0
     seen: set[str] = field(default_factory=set)
 
     def issue(self, message: str) -> None:
@@ -34,13 +37,9 @@ class CollectionRun:
     def checkpoint(self, page, delivery, settings, target_id) -> set[str]:
         observations = [observation for observation in page.observations if self.keep(observation)]
         self.unknown_packages += sum(unknown_package(observation) for observation in observations)
-        submissions = batches(
-            observations,
-            scraper_id=settings.scraper_id,
-            shop_id=settings.shop_id,
-            run_id=self.identity,
-            collector_name=self.collector_name,
-        )
+        self.available_prices += sum(available_price(item) for item in observations)
+        self.unavailable += sum(item.availability == "out_of_stock" for item in observations)
+        submissions = collection_batches(observations, settings, self)
         for submission in submissions:
             self.observations += len(submission.observations)
             delivery.submit(submission)
@@ -58,9 +57,25 @@ class CollectionRun:
         print(
             f"run_id={self.identity} observations={self.observations} failures={self.failures} "
             f"warnings={self.warnings} unknown_packages={self.unknown_packages} "
+            f"available_price_observations={self.available_prices} "
+            f"unavailable_observations={self.unavailable} "
             f"complete={self.failures == 0}"
         )
         return int(self.failures != 0)
+
+
+def collection_batches(observations, settings, run):
+    return batches(
+        observations,
+        scraper_id=settings.scraper_id,
+        shop_id=settings.shop_id,
+        run_id=run.identity,
+        collector_name=run.collector_name,
+    )
+
+
+def available_price(observation) -> bool:
+    return observation.availability == "in_stock" and bool(observation.offers)
 
 
 def unknown_package(observation) -> bool:
@@ -82,6 +97,7 @@ def collect_scope(requester, spool_factory, settings, token: str, adapter) -> in
         collect_adapter(run, requester, delivery, settings, scope, adapter)
     except (DeliveryFailure, ValueError, RequestFailure, httpx.HTTPError) as error:
         run.issue(str(error))
+    request_history_refresh(requester, settings, token)
     return run.finish()
 
 

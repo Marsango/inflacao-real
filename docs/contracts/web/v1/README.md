@@ -163,7 +163,7 @@ See the [example response](history.example.json), also used by frontend tests.
 | `latestPriceMinor` | Lowest eligible available context price on the most recent day with any price in the period, or `null`; always `null` for the overview. Independent of the matched panel. |
 | `changeBasisPoints` | Core-calculated change, rounded to integer basis points. `null` for fewer than two usable days, a nonpositive product baseline, or an unrepresentable result. |
 | `comparisonStart`, `comparisonEnd` | Effective start and end dates when a matched comparison exists and the dates differ; otherwise both `null`. A wider selection uses the available dates and explicitly discloses the actual comparison period. |
-| `collectedAt` | Latest source `observed_at` among the selected product(s)' raw measurements **inside the requested period**, with explicit timezone; `null` if none. This is not ingestion receipt time or necessarily the date of the last selected price. |
+| `collectedAt` | Latest source observation or unchanged-confirmation time (`last_seen_at`) among the selected product(s) **inside the requested period**, with explicit timezone; `null` if none. This is not ingestion receipt time or necessarily the date of the last selected price. |
 | `stale` | Latest source observation is more than 48 hours old at request time. Old historical intervals can be stale by this definition. |
 | `unknownConditions` | Some contexts use advertised prices with incompletely reported buying conditions. This does not mean the price is available unconditionally. The UI displays a notice. |
 | `counts` | Observed `products`, distinct `shops`, `streams`, inclusive effective `days`, and `pricedDays` with usable plotted values. Without eligible prices, `days` covers the request. `includedProducts`, `includedShops` (distinct across products), and `includedStreams` count the matched panel; subtraction gives exclusions. Empty histories have zero counts. |
@@ -203,7 +203,8 @@ is no comparable percentage series; users can select a product for its prices.
    context for the interval; otherwise accept advertised prices with unknown
    conditions, flagged as such. Explicit payment, club, coupon, installment and
    multiple-purchase restrictions remain excluded.
-4. Use the latest observation per context/day, then its minimum eligible BRL
+4. Use the latest observation per context/day (including an unchanged observation's
+   `last_seen_at` confirmation time), then its minimum eligible BRL
    offer, requiring in-stock availability. Ties use scraper identity and observation
    UUID. A later invalid or unavailable observation never falls back to an earlier
    price. Display these daily context prices even when excluded from variation.
@@ -269,3 +270,12 @@ period without rewriting source assignments. Reversing membership restores the
 separate histories. Offer streams, conditions and coverage policies stay intact.
 See the [admin contract](admin.md) for authentication, candidate evidence, generic
 rules, review concurrency, audit and reversal endpoints.
+
+The overview may use persisted daily context summaries internally. These retain
+both known-condition and permissive price candidates, price bases, package shapes
+and availability information needed to reproduce the rules above for the selected
+interval. A daily summary is not an unconditional daily average or a chained index.
+Inclusion, equal weighting, missing-data treatment and final rounding remain the
+same as the raw-observation calculation. Late data and unchanged confirmations
+invalidate their local dates atomically; an incomplete refresh does not authorize
+serving stale daily data. The public response schema is unchanged.

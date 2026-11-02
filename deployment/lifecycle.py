@@ -1,5 +1,5 @@
 """Build before stopping collection; migrate and probe before scheduling."""
-from runtime import compose, revision, CONFIG, require_clean_checkout
+from runtime import compose, revision, CONFIG, ROOT, require_clean_checkout
 from settings import bootstrap, initialize, synchronize_scrapers
 from website import save_domain, start_website, validate_domain
 
@@ -48,7 +48,8 @@ def start_application():
 def scraper_command(action):
     compose("stop", "scrapers")
     try:
-        compose("run", "--rm", "--no-deps", "scrapers", "inflacao-scraper",
+        override = ROOT / "deployment/manual-collection.yaml"
+        compose("--file", str(override), "run", "--no-deps", "scrapers", "inflacao-scraper",
                 "--config", "/app/config.toml", action)
     finally:
         compose("start", "scrapers")

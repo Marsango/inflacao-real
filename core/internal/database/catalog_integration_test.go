@@ -84,6 +84,7 @@ func (fixture workerFixture) checkAttributeMatch() catalogFixture {
 
 func (fixture workerFixture) checkListingEnrichment(product catalogFixture) catalogFixture {
 	product.gtin = "4006381333931"
+	product.observedAt = "2026-10-28T12:00:00Z" // A new day retains a row for the matching-method assertion.
 	identity := fixture.processCatalog(3, product)
 	fixture.assert(`SELECT count(*)=1 AND bool_and(gtin='04006381333931') FROM products`)
 	fixture.assert(`SELECT bool_and(product_match_method='listing_v1') FROM price_observations WHERE payload_id=$1`, identity)
@@ -191,6 +192,7 @@ func TestCatalogAmbiguousCandidatesDoNotPickAnArbitraryProduct(test *testing.T) 
 	fixture.assert(`SELECT count(*)=3 FROM products`)
 	fixture.assert(`SELECT bool_and(product_id=(SELECT max(id) FROM products)
         AND product_match_method='created_v1') FROM price_observations WHERE payload_id=$1`, identity)
+	product.observedAt = "2026-10-28T12:00:00Z"
 	identity = fixture.processCatalog(2, product)
 	fixture.assert(`SELECT count(*)=3 FROM products`)
 	fixture.assert(`SELECT bool_and(product_match_method='listing_v1') FROM price_observations WHERE payload_id=$1`, identity)

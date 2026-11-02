@@ -56,3 +56,5 @@ Preserve KISS: extracting a focused function does not require introducing a clas
 ## Using these instructions
 
 This file applies throughout the repository. Read the `AGENTS.md` in each component you change for its implementation patterns and verification guidance. Keep project-wide rules here and component-specific details in their respective files; avoid duplicating guidance. Add deeper instructions only when a subdirectory needs distinct conventions.
+
+For production investigations or VPS access, read [local VPS access instructions](docs/plans/vps-access.md) when present. That file is Git-ignored and local to this workspace; keep connection details and credentials out of tracked instructions. Maintained deployment guidance lives in [docs/deployment.md](docs/deployment.md).

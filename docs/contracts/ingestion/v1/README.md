@@ -90,6 +90,38 @@ Submission uniqueness is `(scraper_id, submission_id)`. The initial queue dedupl
 
 Observation uniqueness is `(scraper_id, observation_id)`, independent of submission ID. The endpoint rejects duplicate observation IDs within one batch. The worker retains identities and fingerprints independently of raw-payload cleanup: identical observations in another batch are safe no-ops, while conflicting content for the same observation identity fails that entire batch internally. Separate scrapers' independent measurements remain separate observations. Corrections require an explicit future correction workflow, not silently replacing an observation with the same ID. Every historical offer requires the scraper identity and scraper-generated observation ID; PostgreSQL does not generate replacement observation IDs.
 
+### Unchanged observations on the same day
+
+A fresh collection still supplies new observation IDs and actual source times.
+The worker retains each identity, full fingerprint, and run/collector provenance,
+but does not insert another normalized price-history measurement when it matches
+the latest state for the same scraper, shop listing, shopping context and
+**America/Sao_Paulo calendar day**. A new submission still receives `202 Accepted`;
+compaction happens during atomic background processing, not HTTP acceptance.
+
+The compared state includes canonical product assignment, observed package size,
+availability, the complete offer set, reference prices and every price condition.
+Null/unknown values remain distinct from known values; missing prices remain
+distinct from zero. Offer order, run/observation IDs, timestamps, collection method
+and fetched-page URL do not define a price change. Different stores, sellers,
+delivery regions and channels remain separate contexts; independent scrapers are
+not merged. Listing metadata is still validated and updated normally.
+
+Changed state creates a new historical measurement, including a price that changes
+from A to B and back to A. The worker orders observations within a payload by source
+time. The next São Paulo day always permits a new measurement even when unchanged.
+
+Compacted history keeps its original `observed_at`, observation ID, source URL and
+collection method. `last_seen_at` records the latest unchanged confirmation time
+on that same day. Daily histories and freshness use this confirmation time, so a
+delayed older upload cannot replace a more recent confirmed price. All offer rows
+of a retained measurement share that confirmation time. Identity conflicts still
+fail the entire payload, including rolling back confirmation-time updates.
+
+This is internal history compaction; the v1 wire schema, immutable identity rules
+and acknowledgement semantics are unchanged. It also works after successful raw
+payload cleanup. Existing historical duplicates are not deleted by this policy.
+
 [fingerprints.json](fingerprints.json) retains reference SHA-256 vectors over [RFC 8785 JCS](https://www.rfc-editor.org/rfc/rfc8785.html): the complete envelope for a submission, and `{"shop_id": <shop_id>, "observation": <complete observation object>}` for an observation. The worker uses the observation fingerprint; submission fingerprints are not stored or checked. Strings are not Unicode-normalized or trimmed; object-key order, whitespace, equivalent integer spellings, and equivalent JSON escape spelling do not matter, while array order and actual field values do.
 
 Send outgoing batches directly to the core. If delivery fails after bounded retries, persist the exact attempted body locally and stop that scraper's collection. Reuse the same body and IDs after network failures, timeouts, or lost responses. A process interruption before fallback persistence can lose the in-memory batch. Retry `429` and transient `5xx` responses with bounded backoff and jitter, honoring `Retry-After`. An ambiguous `5xx` can occur after a commit, so retries must keep their identity. Authentication, validation, and conflict errors require investigation rather than indefinite retries. Delivery uses HTTP status codes; there are no response-body schemas in this contract.
@@ -113,3 +145,32 @@ python3 -m venv /tmp/nossa-inflacao-contracts-venv
 ```
 
 Checks validate the schema, examples, representative invalid inputs, and canonicalization behavior. Runtime integration tests must additionally cover the API and worker guarantees above when implemented.
+
+## Requesting history precomputation after a run
+
+Collectors call `POST /api/v1/ingestion/history-refresh` on the same private core
+URL after collection ends, including partial runs that submitted observations,
+and after retrying the delivery spool. This control request is separate from
+observation submissions; their schema and acknowledgement rules are unchanged.
+
+Use the same Bearer token and send JSON:
+
+```json
+{"scraper_id":"collector-sp-01","shop_id":"sonda"}
+```
+
+Only these two fields are accepted, and both must match the collector's authorized
+identity and shop. The body limit is 4 KiB. The empty `202 Accepted` response means
+the refresh request is durable; it does not mean processing or calculation finished.
+Repeating a notification is safe. Errors are `400` for invalid bodies, `401` for
+invalid authentication, `403` for unauthorized identities, and `500` if the request
+cannot be stored, using the existing `{"error":"<code>"}` form.
+
+The core waits until no ingestion submissions remain pending, then recalculates
+saved history selections at the current committed catalog revision. A completed
+scraper notification does not certify complete collection across shops. Failed
+payloads remain inspectable and coverage still follows successfully persisted
+observations. Later ingestion, retries, and equivalence changes invalidate saved
+results through the catalog revision. A periodic check recovers missed notifications
+and restarts, waiting for two minutes without newly processed payloads when there
+is no outstanding completion signal. Notification failure is reported separately from collection failure.

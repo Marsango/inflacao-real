@@ -12,7 +12,7 @@ import (
 
 const applicationTablesSQL = `SELECT count(*) FROM information_schema.tables
 		WHERE table_schema = current_schema() AND table_name IN
-		('ingestion_payloads', 'shops', 'products', 'shop_products', 'price_observations', 'observation_identities', 'monitoring_targets', 'product_monitoring_targets', 'catalog_decisions', 'product_equivalence', 'product_exclusions', 'equivalence_audit', 'admin_sessions', 'admin_login_throttle')`
+		('ingestion_payloads', 'shops', 'products', 'shop_products', 'price_observations', 'observation_identities', 'monitoring_targets', 'product_monitoring_targets', 'catalog_decisions', 'product_equivalence', 'product_exclusions', 'equivalence_audit', 'admin_sessions', 'admin_login_throttle', 'history_precomputations', 'history_refresh_requests', 'history_daily_state', 'history_daily_days', 'history_daily')`
 
 const requiredIdentitySQL = `SELECT count(*)=2 AND bool_and(is_nullable='NO' AND column_default IS NULL)
 		FROM information_schema.columns WHERE table_schema=current_schema() AND table_name='price_observations'
@@ -63,12 +63,12 @@ func TestMigrationsUpRepeatDownAndUp(test *testing.T) {
 	requireNoError(test, Migrate(requestContext, pool))
 	provider, err := migrationProvider(pool)
 	requireNoError(test, err)
-	assertMigrationVersion(test, requestContext, provider, 13)
+	assertMigrationVersion(test, requestContext, provider, 16)
 	_, err = provider.DownTo(requestContext, 0)
 	requireNoError(test, err)
 	assertApplicationTables(test, requestContext, pool, 0)
 	requireNoError(test, Migrate(requestContext, pool))
-	assertApplicationTables(test, requestContext, pool, 14)
+	assertApplicationTables(test, requestContext, pool, 19)
 	assertWorkerSQL(test, requestContext, pool, requiredIdentitySQL)
 }
 
@@ -77,6 +77,23 @@ func assertMigrationVersion(test *testing.T, requestContext context.Context, pro
 	if err != nil || version != expected {
 		test.Fatalf("expected migration version %d; got %d, error %v", expected, version, err)
 	}
+}
+
+func TestSameDayCompactionMigrationPreservesExistingObservations(test *testing.T) {
+	fixture := newWorkerFixture(test)
+	fixture.registerShop()
+	fixture.freshMeasurement(1, "2026-10-27T12:00:00Z", nil)
+	provider, err := migrationProvider(fixture.database)
+	requireNoError(test, err)
+	_, err = provider.DownTo(fixture.context, 15)
+	requireNoError(test, err)
+	assertMigrationVersion(test, fixture.context, provider, 15)
+	requireNoError(test, Migrate(fixture.context, fixture.database))
+	fixture.assert(`SELECT count(*)=2 AND bool_and(observed_at='2026-10-27T12:00:00Z') FROM price_observations`)
+	fixture.freshMeasurement(2, "2026-10-27T13:00:00Z", nil)
+	fixture.assert(`SELECT count(*)=2 AND bool_and(observed_at='2026-10-27T12:00:00Z'
+        AND last_seen_at='2026-10-27T13:00:00Z') FROM price_observations`)
+	fixture.assert(`SELECT count(*)=2 FROM observation_identities`)
 }
 
 func assertApplicationTables(test *testing.T, requestContext context.Context, pool *sql.DB, expected int) {

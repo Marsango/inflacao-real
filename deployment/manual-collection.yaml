@@ -1,0 +1,4 @@
+# Retain manual-run diagnostics without inheriting the scheduler's restart policy.
+services:
+  scrapers:
+    restart: "no"

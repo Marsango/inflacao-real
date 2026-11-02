@@ -616,6 +616,18 @@ Warnings alone do not make collection or discovery exit with a failure status.
 Missing targets, invalid base prices, unsupported sale formats, source/network
 errors, pagination failures and failed delivery still fail completeness.
 
+Sonda and Pão de Açúcar attempt independent departments after a source or
+pagination failure. Errors include the department and failing page; the final
+run remains incomplete even when later departments succeed. Overlapping products
+on advancing pages produce warnings and the shared runner retains one measurement
+per listing. Duplicate identities within a page, pages with no new identities,
+changed totals and malformed pagination remain failures. Delivery failure still
+stops collection immediately and preserves the failed batch in its spool.
+
+Run summaries separate total `observations` from `available_price_observations`
+and `unavailable_observations`. Matching a monitoring target does not mean a
+currently available price was found; unavailable products remain unavailable.
+
 The shared parser normalizes measurement-unit spelling and whitespace (`UN`,
 `un`, ` Un `). On 2026-10-31 the VPS returned `measurementUnit=UN` and multiplier
 1 for Muffato SKUs 306771 (Fini 35g) and 301876 (Adidas 150ml). These retain
@@ -676,3 +688,15 @@ ready adapters. New production installations copy that template. For existing in
 `/etc/nossa-inflacao/scrapers.toml` after building and stopping the old scheduler,
 then recreates it. Existing entries, including explicit disables, are preserved. Retain the collector identity authorized by that core,
 separate spool paths, and the matching shop authorization/registration.
+
+### History refresh after collection
+
+After each collection run (including a partial run with committed observations)
+and after spool delivery, the shared runner requests asynchronous history refresh
+through `POST /api/v1/ingestion/history-refresh`. It uses the same authorized
+collector/shop identity and private core URL as ingestion. The core waits for its
+pending ingestion queue to drain before recalculating saved selections. This does
+not assert that every shop completed successfully. Notification errors are reported
+as warnings; collection status and durable batches are preserved. The core's
+periodic revision check recovers a missed signal. Deploy the updated core before
+updating independently hosted collectors to avoid refresh-endpoint warnings.

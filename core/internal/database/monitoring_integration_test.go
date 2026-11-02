@@ -181,7 +181,7 @@ func TestMonitoringGroupsBrandsWithoutMergingProducts(t *testing.T) {
 	assertWorkerSQL(t, ctx, db, `SELECT count(DISTINCT product_id)=2 FROM price_observations`)
 }
 
-func TestProductLabelBackfillOnExistingCatalog(t *testing.T) {
+func TestHistoryPrecomputationUpgradePreservesExistingCatalog(t *testing.T) {
 	requestContext, pool := testDatabase(t)
 	provider, err := migrationProvider(pool)
 	requireNoError(t, err)
@@ -189,13 +189,12 @@ func TestProductLabelBackfillOnExistingCatalog(t *testing.T) {
 	requireNoError(t, err)
 	seedUnlabeledCatalog(t, requestContext, pool)
 	requireNoError(t, Migrate(requestContext, pool))
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=5 FROM products`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets`)
 	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets WHERE product_id=1 AND target_id='cafe-moido'`)
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets WHERE product_id=2 AND target_id='bala'`)
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM product_monitoring_targets WHERE product_id=3 AND target_id='banana'`)
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM product_monitoring_targets WHERE product_id IN (4,5)`)
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM product_monitoring_targets WHERE product_id=2 AND target_id='banana'`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=0 FROM history_precomputations`)
 	requireNoError(t, Migrate(requestContext, pool))
-	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=3 FROM product_monitoring_targets`)
+	assertWorkerSQL(t, requestContext, pool, `SELECT count(*)=1 FROM history_refresh_requests`)
 }
 
 func seedUnlabeledCatalog(t *testing.T, requestContext context.Context, pool *sql.DB) {

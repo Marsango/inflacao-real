@@ -10,6 +10,7 @@ import httpx
 from .collection import collect_scope
 from .config import Settings
 from .delivery import Spool, deliver
+from .history_refresh import request_history_refresh
 from .transport import Requester
 
 
@@ -72,6 +73,8 @@ def deliver_command(settings: Settings, arguments, adapter) -> int:
             scraper_id=settings.scraper_id,
             shop_id=settings.shop_id,
         )
+        token = os.environ.get(settings.ingestion_token_env, "")
+        request_history_refresh(requester, settings, token)
     print(f"accepted_batches={count}; background processing must be checked in core")
     return 0
 
