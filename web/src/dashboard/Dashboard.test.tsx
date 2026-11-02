@@ -26,7 +26,7 @@ it('displays methodology and freshness supplied by core', async () => {
   render(<Dashboard />);
   await screen.findByRole('img');
   expect(screen.getByText(/Última coleta no período/)).toBeVisible();
-  fireEvent.click(screen.getByText('Sobre os dados e a metodologia'));
+  fireEvent.click(screen.getByText('Metodologia deste histórico'));
   expect(screen.getByText(productHistory.methodology)).toBeVisible();
   expect(screen.queryByText(/Dados fictícios/)).not.toBeInTheDocument();
 });
@@ -180,16 +180,17 @@ it('labels per-kg prices and explains unverified buying conditions', async () =>
 });
 
 it('shows available shop prices when no matched variation exists', async () => {
-  const excluded = { ...productHistory.shopPrices[0], included: false };
+  const points = [{ date: '2026-10-27', value: null }, { date: '2026-10-29', value: 2690 }];
+  const excluded = { ...productHistory.shopPrices[0], included: false, points };
   const history = { ...productHistory, points: productHistory.points,
     shopPrices: [excluded], changeBasisPoints: null, comparisonStart: null, comparisonEnd: null,
     counts: { ...productHistory.counts, pricedDays: 2, includedProducts: 0, includedShops: 0, includedStreams: 0 } };
   vi.stubGlobal('fetch', mockCore(history));
   render(<Dashboard />);
   expect(await screen.findByRole('heading', { name: 'Comparar preços entre lojas' })).toBeVisible();
-  expect(screen.getByRole('link', { name: 'Mercado Exemplo' })).toHaveAttribute('href', excluded.productUrl);
-  expect(screen.getByText('Sem preços comparáveis nas duas datas')).toBeVisible();
-  expect(screen.getByText('Sem preço disponível')).toBeVisible();
+  expect(screen.getByRole('link', { name: /Ver oferta de Mercado Exemplo/ })).toHaveAttribute('href', excluded.productUrl);
+  expect(screen.getByText('Fora da variação')).toBeVisible();
+  expect(screen.getAllByText('Sem preço disponível')[0]).toBeVisible();
   expect(screen.getByText(/R\$\s*26,90/, { selector: 'strong' })).toBeVisible();
   expect(screen.getByRole('img')).toBeVisible();
   expect(screen.getByText(/Menor preço disponível por dia/)).toBeVisible();
@@ -197,13 +198,13 @@ it('shows available shop prices when no matched variation exists', async () => {
 });
 
 it('shows São Paulo pickup coverage, retailer and public product link from core', async () => {
-  const context = 'org:171/filial:1/centro:1 · 04263100 · São Paulo · SP · pickup';
+  const context = 'São Paulo/SP · CEP 04263100 · Retirada';
   const coverage = 'Localidades observadas: Curitiba/PR; São Paulo/SP.';
   const productUrl = 'https://www.lojahirota.com.br/produto/498/arroz-camil-tipo-1-5kg';
   const shop = { ...productHistory.shopPrices[0], shopId: 'hirota', shopName: 'Hirota', context, productUrl };
   vi.stubGlobal('fetch', mockCore({ ...productHistory, coverage, shopPrices: [shop] }));
   render(<Dashboard />);
-  expect(await screen.findByRole('link', { name: 'Hirota' })).toHaveAttribute('href', productUrl);
+  expect(await screen.findByRole('link', { name: /Ver oferta de Hirota/ })).toHaveAttribute('href', productUrl);
   expect(screen.getByText(context)).toBeVisible();
   expect(screen.getAllByText(coverage)[0]).toBeVisible();
 });
@@ -250,12 +251,12 @@ it('centers a single chart point with finite coordinates', () => {
 
 
 it('shows Pão de Açúcar delivery coverage and public product link from core', async () => {
-  const context = '461 · 04115090 · São Paulo · SP · delivery';
+  const context = 'São Paulo/SP · CEP 04115090 · Entrega';
   const productUrl = 'https://www.paodeacucar.com/produto/172/arroz-integral-tipo-1-tio-joao-pacote-500g';
   const shop = { ...productHistory.shopPrices[0], shopId: 'pao-de-acucar',
     shopName: 'Pão de Açúcar', context, productUrl };
   vi.stubGlobal('fetch', mockCore({ ...productHistory, shopPrices: [shop] }));
   render(<Dashboard />);
-  expect(await screen.findByRole('link', { name: 'Pão de Açúcar' })).toHaveAttribute('href', productUrl);
+  expect(await screen.findByRole('link', { name: /Ver oferta de Pão de Açúcar/ })).toHaveAttribute('href', productUrl);
   expect(screen.getByText(context)).toBeVisible();
 });

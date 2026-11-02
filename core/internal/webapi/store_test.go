@@ -125,7 +125,7 @@ func assertMamboHistory(test *testing.T, history insights.History) {
 		test.Fatalf("missing São Paulo coverage: %+v", history)
 	}
 	shop := history.ShopPrices[0]
-	if shop.ShopID != "mambo" || shop.ShopName != "Mambo" || !strings.Contains(shop.Context, "01310200") {
+	if shop.ShopID != "mambo" || shop.ShopName != "Mambo" || shop.Context != "São Paulo/SP · CEP 01310200 · Entrega" {
 		test.Fatalf("incorrect Mambo presentation: %+v", shop)
 	}
 }
@@ -240,10 +240,11 @@ func TestFixedContextsAndEquivalentPackages(test *testing.T) {
 	if history.Counts.IncludedStreams != 1 || history.Counts.Streams != 2 {
 		test.Fatal("panel changed between days")
 	}
-	assertPrice(test, history.Points[1].Value, 2490)
-	if history.ChangeBasisPoints == nil || *history.ChangeBasisPoints != 0 {
-		test.Fatal("unmatched branch affected variation")
+	if len(history.ShopPrices) != 2 || history.ShopPrices[0].Context != history.ShopPrices[1].Context {
+		test.Fatal("distinct branches must retain separate histories with readable labels")
 	}
+	assertPrice(test, history.Points[1].Value, 2490)
+	assertPrice(test, history.ChangeBasisPoints, 0)
 }
 
 func TestPaginationAndHistoricalProductAssignment(test *testing.T) {
@@ -513,7 +514,7 @@ func assertHirotaRiceHistory(fixture fixture, product Product) {
 		fixture.test.Fatalf("Hirota geography or shop missing: %+v", history)
 	}
 	shop := history.ShopPrices[0]
-	if shop.ShopID != "hirota" || shop.ShopName != "Hirota" || !strings.Contains(shop.Context, "04263100") {
+	if shop.ShopID != "hirota" || shop.ShopName != "Hirota" || shop.Context != "São Paulo/SP · CEP 04263100 · Retirada" {
 		fixture.test.Fatalf("Hirota pickup context lost: %+v", shop)
 	}
 	if shop.ProductURL != "https://www.lojahirota.com.br/produto/498/arroz-camil-tipo-1-5kg" {
@@ -586,7 +587,7 @@ func assertPaoDeAcucarHistory(fixture fixture, product Product) {
 		fixture.test.Fatalf("retailer or unknown conditions lost: %+v", history)
 	}
 	shop := history.ShopPrices[0]
-	if shop.ShopName != "Pão de Açúcar" || !strings.Contains(shop.Context, "04115090") {
+	if shop.ShopName != "Pão de Açúcar" || shop.Context != "São Paulo/SP · CEP 04115090 · Entrega" {
 		fixture.test.Fatalf("São Paulo retailer context lost: %+v", shop)
 	}
 	if !strings.Contains(shop.ProductURL, "paodeacucar.com/produto/172/") {
@@ -1054,4 +1055,16 @@ func checkDailyUnitBasis(test *testing.T, basis string) {
 	assertDailyOverview(fixture, "2026-10-01", "2026-11-01", "")
 	requireSuccess(test, dailysummary.Refresh(fixture.ctx, fixture.pool))
 	assertDailyOverview(fixture, "2026-10-29", "2026-10-29", "")
+}
+
+func TestUnknownShopLocationIsExplicit(test *testing.T) {
+	fixture := newFixture(test)
+	fixture.submit(1, func(observation map[string]any) {
+		observation["context"] = map[string]any{"seller_id": nil, "store_id": nil,
+			"postal_code": nil, "city": nil, "state": nil, "channel": "unknown"}
+	})
+	history := fixture.history("1", "2026-10-27", "2026-10-27")
+	if len(history.ShopPrices) != 1 || history.ShopPrices[0].Context != "Localidade não informada · Modalidade não informada" {
+		test.Fatalf("unknown context not explained: %+v", history.ShopPrices)
+	}
 }

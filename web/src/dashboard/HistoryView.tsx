@@ -28,6 +28,9 @@ function Context({ history }: { history: History }) {
   return <div className="context"><p>{history.coverage}</p>
     {history.unknownConditions && <p className="notice" role="status">Condições de compra não informadas em parte das ofertas. São preços anunciados e podem exigir condições não verificadas.</p>}
     <p>{collected ? `Última coleta no período: ${collected} (horário de Brasília).` : 'Sem coleta no período.'}</p>
+    <details className="history-methodology"><summary>Metodologia deste histórico</summary>
+      <p>{history.methodology}</p><p>Versão: {history.methodologyVersion}</p>
+    </details>
     <DataTable history={history} />
   </div>;
 }
